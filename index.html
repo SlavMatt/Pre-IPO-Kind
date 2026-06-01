@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pre-IPO 弹出层 · 三路径状态</title>
+<style>
+/* ── Reset ── */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;background:#f0f2f5;color:#1a1a1a;font-size:14px;line-height:1.65;}
+.page{max-width:1440px;margin:0 auto;padding:48px 32px 100px;}
+
+/* ── Design Tokens ── */
+:root{
+  --bg-0:#16181d;
+  --bg-1:#202328;
+  --bg-2:#2b2f35;
+  --text-1:#f9f9f9;
+  --text-2:#878b93;
+  --line-1:#3d4149;
+  --orange:#f69b1d;
+  --green:#2ebd85;
+  --red:#e05252;
+  --font:'HarmonyOS Sans','IBM Plex Sans',-apple-system,sans-serif;
+}
+
+/* ── Page header ── */
+h1{font-size:26px;font-weight:700;margin-bottom:6px;}
+.meta{color:#888;font-size:13px;margin-bottom:40px;}
+
+/* ── Path block ── */
+.path-block{background:#fff;border-radius:16px;border:1px solid #e4e4e4;margin-bottom:28px;overflow:hidden;}
+.path-header{display:flex;align-items:center;gap:12px;padding:18px 28px;border-bottom:1px solid #ebebeb;}
+.path-badge{height:26px;padding:0 13px;border-radius:100px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;flex-shrink:0;}
+.badge-unk{background:#f3f4f6;color:#374151;}
+.badge-ipo{background:#fff3e0;color:#b25a00;}
+.badge-dl{background:#e8f0fe;color:#1a56c4;}
+.badge-spac{background:#f0e6ff;color:#6b21a8;}
+.path-title{font-size:16px;font-weight:700;}
+.path-sub{font-size:12px;color:#888;margin-left:auto;}
+
+/* ── Timeline strip ── */
+.tl-strip{display:flex;border-radius:10px;overflow:hidden;border:1px solid #e4e4e4;margin:16px 28px 0;}
+.tl-node{flex:1;padding:8px 4px;text-align:center;font-size:10px;font-weight:600;border-right:1px solid rgba(0,0,0,0.07);cursor:pointer;transition:filter 0.15s;}
+.tl-node:last-child{border-right:none;}
+.tl-node small{display:block;font-weight:400;font-size:9px;margin-top:1px;opacity:0.75;}
+.tl-node.dim{filter:grayscale(0.6);opacity:0.5;}
+.tl-node.current{outline:2px solid #1a1a1a;outline-offset:-2px;}
+
+/* ── State grid ── */
+.state-grid{display:grid;grid-template-columns:480px 1fr;min-height:260px;}
+.preview-pane{background:var(--bg-0);padding:22px 28px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;}
+.preview-label{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.6px;}
+.sw-row{display:flex;gap:6px;flex-wrap:wrap;}
+.sw-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--line-1);background:var(--bg-2);color:var(--text-2);font-size:11px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all 0.15s;}
+.sw-btn:hover{border-color:var(--orange);color:var(--text-1);}
+.sw-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+/* ── Info pane ── */
+.info-pane{padding:20px 26px;display:flex;flex-direction:column;gap:14px;border-left:1px solid #ebebeb;}
+.info-block{display:flex;flex-direction:column;gap:4px;}
+.info-label{font-size:10px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.4px;}
+.info-text{font-size:13px;color:#1a1a1a;line-height:1.55;}
+.info-risk{font-size:13px;color:#c62828;background:#fff8f8;border-left:3px solid #e05252;padding:6px 10px;border-radius:0 6px 6px 0;}
+.sid{display:inline-block;font-size:10px;font-weight:800;font-family:'SF Mono','Courier New',monospace;padding:1px 7px;border-radius:4px;margin-right:6px;color:#fff;}
+.sid-unk{background:#6b7280;}
+.sid-ipo{background:#f69b1d;}
+.sid-dl{background:#4a7cf7;}
+.sid-spac{background:#9333ea;}
+.sid-red{background:#e05252;}
+
+/* ── Pip Popup Component ── */
+.pip-wrap{width:100%;max-width:340px;}
+.pip{background:var(--bg-1);border:1px solid var(--line-1);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:18px;font-family:var(--font);}
+.pip-header{display:flex;align-items:center;justify-content:space-between;}
+.pip-title{font-size:17px;font-weight:500;color:var(--text-1);}
+.pip-learn{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;color:var(--orange);cursor:pointer;white-space:nowrap;}
+.pip-desc{font-size:12px;color:var(--text-2);line-height:1.6;}
+.pip-cards{display:flex;flex-direction:column;background:var(--line-1);border-radius:12px;overflow:hidden;gap:1px;}
+.pip-card{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;background:var(--bg-1);}
+.pip-card.hl{background:var(--bg-2);}
+.pip-card-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.pip-card-col{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.pip-status-name{font-size:13px;font-weight:500;color:var(--text-1);white-space:nowrap;}
+.pip-card-right{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:8px;}
+.pip-liq{font-size:11px;color:var(--text-2);}
+.pip-liq.red{color:var(--red);}
+.pip-countdown{font-size:12px;font-weight:700;color:var(--orange);}
+.pip-next-tag{font-size:10px;background:rgba(246,155,29,0.15);color:var(--orange);padding:1px 6px;border-radius:4px;font-weight:600;}
+.pip-date{font-size:11px;color:var(--text-2);}
+.pip-date-only{font-size:11px;color:#555;}
+.pip-tbd{font-size:11px;color:#6b6b6b;font-style:italic;}
+.pip-footnote{font-size:11px;color:var(--text-2);line-height:1.55;}
+.pip-footnote::before{content:"* ";color:var(--orange);}
+
+/* Liq bars */
+.liq-bars{display:flex;align-items:flex-end;gap:2px;}
+.liq-bar{width:3px;border-radius:1px;}
+
+/* ── Fork divider ── */
+.fork-wrap{text-align:center;margin:-12px 0 20px;position:relative;}
+.fork-line{height:20px;width:1px;background:#d0d0d0;margin:0 auto;}
+.fork-label{display:inline-block;font-size:11px;font-weight:700;color:#888;background:#f0f2f5;padding:4px 14px;border-radius:100px;border:1px solid #ddd;margin:4px 0;}
+.fork-branches{display:flex;justify-content:center;gap:56px;margin-top:4px;}
+.fork-branch{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.fork-branch-line{width:1px;height:22px;background:#d0d0d0;}
+.fork-branch-badge{font-size:11px;font-weight:700;padding:3px 12px;border-radius:100px;}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>Web · 标题栏 Pre-IPO 弹出层 · 三路径</h1>
+<p class="meta">点击标题栏 Pre-IPO 标签触发 · 上线初始路径未知 → 收到 SEC 文件后分叉为 IPO / Direct Listing / SPAC · 2026-06-01</p>
+
+<!-- ════════════════════════════════════════
+     PHASE 0 — Unknown
+════════════════════════════════════════ -->
+<div class="path-block">
+  <div class="path-header">
+    <span class="path-badge badge-unk">Phase 0 · 路径未知</span>
+    <span class="path-title">Pre-IPO 起始阶段</span>
+    <span class="path-sub">上线时路径 / 日期均未确认 · 等待 SEC 文件（S-1 或 S-4）</span>
+  </div>
+  <div class="tl-strip" style="margin-bottom:0;">
+    <div class="tl-node tl-unk current" style="background:#f3f4f6;color:#374151;" data-path="unk" data-state="C1">C-1<small>纯未知</small></div>
+    <div class="tl-node tl-unk" style="background:#e8eaed;color:#374151;" data-path="unk" data-state="C2">C-2<small>有估算日期</small></div>
+    <div class="tl-node" style="background:#e8eaf6;color:#3949ab;flex:0.6;">→<small>路径确认</small></div>
+  </div>
+  <div class="state-grid">
+    <div class="preview-pane">
+      <div class="preview-label">Live Component</div>
+      <div class="sw-row">
+        <button class="sw-btn active" onclick="setState('unk','C1',this)">C-1 · 路径 / 日期未知</button>
+        <button class="sw-btn" onclick="setState('unk','C2',this)">C-2 · 有估算日期</button>
+      </div>
+      <div class="pip-wrap" id="pip-unk"></div>
+    </div>
+    <div class="info-pane" id="info-unk"></div>
+  </div>
+</div>
+
+<!-- Fork -->
+<div class="fork-wrap">
+  <div class="fork-line"></div>
+  <div class="fork-label">SEC 文件到达 → 路径确认</div>
+  <div class="fork-line"></div>
+  <div class="fork-branches">
+    <div class="fork-branch">
+      <div class="fork-branch-line"></div>
+      <span class="fork-branch-badge" style="background:#fff3e0;color:#b25a00;">Path A · IPO（S-1）</span>
+    </div>
+    <div class="fork-branch">
+      <div class="fork-branch-line"></div>
+      <span class="fork-branch-badge" style="background:#e8f0fe;color:#1a56c4;">Path B · Direct Listing（S-1 无新股）</span>
+    </div>
+    <div class="fork-branch">
+      <div class="fork-branch-line"></div>
+      <span class="fork-branch-badge" style="background:#f0e6ff;color:#6b21a8;">Path D · SPAC（S-4）</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PATH A — IPO
+════════════════════════════════════════ -->
+<div class="path-block">
+  <div class="path-header">
+    <span class="path-badge badge-ipo">Path A · IPO</span>
+    <span class="path-title">传统 IPO 路径</span>
+    <span class="path-sub">S-1 确认 · ipo_date 填具体日期 / "TBD" · IPO 后有 ~2 天 Pre-Listing 窗口 · 有 Rebase</span>
+  </div>
+  <div class="tl-strip">
+    <div class="tl-node" style="background:#f3f4f6;color:#6b7280;" data-path="ipo" data-state="A4">A-4<small>IPO TBD</small></div>
+    <div class="tl-node" style="background:#fff8e1;color:#b36b00;" data-path="ipo" data-state="A2">A-2<small>IPO 远期</small></div>
+    <div class="tl-node" style="background:#fff3e0;color:#e65100;" data-path="ipo" data-state="A3">A-3<small>IPO 近期</small></div>
+    <div class="tl-node current" style="background:#fef3c7;color:#b45309;" data-path="ipo" data-state="A1">A-1<small>IPO &lt;24h</small></div>
+    <div class="tl-node" style="background:#fce4ec;color:#c62828;" data-path="ipo" data-state="A5">A-5<small>Pre-Listing</small></div>
+    <div class="tl-node" style="background:#fde8e8;color:#c62828;" data-path="ipo" data-state="A6">A-6<small>Merging</small></div>
+    <div class="tl-node" style="background:#e8eaf6;color:#3949ab;flex:0.7;" data-path="ipo" data-state="END">→<small>country_stock</small></div>
+  </div>
+  <div class="state-grid">
+    <div class="preview-pane">
+      <div class="preview-label">Live Component</div>
+      <div class="sw-row">
+        <button class="sw-btn" onclick="setState('ipo','A4',this)">A-4 · TBD</button>
+        <button class="sw-btn" onclick="setState('ipo','A2',this)">A-2 · 远期</button>
+        <button class="sw-btn" onclick="setState('ipo','A3',this)">A-3 · 近期</button>
+        <button class="sw-btn active" onclick="setState('ipo','A1',this)">A-1 · &lt;24h</button>
+        <button class="sw-btn" onclick="setState('ipo','A5',this)">A-5 · Pre-Listing</button>
+        <button class="sw-btn" onclick="setState('ipo','A6',this)">A-6 · Merging</button>
+      </div>
+      <div class="pip-wrap" id="pip-ipo"></div>
+    </div>
+    <div class="info-pane" id="info-ipo"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PATH B — Direct Listing
+════════════════════════════════════════ -->
+<div class="path-block">
+  <div class="path-header">
+    <span class="path-badge badge-dl">Path B · Direct Listing</span>
+    <span class="path-title">直接上市路径</span>
+    <span class="path-sub">S-1（无新股）确认 · ipo_date = "N/A" · 无 Rebase · 关键节点为 market_open_date</span>
+  </div>
+  <div class="tl-strip">
+    <div class="tl-node" style="background:#f3f4f6;color:#6b7280;" data-path="dl" data-state="B3">B-3<small>DL TBD</small></div>
+    <div class="tl-node current" style="background:#e8f5e9;color:#2e7d32;" data-path="dl" data-state="B1">B-1<small>DL 远期</small></div>
+    <div class="tl-node" style="background:#fff8e1;color:#b36b00;" data-path="dl" data-state="B2">B-2<small>DL 近期</small></div>
+    <div class="tl-node" style="background:#fce4ec;color:#c62828;" data-path="dl" data-state="B4">B-4<small>Pre-Opening</small></div>
+    <div class="tl-node" style="background:#fde8e8;color:#c62828;" data-path="dl" data-state="B5">B-5<small>Merging</small></div>
+    <div class="tl-node" style="background:#e8eaf6;color:#3949ab;flex:0.7;" data-path="dl" data-state="END">→<small>country_stock</small></div>
+  </div>
+  <div class="state-grid">
+    <div class="preview-pane">
+      <div class="preview-label">Live Component</div>
+      <div class="sw-row">
+        <button class="sw-btn" onclick="setState('dl','B3',this)">B-3 · TBD</button>
+        <button class="sw-btn active" onclick="setState('dl','B1',this)">B-1 · 远期</button>
+        <button class="sw-btn" onclick="setState('dl','B2',this)">B-2 · 近期</button>
+        <button class="sw-btn" onclick="setState('dl','B4',this)">B-4 · Pre-Opening</button>
+        <button class="sw-btn" onclick="setState('dl','B5',this)">B-5 · Merging</button>
+      </div>
+      <div class="pip-wrap" id="pip-dl"></div>
+    </div>
+    <div class="info-pane" id="info-dl"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PATH D — SPAC
+════════════════════════════════════════ -->
+<div class="path-block">
+  <div class="path-header">
+    <span class="path-badge badge-spac">Path D · SPAC</span>
+    <span class="path-title">SPAC 借壳上市路径</span>
+    <span class="path-sub">S-4 确认 · 无 Rebase · SPAC 特有：股东投票节点（D-4）· 关键事件为合并完成</span>
+  </div>
+  <div class="tl-strip">
+    <div class="tl-node" style="background:#f3f4f6;color:#6b7280;" data-path="spac" data-state="D3">D-3<small>合并 TBD</small></div>
+    <div class="tl-node current" style="background:#f5f0ff;color:#7e22ce;" data-path="spac" data-state="D1">D-1<small>合并远期</small></div>
+    <div class="tl-node" style="background:#ede9fe;color:#7e22ce;" data-path="spac" data-state="D2">D-2<small>合并近期</small></div>
+    <div class="tl-node" style="background:#fce4ec;color:#c62828;" data-path="spac" data-state="D4">D-4<small>股东投票</small></div>
+    <div class="tl-node" style="background:#fde8e8;color:#c62828;" data-path="spac" data-state="D5">D-5<small>Merging</small></div>
+    <div class="tl-node" style="background:#e8eaf6;color:#3949ab;flex:0.7;" data-path="spac" data-state="END">→<small>country_stock</small></div>
+  </div>
+  <div class="state-grid">
+    <div class="preview-pane">
+      <div class="preview-label">Live Component</div>
+      <div class="sw-row">
+        <button class="sw-btn" onclick="setState('spac','D3',this)">D-3 · TBD</button>
+        <button class="sw-btn active" onclick="setState('spac','D1',this)">D-1 · 远期</button>
+        <button class="sw-btn" onclick="setState('spac','D2',this)">D-2 · 近期</button>
+        <button class="sw-btn" onclick="setState('spac','D4',this)">D-4 · 股东投票</button>
+        <button class="sw-btn" onclick="setState('spac','D5',this)">D-5 · Merging</button>
+      </div>
+      <div class="pip-wrap" id="pip-spac"></div>
+    </div>
+    <div class="info-pane" id="info-spac"></div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+/* ── SVG Icons ── */
+function sunSVG(){
+  return`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+    <circle cx="8" cy="8" r="2.8" fill="#f69b1d"/>
+    <line x1="8" y1="0.5" x2="8" y2="2.5" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="8" y1="13.5" x2="8" y2="15.5" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="0.5" y1="8" x2="2.5" y2="8" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="13.5" y1="8" x2="15.5" y2="8" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="2.4" y1="2.4" x2="3.8" y2="3.8" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12.2" y1="12.2" x2="13.6" y2="13.6" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="13.6" y1="2.4" x2="12.2" y2="3.8" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="3.8" y1="12.2" x2="2.4" y2="13.6" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>`;
+}
+function afterSVG(){
+  return`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+    <path d="M13.2 10A6 6 0 0 1 6 2.8a6 6 0 1 0 7.2 7.2z" fill="none" stroke="#878b93" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="11.5" cy="4.5" r="0.8" fill="#878b93"/>
+    <circle cx="13" cy="6.5" r="0.6" fill="#878b93"/>
+  </svg>`;
+}
+function liqBars(type){
+  if(type==='moderate'){
+    return`<div class="liq-bars"><div class="liq-bar" style="height:5px;background:#2ebd85;"></div><div class="liq-bar" style="height:9px;background:#2ebd85;"></div><div class="liq-bar" style="height:13px;background:#2ebd85;"></div><div class="liq-bar" style="height:9px;background:#3d4149;"></div></div>`;
+  }
+  if(type==='low'){
+    return`<div class="liq-bars"><div class="liq-bar" style="height:5px;background:#e05252;"></div><div class="liq-bar" style="height:9px;background:#3d4149;"></div><div class="liq-bar" style="height:13px;background:#3d4149;"></div><div class="liq-bar" style="height:9px;background:#3d4149;"></div></div>`;
+  }
+  return '';
+}
+
+/* ── Renderers ── */
+function renderCard(c){
+  const icon = c.icon==='sun' ? sunSVG() : afterSVG();
+  let rightHTML;
+  if(c.tbd){
+    rightHTML=`<span class="pip-tbd">TBD</span>`;
+  } else if(c.dateOnly){
+    rightHTML=`<span class="pip-date-only">${c.dateOnly}</span>`;
+  } else if(c.liq){
+    rightHTML=`${liqBars(c.liqT)}<span class="pip-liq${c.liqT==='low'?' red':''}">${c.liq}</span>`;
+  } else {
+    rightHTML=`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+      <div style="display:flex;align-items:center;gap:4px;">
+        ${c.countdown?`<span class="pip-countdown">${c.countdown}</span>`:''}
+        ${c.tag?`<span class="pip-next-tag">${c.tag}</span>`:''}
+      </div>
+      ${c.date?`<span class="pip-date">${c.date}</span>`:''}
+    </div>`;
+  }
+  return`<div class="pip-card${c.hl?' hl':''}">
+    <div class="pip-card-left">${icon}<div class="pip-card-col"><span class="pip-status-name">${c.name}</span></div></div>
+    <div class="pip-card-right">${rightHTML}</div>
+  </div>`;
+}
+
+function renderPip(d){
+  return`<div class="pip">
+    <div class="pip-header">
+      <span class="pip-title">Pre-IPO Assets</span>
+      <span class="pip-learn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#f69b1d" stroke-width="1.2"/><path d="M7 6.5v3.5" stroke="#f69b1d" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="4.5" r="0.75" fill="#f69b1d"/></svg>
+        Learn More
+      </span>
+    </div>
+    <p class="pip-desc">${d.desc}</p>
+    <div class="pip-cards">${d.cards.map(renderCard).join('')}</div>
+    <p class="pip-footnote">${d.fn}</p>
+  </div>`;
+}
+
+function renderInfo(sid, path, i){
+  const cls = {unk:'sid-unk',ipo:'sid-ipo',dl:'sid-dl',spac:'sid-spac'}[path]||'sid-unk';
+  return`
+    <div class="info-block">
+      <div class="info-label">当前状态</div>
+      <div class="info-text"><span class="sid ${cls}">${sid}</span>${i.name}</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">触发条件</div>
+      <div class="info-text">${i.trigger}</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">高亮卡说明</div>
+      <div class="info-text">${i.highlight}</div>
+    </div>
+    ${i.risk?`<div class="info-block"><div class="info-label" style="color:#c62828;">风险 / 仓位限制</div><div class="info-risk">${i.risk}</div></div>`:''}
+    ${i.note?`<div class="info-block"><div class="info-label">备注</div><div class="info-text" style="color:#555;">${i.note}</div></div>`:''}
+  `;
+}
+
+/* ── State Definitions ── */
+const FN_STD = 'During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.';
+const FN_UNK = 'Listing method (IPO or Direct Listing) has not been confirmed. Path and schedule will be updated once an SEC filing is detected by the system.';
+const FN_DL  = 'This symbol will list via Direct Listing. No Rebase will occur. High price volatility is expected on and around the opening day.';
+const FN_SPC = 'This symbol will go public via SPAC merger (S-4 filing). No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
+
+const DESC_IPO = 'This perpetual trades 24/7, and its price is based on various market estimates. Prices may fluctuate during the Pre-IPO phase. When the underlying asset officially launches on the IPO market, the liquidity and price protection may adjust to regular market rules.';
+const DESC_DL  = 'This perpetual trades 24/7. This symbol will list via Direct Listing — no Rebase will occur. High price volatility is expected on and around the opening day.';
+const DESC_SPC = 'This perpetual trades 24/7. This symbol will go public via SPAC merger (S-4 filing). No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
+const DESC_UNK = 'This perpetual trades 24/7. Listing method (IPO or Direct Listing) has not been confirmed. Path and schedule will be updated once an SEC filing is detected by the system.';
+
+const STATES = {
+  unk:{
+    C1:{
+      pip:{desc:DESC_UNK,fn:FN_UNK,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',          liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Listing Date', tbd:true}
+      ]},
+      info:{name:'路径与日期完全未知',trigger:'上线初始状态 · 尚未收到任何 SEC 文件',highlight:'仅 Pre-IPO 高亮 · 下卡 Est. Listing Date 显示 TBD',note:'流动性 Moderate · 无仓位限制 · 一旦 S-1 / S-4 到达立即切对应路径'}
+    },
+    C2:{
+      pip:{desc:DESC_UNK,fn:FN_UNK,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',          liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Listing Date', countdown:'3 Mon 24 Days', tag:'Next Phase', date:'2026-10-26 21:00 UTC'}
+      ]},
+      info:{name:'有估算日期，路径仍未知',trigger:'市场有分析师估算日期，后端录入 est_date（非官方 SEC 文件）',highlight:'Pre-IPO 高亮 · 下卡显示估算倒计时（标注 Est.）',note:'与 C-1 的差异：下卡有倒计时但路径未知 · 日期可信度低'}
+    }
+  },
+  ipo:{
+    A4:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. IPO Date', tbd:true}
+      ]},
+      info:{name:'IPO 路径已确认，日期 TBD',trigger:'S-1 到达确认走 IPO 路径，但 ipo_date 字段值为 "TBD"',highlight:'Pre-IPO 高亮 · 下卡 Est. IPO Date 显示 TBD',note:'与 C-1 的区别：路径已明确为 IPO，只是日期待公司公告'}
+    },
+    A2:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. IPO Date', countdown:'3 Mon 24 Days', tag:'Next Phase', date:'2026-10-26 21:00 UTC'}
+      ]},
+      info:{name:'IPO 倒计时 &gt;31 天（远期）',trigger:'ipo_date 已配置 · current_time 距 ipo_date 超过 31 天',highlight:'Pre-IPO 高亮 · 倒计时以 "X Mon Y Days" 格式展示',note:'流动性正常 · 无仓位限制 · 倒计时精度：月 + 天'}
+    },
+    A3:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. IPO Date', countdown:'14 Days', tag:'Next Phase', date:'2026-06-15 21:00 UTC'}
+      ]},
+      info:{name:'IPO 倒计时 14 天（近期）',trigger:'current_time 距 ipo_date 在 24h ~ 31 天之间',highlight:'Pre-IPO 高亮 · 倒计时精度切换为天',note:'此窗口可在 UI 加入"即将 IPO"的显著提示'}
+    },
+    A1:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. IPO Date', countdown:'01:26:56', tag:'Next Phase', date:'2026-05-30 21:00 UTC'}
+      ]},
+      info:{name:'IPO 倒计时 &lt;24h（最高风险）',trigger:'current_time 距 ipo_date 不足 24 小时',highlight:'Pre-IPO 高亮 · 倒计时精度升级为 HH:MM:SS',risk:'临近 IPO，价格波动风险最高。建议前端加入显著提示横幅。'}
+    },
+    A5:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:false,icon:'after', name:'Pre-IPO',      dateOnly:'2026-05-30 21:00 UTC'},
+        {hl:true, icon:'after', name:'Pre-Listing',  liq:'Low Liquidity', liqT:'low'}
+      ]},
+      info:{name:'Pre-Listing（IPO 已发生，市场未开）',trigger:'ipo_date &lt; current_time &lt; market_open_time · 约 2 天窗口',highlight:'高亮切换至 Pre-Listing · Pre-IPO 卡变为历史节点（显示具体日期）',risk:'is_reduce_only = true · 仅允许减仓 · 流动性 Low · 开市前价格波动最剧烈'}
+    },
+    A6:{
+      pip:{desc:DESC_IPO,fn:FN_STD,cards:[
+        {hl:false,icon:'after', name:'Pre-Listing',          dateOnly:'2026-05-30 21:00 UTC'},
+        {hl:true, icon:'after', name:'Market Merging Phase', liq:'Low Liquidity', liqT:'low'}
+      ]},
+      info:{name:'Market Merging Phase（股市已开，混合阶段）',trigger:'current_time &gt; market_open_time · 开发尚未手动切换 symbol 类型',highlight:'高亮切换至 Market Merging Phase · Pre-Listing 变为历史节点',risk:'价格混合参考 OTC + 股市 · blend_alpha 从 0→1 过渡 · 开发手动切 symbol.type 后弹窗消失'}
+    }
+  },
+  dl:{
+    B3:{
+      pip:{desc:DESC_DL,fn:FN_DL,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',          liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Opening Date', tbd:true}
+      ]},
+      info:{name:'DL 路径已确认，开市日 TBD',trigger:'S-1（无新股）到达确认直接上市，但 market_open_date 未定',highlight:'Pre-IPO 高亮 · 下卡 Est. Opening Date 显示 TBD',note:'与 A-4 差异：下卡标题为 "Opening Date" 而非 "IPO Date" · 无 Rebase'}
+    },
+    B1:{
+      pip:{desc:DESC_DL,fn:FN_DL,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',          liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Opening Date', countdown:'3 Mon 24 Days', tag:'Next Phase', date:'2026-10-26 21:00 UTC'}
+      ]},
+      info:{name:'DL · 开市日远期',trigger:'market_open_date 已配置 · 距今 &gt;31 天',highlight:'Pre-IPO 高亮 · 下卡显示 "Est. Opening Date" 倒计时',note:'DL 无 IPO 发行环节，直接跳至开市 · 无 Rebase 是与 IPO 的最大差异'}
+    },
+    B2:{
+      pip:{desc:DESC_DL,fn:FN_DL,cards:[
+        {hl:true, icon:'sun',   name:'Pre-IPO',          liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Opening Date', countdown:'14 Days', tag:'Next Phase', date:'2026-06-15 21:00 UTC'}
+      ]},
+      info:{name:'DL · 开市日近期',trigger:'market_open_date 距今 24h ~ 31 天',highlight:'Pre-IPO 高亮 · 倒计时以天为单位',note:'开市当天价格发现过程完全依赖市场，无 Rebase 锚定 · 波动可能极高'}
+    },
+    B4:{
+      pip:{desc:DESC_DL,fn:FN_DL,cards:[
+        {hl:false,icon:'after', name:'Pre-IPO',      dateOnly:'N/A'},
+        {hl:true, icon:'after', name:'Pre-Opening',  liq:'Low Liquidity', liqT:'low'}
+      ]},
+      info:{name:'Pre-Opening（开市窗口）',trigger:'进入开市前窗口 · DL 无 IPO 节点直接跳至此阶段',highlight:'高亮切换至 Pre-Opening · 上卡标注 N/A（DL 无 IPO 日期）',risk:'is_reduce_only = true · 流动性 Low · 无 Rebase，开市价格发现完全市场化'}
+    },
+    B5:{
+      pip:{desc:DESC_DL,fn:FN_DL,cards:[
+        {hl:false,icon:'after', name:'Pre-Opening',         dateOnly:'2026-05-30 21:00 UTC'},
+        {hl:true, icon:'after', name:'Market Merging Phase', liq:'Low Liquidity', liqT:'low'}
+      ]},
+      info:{name:'Market Merging Phase（DL 版）',trigger:'current_time &gt; market_open_time · 开发尚未切换 symbol 类型',highlight:'Merging 高亮 · Pre-Opening 变历史节点',risk:'同 A-6 · blend_alpha 逐步收敛至 1.0 · 开发手动切换后弹窗消失'}
+    }
+  },
+  spac:{
+    D3:{
+      pip:{desc:DESC_SPC,fn:FN_SPC,cards:[
+        {hl:true, icon:'after', name:'Pre-Merger',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Merger Date', tbd:true}
+      ]},
+      info:{name:'SPAC 路径已确认，合并日 TBD',trigger:'S-4 到达确认 SPAC 路径，但股东投票 / 合并完成日期未定',highlight:'Pre-Merger 高亮（注意：SPAC 无 Pre-IPO 节点，直接从 Pre-Merger 开始）',note:'与 A-4 / B-3 区别：上卡标题为 Pre-Merger · 所有图标均用 after（无市场时段概念）'}
+    },
+    D1:{
+      pip:{desc:DESC_SPC,fn:FN_SPC,cards:[
+        {hl:true, icon:'after', name:'Pre-Merger',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Merger Date', countdown:'3 Mon 24 Days', tag:'Next Phase', date:'2026-10-26 21:00 UTC'}
+      ]},
+      info:{name:'Pre-Merger · 合并远期',trigger:'S-4 确认 SPAC · merger_date 已配置 · 距今 &gt;31 天',highlight:'Pre-Merger 高亮 · 下卡显示合并日倒计时',note:'SPAC 无 "IPO Date" 概念 · 关键事件为合并完成（Merger Completion）'}
+    },
+    D2:{
+      pip:{desc:DESC_SPC,fn:FN_SPC,cards:[
+        {hl:true, icon:'after', name:'Pre-Merger',     liq:'Moderate Liquidity', liqT:'moderate'},
+        {hl:false,icon:'after', name:'Est. Merger Date', countdown:'14 Days', tag:'Next Phase', date:'2026-06-12 21:00 UTC'}
+      ]},
+      info:{name:'Pre-Merger · 合并近期',trigger:'merger_date 距今 24h ~ 31 天',highlight:'Pre-Merger 高亮 · 倒计时以天为单位',note:'股东投票通常在合并完成前 ~7 天 · 届时切换至 D-4'}
+    },
+    D4:{
+      pip:{desc:DESC_SPC,fn:FN_SPC,cards:[
+        {hl:true, icon:'after', name:'Shareholder Vote',   liq:'Low Liquidity', liqT:'low'},
+        {hl:false,icon:'after', name:'Merger Completion',  countdown:'2 Days', tag:'Next Phase', date:'2026-06-12 21:00 UTC'}
+      ]},
+      info:{name:'Shareholder Vote · 股东投票',trigger:'进入股东投票期 · SPAC 特有节点 · IPO / DL 路径无此状态',highlight:'高亮切换至 Shareholder Vote · 下卡显示合并完成倒计时',risk:'is_reduce_only = true · 投票结果未知风险极高 · 若投票失败合约可能下线并按 TWAP 结算'}
+    },
+    D5:{
+      pip:{desc:DESC_SPC,fn:FN_SPC,cards:[
+        {hl:false,icon:'after', name:'Merger Completion',   dateOnly:'2026-06-12 21:00 UTC'},
+        {hl:true, icon:'after', name:'Market Merging Phase', liq:'Low Liquidity', liqT:'low'}
+      ]},
+      info:{name:'Market Merging Phase（SPAC 版）',trigger:'合并完成后 · 开发尚未切换 symbol 类型',highlight:'Merging 高亮 · Merger Completion 变历史节点',risk:'同 A-6 / B-5 · 开发手动切 symbol.type 后弹窗消失'}
+    }
+  }
+};
+
+/* ── State machine ── */
+const cur = {unk:'C1', ipo:'A1', dl:'B1', spac:'D1'};
+
+function setState(path, sid, btn){
+  cur[path] = sid;
+  btn.closest('.sw-row').querySelectorAll('.sw-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(path);
+}
+
+function render(path){
+  const sid = cur[path];
+  const s = STATES[path][sid];
+  if(!s) return;
+  document.getElementById('pip-'+path).innerHTML = renderPip(s.pip);
+  document.getElementById('info-'+path).innerHTML = renderInfo(sid, path, s.info);
+  // Timeline highlight
+  document.querySelectorAll(`.tl-node[data-path="${path}"]`).forEach(n=>{
+    n.classList.toggle('current', n.dataset.state === sid);
+  });
+}
+
+// Init all
+['unk','ipo','dl','spac'].forEach(render);
+</script>
+</body>
+</html>
