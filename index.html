@@ -2,12 +2,73 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pre-IPO 弹出层 · 三路径</title>
+<title>Pre-IPO 前端页面说明</title>
 <style>
+/* ── Reset & Base ── */
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;background:#f0f2f5;color:#1a1a1a;font-size:14px;}
-.page{max-width:1440px;margin:0 auto;padding:48px 32px 100px;}
+body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;background:#f0f2f5;color:#1a1a1a;font-size:14px;line-height:1.65;}
+.page{max-width:1400px;margin:0 auto;padding:48px 32px 100px;}
+h1{font-size:26px;font-weight:700;margin-bottom:6px;}
+.meta{color:#888;font-size:13px;margin-bottom:40px;}
+
+/* ── Category Block ── */
+.category{background:#fff;border-radius:16px;padding:32px;margin-bottom:32px;border:1px solid #e4e4e4;}
+.cat-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px;}
+.cat-num{width:36px;height:36px;border-radius:10px;background:#1a1a1a;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.cat-title-wrap{flex:1;}
+.cat-title{font-size:20px;font-weight:700;margin-bottom:4px;}
+.cat-desc{font-size:13px;color:#666;line-height:1.6;}
+
+/* ── State Block ── */
+.state-list{display:flex;flex-direction:column;gap:24px;}
+.state-block{border:1px solid #ebebeb;border-radius:12px;overflow:hidden;}
+.state-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fafafa;border-bottom:1px solid #ebebeb;flex-wrap:wrap;}
+.state-badge{height:24px;padding:0 10px;border-radius:100px;font-size:12px;font-weight:600;display:flex;align-items:center;white-space:nowrap;}
+.badge-orange{background:rgba(246,155,29,0.15);color:#b36800;}
+.badge-red{background:rgba(224,82,82,0.12);color:#c0393a;}
+.badge-gray{background:#eee;color:#666;}
+.badge-green{background:rgba(46,189,133,0.12);color:#1a7a55;}
+.state-title-text{font-size:15px;font-weight:700;}
+.state-trigger{font-size:12px;color:#999;margin-left:auto;}
+
+/* ── Two-col layout: preview | info ── */
+.state-body{display:grid;grid-template-columns:420px 1fr;gap:0;}
+.state-preview{background:#16181d;padding:28px 28px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;}
+.preview-label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;align-self:flex-start;}
+.state-info{padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
+
+/* ── Component annotation rows ── */
+.comp{display:flex;flex-direction:column;gap:4px;}
+.comp-label{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;}
+.comp-what{font-size:13px;color:#1a1a1a;}
+.comp-why{font-size:13px;color:#555;padding-left:12px;border-left:2px solid #e0e0e0;}
+.comp-why::before{content:"为什么 → ";color:#bbb;font-size:12px;}
+
+/* ── Tags ── */
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:4px;margin-right:4px;vertical-align:middle;}
+.tag-api{background:#e8f0fe;color:#1a56c4;}
+.tag-ws{background:#e6f4ea;color:#1a6e35;}
+.tag-local{background:#f3e8fd;color:#6d28d9;}
+.tag-calc{background:#fff3e0;color:#b25a00;}
+
+/* ── State switcher (demo control) ── */
+.demo-switcher{display:flex;gap:6px;flex-wrap:wrap;align-self:flex-start;}
+.dsw-btn{padding:4px 10px;border-radius:6px;border:1px solid #3d4149;background:#2b2f35;color:#878b93;font-size:11px;cursor:pointer;font-family:-apple-system,sans-serif;white-space:nowrap;transition:all 0.15s;}
+.dsw-btn.active,.dsw-btn:hover{background:#f69b1d;border-color:#f69b1d;color:#fff;}
+
+/* ── Risk flow strip ── */
+.risk-strip{display:flex;border-radius:8px;overflow:hidden;margin-top:16px;}
+.rs{flex:1;padding:10px 8px;text-align:center;font-size:11px;font-weight:600;}
+.rs small{display:block;font-weight:400;margin-top:1px;font-size:10px;opacity:0.7;}
+.rs-tbd{background:#f0f0f0;color:#666;}
+.rs-far{background:#e8f5e9;color:#2e7d32;}
+.rs-mid{background:#fff8e1;color:#b36b00;}
+.rs-near{background:#fff3e0;color:#e65100;}
+.rs-merge{background:#fde8e8;color:#c62828;}
+
+/* ════════════════════════════════════════
+   DESIGN TOKENS (matches Figma exactly)
+════════════════════════════════════════ */
 :root{
   --bg-0:#16181d;--bg-1:#202328;--bg-2:#2b2f35;--bg-3:#363724;
   --text-1:#f9f9f9;--text-2:#878b93;--line-1:#3d4149;
@@ -15,713 +76,732 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
   --font:'HarmonyOS Sans','IBM Plex Sans',-apple-system,sans-serif;
 }
 
-/* Page header */
-.ph{font-size:26px;font-weight:700;margin-bottom:6px;}
-.pm{font-size:13px;color:#888;margin-bottom:32px;}
+/* ════════════════════════════════════════
+   PRE-IPO POPUP (embedded live component)
+════════════════════════════════════════ */
+.pip-wrap{width:100%;max-width:500px;}
+.pip{background:var(--bg-1);border:1px solid var(--line-1);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:24px;font-family:var(--font);box-shadow:0 4px 4px rgba(0,0,0,0.04);}
+.pip-header{display:flex;align-items:center;justify-content:space-between;}
+.pip-title{font-size:18px;font-weight:500;color:var(--text-1);line-height:1.4;}
+.pip-learn{display:flex;align-items:center;gap:4px;height:32px;font-size:14px;font-weight:500;color:var(--orange);cursor:pointer;line-height:1.4;}
+.pip-learn-img{width:16px;height:16px;overflow:hidden;position:relative;flex-shrink:0;}
+.pip-learn-img img{position:absolute;width:13.6px;height:14.4px;left:50%;top:50%;transform:translate(-50%,-50%);}
+.pip-desc{font-size:13px;font-weight:400;color:var(--text-2);line-height:1.4;}
+.pip-cards{display:flex;flex-direction:column;}
+.pip-card{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 12px;}
+.pip-card-left{display:flex;align-items:center;gap:8px;}
+.pip-status-name{font-size:14px;font-weight:500;color:var(--text-1);line-height:1.4;white-space:nowrap;}
+.pip-card-right{display:flex;align-items:center;gap:4px;}
+.pip-liquidity{font-size:12px;color:var(--text-2);line-height:1.4;white-space:nowrap;}
+.pip-liquidity.red{color:var(--red);}
+.pip-card-col{display:flex;flex-direction:column;gap:2px;}
+.pip-card-sub-label{font-size:14px;font-weight:500;color:var(--text-1);line-height:1.4;white-space:nowrap;}
+.pip-countdown-row{display:flex;align-items:center;gap:2px;}
+.pip-countdown{font-size:13px;font-weight:700;color:var(--orange);line-height:1.4;white-space:nowrap;}
+.pip-next-tag{height:20px;padding:0 8px;border-radius:100px;background:var(--bg-3);display:flex;align-items:center;font-size:12px;color:var(--orange);white-space:nowrap;}
+.pip-date{font-size:12px;color:#fff;white-space:nowrap;}
+.pip-tbd{font-size:12px;color:#8c8c8c;white-space:nowrap;}
+.pip-footnote{display:flex;gap:2px;font-size:13px;color:var(--text-2);line-height:1.4;}
 
-/* Tabs */
-.tab-nav{display:flex;gap:4px;margin-bottom:28px;background:#e8eaed;padding:4px;border-radius:12px;width:fit-content;}
-.tab-btn{height:36px;padding:0 18px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:transparent;color:#666;transition:all .15s;}
-.tab-btn:hover{background:rgba(0,0,0,.05);color:#1a1a1a;}
-.tab-btn.active{background:#fff;color:#1a1a1a;box-shadow:0 1px 4px rgba(0,0,0,.12);}
-.tbadge{display:inline-block;margin-left:5px;font-size:10px;font-weight:700;padding:0 5px;border-radius:100px;background:rgba(0,0,0,.08);line-height:16px;vertical-align:middle;}
-.tab-btn.active .tbadge{background:#f0f0f0;}
-.tab-panel{display:none;}.tab-panel.active{display:block;}
+/* ════════════════════════════════════════
+   SYMBOL SELECTOR — WEB
+════════════════════════════════════════ */
+.sd-wrap{width:100%;font-family:var(--font);}
+.sd{background:var(--bg-1);border:1px solid var(--line-1);border-radius:8px;overflow:hidden;width:100%;}
+.sd-search-row{padding:12px 12px 0;display:flex;align-items:center;gap:8px;background:var(--bg-1);}
+.sd-search-box{flex:1;background:var(--bg-2);border-radius:100px;height:36px;display:flex;align-items:center;padding:0 14px;gap:8px;}
+.sd-search-box input{background:transparent;border:none;outline:none;color:var(--text-1);font-size:13px;font-family:var(--font);flex:1;}
+.sd-search-box input::placeholder{color:var(--text-2);}
+.sd-search-icon{color:var(--text-2);font-size:14px;flex-shrink:0;}
+.sd-tabs{display:flex;padding:0 12px;gap:4px;border-bottom:1px solid var(--line-1);}
+.sd-tab{padding:10px 12px;font-size:14px;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color 0.15s;}
+.sd-tab:hover{color:var(--text-1);}
+.sd-tab.active{color:var(--text-1);border-bottom-color:var(--orange);}
+.sd-table-head{display:grid;grid-template-columns:220px 1fr 1fr 1fr 1fr;padding:0 12px;height:32px;align-items:center;border-bottom:1px solid var(--line-1);}
+.sd-th{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:2px;white-space:nowrap;}
+.sd-th.r{justify-content:flex-end;}
+.sd-row{display:grid;grid-template-columns:220px 1fr 1fr 1fr 1fr;padding:0 12px;height:48px;align-items:center;border-bottom:1px solid var(--line-1);cursor:pointer;transition:background 0.1s;}
+.sd-row:hover{background:var(--bg-2);}
+.sd-row:last-child{border-bottom:none;}
+.sd-sym-cell{display:flex;align-items:center;gap:10px;min-width:0;}
+.sd-token-icon{width:24px;height:24px;border-radius:50%;background:#c47a00;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.sd-sym-info{display:flex;flex-direction:column;gap:1px;min-width:0;overflow:hidden;}
+.sd-sym-top{display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.sd-sym-name{font-size:13px;font-weight:500;color:var(--text-1);}
+.sd-lev{font-size:10px;color:var(--text-2);background:var(--bg-2);padding:1px 4px;border-radius:3px;flex-shrink:0;}
+.sd-sym-sub{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;}
+.sd-preipo-tag{color:var(--orange);font-size:11px;font-weight:600;}
+.sd-cell{font-size:13px;color:var(--text-1);text-align:right;}
+.sd-cell.green{color:var(--green);}
+.sd-cell.orange{color:var(--orange);}
+.sd-hidden{display:none;}
 
-/* Path badge */
-.pbadge{height:24px;padding:0 12px;border-radius:100px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;flex-shrink:0;}
-.pb-unk{background:#f3f4f6;color:#374151;}
-.pb-ipo{background:#fff3e0;color:#b25a00;}
-.pb-dl{background:#e8f0fe;color:#1a56c4;}
-.pb-spac{background:#f0e6ff;color:#6b21a8;}
-.pb-term{background:#fee2e2;color:#c62828;}
+/* ════════════════════════════════════════
+   SYMBOL SELECTOR — H5
+════════════════════════════════════════ */
+.h5-wrap{display:flex;justify-content:center;}
+.h5-sheet{width:320px;background:var(--bg-1);border-radius:16px 16px 0 0;font-family:var(--font);overflow:hidden;border:1px solid var(--line-1);}
+.h5-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--line-1);}
+.h5-title{font-size:16px;font-weight:700;color:var(--text-1);}
+.h5-close{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text-2);cursor:pointer;font-size:16px;}
+.h5-search{margin:12px 16px;background:var(--bg-2);border-radius:100px;height:32px;display:flex;align-items:center;padding:0 12px;gap:8px;}
+.h5-search input{background:transparent;border:none;outline:none;color:var(--text-1);font-size:12px;font-family:var(--font);flex:1;}
+.h5-search input::placeholder{color:var(--text-2);}
+.h5-tabs{display:flex;padding:0 16px;gap:0;border-bottom:1px solid var(--line-1);}
+.h5-tab{padding:8px 10px;font-size:13px;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.15s;}
+.h5-tab.active{color:var(--text-1);border-bottom-color:var(--orange);}
+.h5-table-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:36px;border-bottom:1px solid var(--line-1);}
+.h5-th-left{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px;}
+.h5-th-right{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:16px;}
+.h5-row{display:flex;align-items:center;padding:0 16px;height:60px;border-bottom:1px solid var(--line-1);cursor:pointer;transition:background 0.1s;}
+.h5-row:hover{background:var(--bg-2);}
+.h5-row:last-child{border-bottom:none;}
+.h5-star{color:var(--orange);font-size:14px;margin-right:8px;cursor:pointer;}
+.h5-token-icon{width:28px;height:28px;border-radius:50%;background:#c47a00;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;margin-right:8px;}
+.h5-row-info{flex:1;display:flex;flex-direction:column;gap:2px;}
+.h5-row-top{display:flex;align-items:center;gap:4px;}
+.h5-row-name{font-size:13px;font-weight:500;color:var(--text-1);}
+.h5-row-lev{font-size:10px;color:var(--text-2);}
+.h5-row-sub{font-size:11px;color:var(--text-2);display:flex;align-items:center;min-width:0;overflow:hidden;}
+.h5-row-sub .preipo{flex-shrink:0;color:var(--orange);font-weight:600;}
+.h5-sub-sep{flex-shrink:0;white-space:nowrap;}
+.h5-sub-name{flex-shrink:0;white-space:nowrap;}
+.h5-sub-vol{flex-shrink:0;white-space:nowrap;}
+.h5-row-right{text-align:right;}
+.h5-price{font-size:13px;color:var(--text-1);}
+.h5-chg{font-size:12px;color:var(--green);}
 
-/* ─── FLOW DIAGRAM ─── */
-.flow-wrap{background:#fff;border-radius:16px;border:1px solid #e4e4e4;padding:24px 28px 28px;margin-bottom:24px;overflow-x:auto;}
-.flow-label{font-size:11px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;}
-.flow{display:flex;align-items:flex-start;gap:0;min-width:max-content;}
+/* ════════════════════════════════════════
+   TITLE BAR STATE MACHINE
+════════════════════════════════════════ */
+.titlebar-demo{font-family:var(--font);width:100%;}
+.tb-stage-btns{display:flex;gap:8px;margin-bottom:16px;}
+.tb-stage-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--line-1);background:var(--bg-2);color:var(--text-2);font-size:12px;cursor:pointer;font-family:var(--font);transition:all 0.15s;}
+.tb-stage-btn:hover{border-color:var(--orange);color:var(--text-1);}
+.tb-stage-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+.tb-bar{background:var(--bg-1);border:1px solid var(--line-1);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.tb-token-icon{width:28px;height:28px;border-radius:50%;background:#c47a00;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.tb-sym-block{display:flex;flex-direction:column;gap:2px;}
+.tb-sym-row{display:flex;align-items:center;gap:6px;}
+.tb-sym-name{font-size:18px;font-weight:700;color:var(--text-1);}
+.tb-arrow{color:var(--text-2);font-size:12px;}
+.tb-sym-sub{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:6px;}
+.tb-tag{height:20px;padding:0 7px;border-radius:100px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;gap:4px;background:var(--bg-2);color:var(--text-1);}
+.tb-tag.preipo{background:var(--bg-2);}
+.tb-tag.merge{background:var(--bg-2);}
+.tb-bars{display:inline-flex;gap:1.5px;align-items:flex-end;}
+.tb-note{margin-top:12px;font-size:12px;color:var(--text-2);padding:10px 14px;background:var(--bg-2);border-radius:8px;line-height:1.6;}
+.tb-note strong{color:var(--text-1);}
 
-/* flow node */
-.fn{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
-.fn-box{border-radius:10px;padding:9px 13px;font-size:11px;font-weight:700;text-align:center;line-height:1.4;min-width:90px;}
-.fn-states{font-size:9px;font-weight:700;color:#888;margin-top:5px;text-align:center;font-family:'SF Mono','Courier New',monospace;}
-.fn-event{font-size:9px;color:#aaa;margin-top:3px;text-align:center;line-height:1.3;max-width:100px;}
-/* node colors */
-.fn-gray{background:#f3f4f6;color:#374151;border:1.5px solid #d1d5db;}
-.fn-ipo{background:#fff8ed;color:#b25a00;border:1.5px solid #fdba74;}
-.fn-ipo-hot{background:#fef3c7;color:#b45309;border:1.5px solid #fcd34d;}
-.fn-danger{background:#fee2e2;color:#c62828;border:1.5px solid #fca5a5;}
-.fn-danger-dash{background:#fef2f2;color:#c62828;border:1.5px dashed #fca5a5;}
-.fn-dl{background:#eff6ff;color:#1e40af;border:1.5px solid #93c5fd;}
-.fn-dl-hot{background:#dbeafe;color:#1e40af;border:1.5px solid #60a5fa;}
-.fn-spac{background:#f5f3ff;color:#6d28d9;border:1.5px solid #c4b5fd;}
-.fn-spac-hot{background:#ede9fe;color:#5b21b6;border:1.5px solid #a78bfa;}
-.fn-end{background:#eef2ff;color:#3730a3;border:1.5px solid #a5b4fc;}
-.fn-term{background:#fee2e2;color:#c62828;border:1.5px solid #fca5a5;}
-.fn-term-end{background:#1f2937;color:#9ca3af;border:1.5px solid #374151;}
-.fn-ipo-ann{background:#fffbeb;color:#92400e;border:1.5px dashed #fcd34d;}
-.fn-dl-ann{background:#dbeafe;color:#1e40af;border:1.5px dashed #60a5fa;}
-.fn-spac-ann{background:#ede9fe;color:#5b21b6;border:1.5px dashed #a78bfa;}
-/* arrow */
-.fa{display:flex;align-items:center;margin-top:24px;flex-shrink:0;width:28px;}
-.fa-line{height:2px;flex:1;background:#d1d5db;}
-.fa-head{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid #d1d5db;}
-.fa.ipo .fa-line,.fa.ipo .fa-head{background:#fdba74;border-left-color:#fdba74;}
-.fa.dl .fa-line,.fa.dl .fa-head{background:#93c5fd;border-left-color:#93c5fd;}
-.fa.spac .fa-line,.fa.spac .fa-head{background:#c4b5fd;border-left-color:#c4b5fd;}
-.fa.term .fa-line{background:#fca5a5;}.fa.term .fa-head{border-left-color:#fca5a5;}
+/* ════════════════════════════════════════
+   IPO DATE SOURCE TABLE (Category 5)
+════════════════════════════════════════ */
+.info-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+.info-table th{text-align:left;font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;padding:8px 12px;border-bottom:2px solid #e8e8e8;}
+.info-table td{padding:12px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.6;}
+.info-table tr:last-child td{border-bottom:none;}
+.info-table td:first-child{font-weight:600;white-space:nowrap;}
+.cert-soft{display:inline-block;padding:2px 8px;border-radius:4px;background:#fff8e1;color:#b36b00;font-size:12px;font-weight:600;}
+.cert-hard{display:inline-block;padding:2px 8px;border-radius:4px;background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:600;}
+.usable-yes{color:#1a7a55;font-weight:600;}
+.usable-late{color:#c0393a;font-weight:600;}
 
-/* ─── DEMO BLOCK ─── */
-.demo-block{background:#fff;border-radius:16px;border:1px solid #e4e4e4;overflow:hidden;margin-bottom:24px;}
-.demo-hdr{padding:14px 24px;border-bottom:1px solid #ebebeb;display:flex;align-items:center;gap:10px;}
-.demo-body{display:grid;grid-template-columns:514px 1fr;}
-.demo-preview{background:var(--bg-0);padding:22px 24px;display:flex;flex-direction:column;gap:14px;}
-.preview-lbl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.5px;}
-.sw-row{display:flex;gap:5px;flex-wrap:wrap;}
-.sw-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--line-1);background:var(--bg-2);color:var(--text-2);font-size:11px;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;}
-.sw-btn:hover{border-color:var(--orange);color:var(--text-1);}
-.sw-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
-.demo-info{padding:18px 24px;display:flex;flex-direction:column;gap:14px;border-left:1px solid #ebebeb;}
-.ib{display:flex;flex-direction:column;gap:4px;}
-.il{font-size:10px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.4px;}
-.it{font-size:13px;color:#1a1a1a;line-height:1.55;}
-.irisk{font-size:13px;color:#c62828;background:#fff8f8;border-left:3px solid #e05252;padding:6px 10px;border-radius:0 6px 6px 0;line-height:1.5;}
-.sid{font-size:10px;font-weight:800;font-family:'SF Mono','Courier New',monospace;padding:1px 6px;border-radius:4px;color:#fff;margin-right:4px;}
-.sid-u{background:#6b7280;}.sid-i{background:#f69b1d;}.sid-d{background:#4a7cf7;}.sid-s{background:#9333ea;}.sid-t{background:#e05252;}
+.alert-block{border:1px solid #fde8e8;background:#fff9f9;border-radius:10px;padding:18px 20px;margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+.alert-title{font-size:13px;font-weight:700;color:#c0393a;display:flex;align-items:center;gap:6px;}
+.alert-body{font-size:13px;color:#1a1a1a;line-height:1.7;}
+.alert-body code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:12px;}
+.alert-steps{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.alert-step{display:flex;gap:10px;font-size:13px;color:#333;line-height:1.6;}
+.alert-step-num{width:20px;height:20px;border-radius:50%;background:#e05252;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
 
-/* ─── PIP POPUP (Figma pixel-perfect) ─── */
-.pip-outer{width:480px;}
-.pip{background:var(--bg-1);border:1px solid var(--line-1);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:16px;font-family:var(--font);width:100%;}
-.pip-hdr{display:flex;align-items:center;justify-content:space-between;height:32px;}
-.pip-title{font-size:18px;font-weight:500;color:var(--text-1);}
-.pip-learn{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--orange);cursor:pointer;white-space:nowrap;}
-.pip-desc{font-size:13px;color:var(--text-2);line-height:1.6;}
-/* cards container */
-.pip-cards{border:1px solid var(--line-1);border-radius:12px;overflow:hidden;}
-.pip-card{display:flex;align-items:center;height:56px;padding:0 12px;background:var(--bg-1);justify-content:space-between;gap:8px;}
-.pip-card:not(:last-child){border-bottom:1px solid var(--line-1);}
-.pip-card.hl{background:var(--bg-2);}
-.pip-card-l{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
-.pip-card-col{display:flex;flex-direction:column;gap:3px;}
-.pip-card-name{font-size:14px;font-weight:500;color:var(--text-1);white-space:nowrap;}
-.pip-card-sub{display:flex;align-items:center;gap:6px;}
-.pip-cd{font-size:13px;font-weight:700;color:var(--orange);}
-.pip-next{background:var(--bg-3);color:var(--orange);font-size:11px;font-weight:500;padding:1px 8px;border-radius:100px;white-space:nowrap;}
-.pip-card-r{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.pip-liq{font-size:12px;color:var(--text-2);white-space:nowrap;}
-.pip-liq.red{color:var(--red);}
-.pip-date{font-size:12px;color:var(--text-2);white-space:nowrap;}
-.pip-tbd{font-size:12px;color:#6b6b6b;font-style:italic;}
-.pip-foot{font-size:13px;color:var(--text-2);line-height:1.55;}
-.pip-foot::before{content:"* ";color:var(--orange);}
 </style>
 </head>
 <body>
 <div class="page">
 
-<h1 class="ph">Web · 标题栏 Pre-IPO 弹出层 · 三路径</h1>
-<p class="pm">点击标题栏 Pre-IPO 标签触发 · 上线初始路径未知 · 公司公告可提前确认路径（S-1/S-4 尚未到达）→ SEC 文件正式确认 · 2026-06-01</p>
+<h1>Pre-IPO 前端页面说明</h1>
+<p class="meta">TradFi 美股个股子类型 · 特殊阶段前端说明</p>
 
-<div class="tab-nav">
-  <button class="tab-btn active" data-tab="unk">路径未知<span class="tbadge">2</span></button>
-  <button class="tab-btn" data-tab="ipo">Path A · IPO<span class="tbadge">6</span></button>
-  <button class="tab-btn" data-tab="dl">Path B · Direct Listing<span class="tbadge">5</span></button>
-  <button class="tab-btn" data-tab="spac">Path D · SPAC<span class="tbadge">6</span></button>
-  <button class="tab-btn" data-tab="term">Path E · 终止/下线<span class="tbadge">2</span></button>
-</div>
-
-<!-- ═══════════════ TAB: UNKNOWN ═══════════════ -->
-<div class="tab-panel active" id="panel-unk">
-  <div class="demo-block">
-    <div class="demo-hdr">
-      <span class="pbadge pb-unk">Phase 0 · 路径未知</span>
-      <span style="font-size:15px;font-weight:700;">Pre-IPO 起始阶段</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">上线时路径/日期均未确认 · 等待 SEC 文件（S-1 或 S-4）到达</span>
+<!-- ══════════════════════════════════════
+     CATEGORY 1 — Pre-IPO 悬浮弹窗
+══════════════════════════════════════ -->
+<div class="category">
+  <div class="cat-header">
+    <div class="cat-num">1</div>
+    <div class="cat-title-wrap">
+      <div class="cat-title">Web · 标题栏 Pre-IPO 弹出层</div>
+      <div class="cat-desc">点击标题栏 Pre-IPO 标签触发。6 种状态由 <code>stage</code> + <code>ipoDate</code> + <code>marketOpenTime</code> 决定。</div>
     </div>
-    <div class="demo-body">
-      <div class="demo-preview">
-        <div class="preview-lbl">Live Component · Figma Match</div>
-        <div class="sw-row">
-          <button class="sw-btn active" onclick="setState('unk','C1',this)">C-1 · 路径/日期未知</button>
-          <button class="sw-btn" onclick="setState('unk','C2',this)">C-2 · 有估算日期</button>
+  </div>
+
+  <div class="state-list">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-orange">6 States</span>
+        <span class="state-title-text">Pre-IPO Assets 弹窗</span>
+        <span class="state-trigger">切换状态查看不同阶段</span>
+      </div>
+      <div class="state-body" style="grid-template-columns:560px 1fr;">
+        <!-- LIVE COMPONENT -->
+        <div class="state-preview">
+          <div class="demo-switcher" id="pipSwitcher">
+            <button class="dsw-btn active" onclick="setPIPState(1,this)">≤24h</button>
+            <button class="dsw-btn" onclick="setPIPState(2,this)">1 Mon+</button>
+            <button class="dsw-btn" onclick="setPIPState(3,this)">14 Days</button>
+            <button class="dsw-btn" onclick="setPIPState(4,this)">TBD</button>
+            <button class="dsw-btn" onclick="setPIPState(5,this)">Pre-Listing</button>
+            <button class="dsw-btn" onclick="setPIPState(6,this)">Merging</button>
+          </div>
+          <div class="pip-wrap">
+            <div class="pip">
+              <div class="pip-header">
+                <span class="pip-title">Pre-IPO Assets</span>
+                <div class="pip-learn">
+                  <div class="pip-learn-img"><img src="https://www.figma.com/api/mcp/asset/a822ff3f-089a-4af4-92f5-0bf6570217b8" alt=""></div>
+                  Learn More
+                </div>
+              </div>
+              <p class="pip-desc">This perpetual trades 24/7, and its price is based on various market price. Prices may fluctuate during the Pre-IPO phase — please be mindful of the risks. When the underlying asset officially launch on IPO market, the liquidity and price protection may adjust to regular {stock} market</p>
+              <div class="pip-cards" id="pipCards2"></div>
+              <div class="pip-footnote">
+                <span style="flex-shrink:0">*</span>
+                <span id="pipFootnote2"></span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="pip-outer" id="pip-unk"></div>
-      </div>
-      <div class="demo-info" id="info-unk"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ TAB: IPO ═══════════════ -->
-<div class="tab-panel" id="panel-ipo">
-
-  <!-- Flow diagram -->
-  <div class="flow-wrap">
-    <div class="flow-label">Path A · IPO 完整生命周期流程图</div>
-    <div class="flow">
-      <div class="fn">
-        <div class="fn-box fn-gray">Pre-IPO<br>上线</div>
-        <div class="fn-states">C-1 / C-2</div>
-        <div class="fn-event">路径/日期<br>未知</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-ipo-ann">公司公告<br>IPO 意向</div>
-        <div class="fn-states">— 早期信号 —</div>
-        <div class="fn-event">新闻稿 / 路演<br>S-1 尚未<br>到达 SEC</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-ipo">路径已知<br>S-1 待达</div>
-        <div class="fn-states">A-0</div>
-        <div class="fn-event">已公告 IPO<br>等待 SEC<br>正式确认</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-ipo">S-1 到达<br>确认 IPO</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">SEC 收到<br>S-1 文件</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-ipo">IPO Date<br>TBD</div>
-        <div class="fn-states">A-4</div>
-        <div class="fn-event">路径确认<br>日期未定</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-ipo-hot">IPO 倒计时<br>定价夜→&lt;24h</div>
-        <div class="fn-states">A-3 → A-1</div>
-        <div class="fn-event">ipo_date 确定<br>（定价夜前 1-7天）<br>精度：天→小时</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">IPO Day<br>Pre-Listing</div>
-        <div class="fn-states">A-5</div>
-        <div class="fn-event">IPO 已发生<br>市场未开（~2天）<br>仅减仓</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">Market<br>Opens</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">market_open_time<br>到达</div>
-      </div>
-      <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger-dash">Market<br>Merging</div>
-        <div class="fn-states">A-6</div>
-        <div class="fn-event">blend_alpha<br>0→1 过渡<br>开发手动切换</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-end">country_<br>stock</div>
-        <div class="fn-states">结束</div>
-        <div class="fn-event">Pre-IPO 弹窗<br>消失</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Demo -->
-  <div class="demo-block">
-    <div class="demo-hdr">
-      <span class="pbadge pb-ipo">Path A · IPO</span>
-      <span style="font-size:15px;font-weight:700;">传统 IPO 路径 · 弹窗状态</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→A-0 · S-1 确认→A-4（Ticker已知,日期TBD） · 定价夜日期确认→A-3→A-1 · IPO后Pre-Listing窗口</span>
-    </div>
-    <div class="demo-body">
-      <div class="demo-preview">
-        <div class="preview-lbl">Live Component · Figma Match</div>
-        <div class="sw-row">
-          <button class="sw-btn" onclick="setState('ipo','A0',this)">A-0 · 公告待达</button>
-          <button class="sw-btn" onclick="setState('ipo','A4',this)">A-4 · TBD</button>
-          <button class="sw-btn" onclick="setState('ipo','A3',this)">A-3 · 倒计时</button>
-          <button class="sw-btn active" onclick="setState('ipo','A1',this)">A-1 · &lt;24h</button>
-          <button class="sw-btn" onclick="setState('ipo','A5',this)">A-5 · Pre-Listing</button>
-          <button class="sw-btn" onclick="setState('ipo','A6',this)">A-6 · Merging</button>
+        <!-- ANNOTATIONS -->
+        <div class="state-info">
+          <div class="comp">
+            <div class="comp-label">描述文字</div>
+            <div class="comp-what">三个核心风险信息：24/7 交易、价格基于 OTC 估值、上市后规则切换。<br>这三点直接影响用户风险判断，必须在弹窗顶部前置展示。</div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">6 种触发条件</div>
+            <div class="comp-what">
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-top:2px;">
+                <div><b style="color:#f69b1d">State 1</b> — <code>current &lt; ipo_time</code> 且剩余 &lt;24h</div>
+                <div><b style="color:#f69b1d">State 2</b> — <code>current &lt; ipo_time</code> 且剩余 &gt;31 天</div>
+                <div><b style="color:#f69b1d">State 3</b> — <code>current &lt; ipo_time</code> 且 24h &lt; 剩余 &lt;31 天</div>
+                <div><b style="color:#878b93">State 4</b> — <code>ipo_time</code> 未配置，暂未披露</div>
+                <div><b style="color:#9b7fd4">State 5</b> — <code>ipo_time &lt; current &lt; market_open</code>（IPO 到开市，约 2 天）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">IPO 已发生，开市前约 2 天。高亮卡变为 Pre-Listing，下卡显示 Market Opening 倒计时。</span></div>
+                <div><b style="color:#e05252">State 6</b> — <code>current &gt; market_open</code> 且开发尚未手动切换为对应 stock 类别（US/KR）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">开市时间已过，高亮移至下卡 Market Merging Phase。上卡只显示开市日期（历史节点）。<br>开市初期价格波动最剧烈，可能跳空。开发手动将 symbol 类型切为对应 stock 类别后此弹窗消失。</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">高亮卡 = 当前阶段</div>
+            <div class="comp-what">白框 + 深背景 = 用户现在所在阶段。非高亮 = 下一阶段预告。</div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">脚注 * · 只减仓提醒</div>
+            <div class="comp-what">During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.</div>
+          </div>
         </div>
-        <div class="pip-outer" id="pip-ipo"></div>
       </div>
-      <div class="demo-info" id="info-ipo"></div>
     </div>
   </div>
+
 </div>
 
-<!-- ═══════════════ TAB: DIRECT LISTING ═══════════════ -->
-<div class="tab-panel" id="panel-dl">
-
-  <div class="flow-wrap">
-    <div class="flow-label">Path B · Direct Listing 完整生命周期流程图</div>
-    <div class="flow">
-      <div class="fn">
-        <div class="fn-box fn-gray">Pre-IPO<br>上线</div>
-        <div class="fn-states">C-1 / C-2</div>
-        <div class="fn-event">路径/日期<br>未知</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-dl-ann">公司公告<br>直接上市</div>
-        <div class="fn-states">— 早期信号 —</div>
-        <div class="fn-event">新闻稿<br>S-1 尚未<br>到达 SEC</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-dl">路径已知<br>S-1 待达</div>
-        <div class="fn-states">B-0</div>
-        <div class="fn-event">已公告 DL<br>等待 SEC<br>正式确认</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-dl">S-1 到达<br>确认 DL</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">S-1 无新股<br>ipo_date = N/A</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-dl">Opening Date<br>TBD</div>
-        <div class="fn-states">B-3</div>
-        <div class="fn-event">路径确认<br>开市日未定</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-dl-hot">开市倒计时</div>
-        <div class="fn-states">B-2</div>
-        <div class="fn-event">交易所设定<br>market_open_date<br>（S-1 生效后数天）</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">Pre-Opening<br>窗口</div>
-        <div class="fn-states">B-4</div>
-        <div class="fn-event">无 IPO 节点<br>直接进入<br>仅减仓</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">Market<br>Opens</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">无 Rebase<br>价格发现<br>完全市场化</div>
-      </div>
-      <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger-dash">Market<br>Merging</div>
-        <div class="fn-states">B-5</div>
-        <div class="fn-event">blend_alpha<br>0→1 过渡<br>开发手动切换</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-end">country_<br>stock</div>
-        <div class="fn-states">结束</div>
-        <div class="fn-event">Pre-IPO 弹窗<br>消失</div>
-      </div>
+<!-- ══════════════════════════════════════
+     CATEGORY 2 — Symbol Selector Web
+══════════════════════════════════════ -->
+<div class="category">
+  <div class="cat-header">
+    <div class="cat-num">2</div>
+    <div class="cat-title-wrap">
+      <div class="cat-title">Web · 标题栏 Symbol 下拉列表</div>
+      <div class="cat-desc">点击标题栏 SPCX-PERP ▼ 触发。Pre-IPO 阶段在子标题行展示橙色标签；开发切 <code>country_stock</code> 后标签消失。</div>
     </div>
   </div>
-
-  <div class="demo-block">
-    <div class="demo-hdr">
-      <span class="pbadge pb-dl">Path B · Direct Listing</span>
-      <span style="font-size:15px;font-weight:700;">直接上市路径 · 弹窗状态</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→B-0 · S-1（无新股）确认→B-3（Ticker已知,日期TBD） · 交易所定日期→B-2 · 无Rebase</span>
-    </div>
-    <div class="demo-body">
-      <div class="demo-preview">
-        <div class="preview-lbl">Live Component · Figma Match</div>
-        <div class="sw-row">
-          <button class="sw-btn" onclick="setState('dl','B0',this)">B-0 · 公告待达</button>
-          <button class="sw-btn" onclick="setState('dl','B3',this)">B-3 · TBD</button>
-          <button class="sw-btn active" onclick="setState('dl','B2',this)">B-2 · 倒计时</button>
-          <button class="sw-btn" onclick="setState('dl','B4',this)">B-4 · Pre-Opening</button>
-          <button class="sw-btn" onclick="setState('dl','B5',this)">B-5 · Merging</button>
+  <div class="state-list">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-gray">Web</span>
+        <span class="state-title-text">Symbol 标签状态流转</span>
+        <span class="state-trigger">切换阶段查看 SPCX-PERP 行变化</span>
+      </div>
+      <div class="state-body" style="grid-template-columns:1fr 220px;">
+        <!-- LIVE COMPONENT -->
+        <div class="state-preview" style="padding:20px 16px;gap:14px;">
+          <!-- Phase switcher -->
+          <div class="demo-switcher" id="sdPhaseSwitcher">
+            <button class="dsw-btn active" onclick="setSDPhase('preipo',this)">Pre-IPO</button>
+            <button class="dsw-btn" onclick="setSDPhase('stock',this)">country_stock</button>
+          </div>
+          <div class="sd-wrap">
+            <div class="sd">
+              <div class="sd-search-row">
+                <div class="sd-search-box">
+                  <span class="sd-search-icon">🔍</span>
+                  <input type="text" placeholder="Search Symbol / Coin Name" id="sdInput" oninput="filterSD()">
+                </div>
+              </div>
+              <div class="sd-tabs">
+                <div class="sd-tab" onclick="switchSDTab('Favorite',this)">Favorite</div>
+                <div class="sd-tab" onclick="switchSDTab('All',this)">All</div>
+                <div class="sd-tab" onclick="switchSDTab('Crypto',this)">Crypto</div>
+                <div class="sd-tab active" onclick="switchSDTab('Stocks',this)">Stocks</div>
+                <div class="sd-tab" onclick="switchSDTab('Commodities',this)">Commodities</div>
+              </div>
+              <div class="sd-table-head">
+                <div class="sd-th">Symbols ⬍</div>
+                <div class="sd-th r">Oracle Price ⬍</div>
+                <div class="sd-th r">24H Change ⬍</div>
+                <div class="sd-th r">24H Vol ⬍</div>
+                <div class="sd-th r">Funding Rate ⬍</div>
+              </div>
+              <div id="sdRows">
+                <!-- Row: SPCX-PERP dynamic -->
+                <div class="sd-row" data-cat="Stocks" data-search="spcx space exploration">
+                  <div class="sd-sym-cell">
+                    <div style="width:24px;height:24px;border-radius:50%;background:#000;position:relative;overflow:hidden;flex-shrink:0;"><div style="position:absolute;top:38.06%;right:25.16%;bottom:31.43%;left:18.91%;"><img src="https://www.figma.com/api/mcp/asset/44605869-3697-4873-a20d-5220541319ff" style="width:100%;height:100%;display:block;"></div><div style="position:absolute;top:20.21%;right:-44.54%;bottom:31.43%;left:17.91%;"><img src="https://www.figma.com/api/mcp/asset/a23de238-3dff-45bc-8fec-325ef55eb8dc" style="width:100%;height:100%;display:block;"></div></div>
+                    <div class="sd-sym-info">
+                      <div class="sd-sym-top">
+                        <span class="sd-sym-name">SPCX-PERP</span>
+                        <span class="sd-lev">20x</span>
+                      </div>
+                      <div class="sd-sym-sub" id="spcxSub">
+                        <span class="sd-preipo-tag">Pre-IPO</span>
+                        <span>|</span>
+                        <span>Space Exploration Te...</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sd-cell" style="text-align:right">70,947.0</div>
+                  <div class="sd-cell green" style="text-align:right">+4.58%</div>
+                  <div class="sd-cell" style="text-align:right">$102.47M</div>
+                  <div class="sd-cell orange" style="text-align:right" id="spcxFunding">+0.0012%</div>
+                </div>
+                <!-- Row: TSLA-PERP -->
+                <div class="sd-row" data-cat="Stocks" data-search="tsla tesla">
+                  <div class="sd-sym-cell">
+                    <div style="width:24px;height:24px;border-radius:50%;background:#e31937;position:relative;overflow:hidden;flex-shrink:0;"><img src="https://www.figma.com/api/mcp/asset/ac47c5fc-a681-4d80-af50-fea2675d1340" style="position:absolute;left:50%;transform:translateX(-50%);top:24.89%;height:59.9%;width:auto;"></div>
+                    <div class="sd-sym-info">
+                      <div class="sd-sym-top">
+                        <span class="sd-sym-name">TSLA-PERP</span>
+                        <span class="sd-lev">20x</span>
+                      </div>
+                      <div class="sd-sym-sub"><span>Tesla Inc.</span></div>
+                    </div>
+                  </div>
+                  <div class="sd-cell" style="text-align:right">178.32</div>
+                  <div class="sd-cell green" style="text-align:right">+2.14%</div>
+                  <div class="sd-cell" style="text-align:right">$89.21M</div>
+                  <div class="sd-cell orange" style="text-align:right">+0.0008%</div>
+                </div>
+                <!-- Row: TSLA-PERP 2 -->
+                <div class="sd-row" data-cat="Stocks" data-search="tsla tesla">
+                  <div class="sd-sym-cell">
+                    <div style="width:24px;height:24px;border-radius:50%;background:#e31937;position:relative;overflow:hidden;flex-shrink:0;"><img src="https://www.figma.com/api/mcp/asset/ac47c5fc-a681-4d80-af50-fea2675d1340" style="position:absolute;left:50%;transform:translateX(-50%);top:24.89%;height:59.9%;width:auto;"></div>
+                    <div class="sd-sym-info">
+                      <div class="sd-sym-top">
+                        <span class="sd-sym-name">TSLA-PERP</span>
+                        <span class="sd-lev">20x</span>
+                      </div>
+                      <div class="sd-sym-sub"><span>Tesla Inc.</span></div>
+                    </div>
+                  </div>
+                  <div class="sd-cell" style="text-align:right">178.32</div>
+                  <div class="sd-cell" style="color:var(--red);text-align:right">-1.03%</div>
+                  <div class="sd-cell" style="text-align:right">$54.67M</div>
+                  <div class="sd-cell orange" style="text-align:right">-0.0003%</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="pip-outer" id="pip-dl"></div>
-      </div>
-      <div class="demo-info" id="info-dl"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ TAB: SPAC ═══════════════ -->
-<div class="tab-panel" id="panel-spac">
-
-  <div class="flow-wrap">
-    <div class="flow-label">Path D · SPAC 完整生命周期流程图</div>
-    <div class="flow">
-      <div class="fn">
-        <div class="fn-box fn-gray">Pre-IPO<br>上线</div>
-        <div class="fn-states">C-1 / C-2</div>
-        <div class="fn-event">路径/日期<br>未知</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-spac-ann">合并协议<br>签署公告</div>
-        <div class="fn-states">— 早期信号 —</div>
-        <div class="fn-event">新闻稿发布<br>具有约束力<br>S-4 尚未到达</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-spac">路径已知<br>S-4 待达</div>
-        <div class="fn-states">D-0</div>
-        <div class="fn-event">已公告 SPAC<br>等待 SEC<br>正式确认</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-spac">S-4 到达<br>确认 SPAC</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">SEC 收到<br>S-4 文件<br>无 Rebase</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-spac">Merger Date<br>TBD</div>
-        <div class="fn-states">D-3</div>
-        <div class="fn-event">路径确认<br>合并日未定</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-spac-hot">Pre-Merger<br>远期→近期</div>
-        <div class="fn-states">D-1 → D-2</div>
-        <div class="fn-event">merger_date<br>确定后倒计时</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">Shareholder<br>Vote</div>
-        <div class="fn-states">D-4</div>
-        <div class="fn-event">SPAC 特有节点<br>仅减仓<br>投票风险最高</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger">Merger<br>Complete</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">股东投票通过<br>合并完成</div>
-      </div>
-      <div class="fa spac"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-danger-dash">Market<br>Merging</div>
-        <div class="fn-states">D-5</div>
-        <div class="fn-event">blend_alpha<br>0→1 过渡<br>开发手动切换</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-end">country_<br>stock</div>
-        <div class="fn-states">结束</div>
-        <div class="fn-event">Pre-IPO 弹窗<br>消失</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="demo-block">
-    <div class="demo-hdr">
-      <span class="pbadge pb-spac">Path D · SPAC</span>
-      <span style="font-size:15px;font-weight:700;">SPAC 借壳上市路径 · 弹窗状态</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">合并协议签署→D-0 · S-4 确认→D-3 · 无 Rebase · SPAC 特有：股东投票节点（D-4）</span>
-    </div>
-    <div class="demo-body">
-      <div class="demo-preview">
-        <div class="preview-lbl">Live Component · Figma Match</div>
-        <div class="sw-row">
-          <button class="sw-btn" onclick="setState('spac','D0',this)">D-0 · 公告待达</button>
-          <button class="sw-btn" onclick="setState('spac','D3',this)">D-3 · TBD</button>
-          <button class="sw-btn active" onclick="setState('spac','D1',this)">D-1 · 远期</button>
-          <button class="sw-btn" onclick="setState('spac','D2',this)">D-2 · 近期</button>
-          <button class="sw-btn" onclick="setState('spac','D4',this)">D-4 · 股东投票</button>
-          <button class="sw-btn" onclick="setState('spac','D5',this)">D-5 · Merging</button>
+        <!-- ANNOTATIONS -->
+        <div class="state-info">
+          <div class="comp">
+            <div class="comp-label">Pre-IPO 阶段</div>
+            <div class="comp-what">SPCX-PERP 行子标题显示橙色 Pre-IPO 标签，位于美股（Stocks Tab）列表中，选标的前即感知该合约处于特殊阶段。</div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">country_stock — 标签消失 <span class="tag tag-local">开发手动</span></div>
+            <div class="comp-what">IPO Merge 结束后，开发手动将合约类型切为 country_stock（如 US_STOCK）。Pre-IPO 标签消失，SPCX-PERP 变为普通美股合约行，与 TSLA-PERP 等无差别展示。手动触发是因为需要人工确认股票已稳定上市，避免数据延迟造成错误切换。</div>
+          </div>
         </div>
-        <div class="pip-outer" id="pip-spac"></div>
       </div>
-      <div class="demo-info" id="info-spac"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ TAB: TERMINATED ═══════════════ -->
-<div class="tab-panel" id="panel-term">
-
-  <div class="flow-wrap">
-    <div class="flow-label">Path E · 终止 / 下线 — 上市计划取消或长期无 SEC 文件</div>
-    <div class="flow">
-      <div class="fn">
-        <div class="fn-box fn-gray">Pre-IPO<br>上线</div>
-        <div class="fn-states">C-1 / C-2</div>
-        <div class="fn-event">路径/日期<br>未知</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-gray" style="border-style:dashed">…任意节点…</div>
-        <div class="fn-states">A-x / B-x / D-x</div>
-        <div class="fn-event">已知路径中<br>可随时触发<br>终止事件</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-term">上市取消<br>触发终止</div>
-        <div class="fn-states">— 事件 —</div>
-        <div class="fn-event">公司公告 / 投票失败<br>/ 长期无 SEC 文件<br>/ 合约到期</div>
-      </div>
-      <div class="fa term"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-term">仅减仓<br>结算倒计时</div>
-        <div class="fn-states">E-1</div>
-        <div class="fn-event">is_reduce_only<br>= true<br>TWAP 结算</div>
-      </div>
-      <div class="fa term"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-term">TWAP<br>结算完成</div>
-        <div class="fn-states">E-2</div>
-        <div class="fn-event">结算价格<br>已确定</div>
-      </div>
-      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
-      <div class="fn">
-        <div class="fn-box fn-term-end">合约<br>下线</div>
-        <div class="fn-states">结束</div>
-        <div class="fn-event">Pre-IPO 弹窗<br>消失<br>合约永久关闭</div>
-      </div>
-    </div>
-    <div style="margin-top:16px;font-size:11px;color:#999;line-height:1.7">
-      <b style="color:#c62828">终止触发场景：</b>
-      ① 公司公告撤回 IPO/DL 计划 &nbsp;|&nbsp;
-      ② SPAC 股东投票未通过（D-4 节点失败）&nbsp;|&nbsp;
-      ③ 长期未收到任何 SEC 文件（平台主动下线）&nbsp;|&nbsp;
-      ④ SEC 拒绝注册申请（S-1 / S-4 被退回）
+<!-- ══════════════════════════════════════
+     CATEGORY 3 — Symbol Selector H5
+══════════════════════════════════════ -->
+<div class="category">
+  <div class="cat-header">
+    <div class="cat-num">3</div>
+    <div class="cat-title-wrap">
+      <div class="cat-title">H5 · Market 底部列表</div>
+      <div class="cat-desc">移动端底部弹出（TradFi § 1 双行展示 · H5 精简列）。搜索逻辑同 § 2：symbol 前缀匹配 &gt; full_name 匹配 &gt; 任意字段中间匹配。</div>
     </div>
   </div>
-
-  <div class="demo-block">
-    <div class="demo-hdr">
-      <span class="pbadge pb-term">Path E · 终止</span>
-      <span style="font-size:15px;font-weight:700;">上市计划取消 · 合约进入结算</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">is_reduce_only = true · TWAP 结算 · 结算完成后合约下线</span>
-    </div>
-    <div class="demo-body">
-      <div class="demo-preview">
-        <div class="preview-lbl">Live Component · Figma Match</div>
-        <div class="sw-row">
-          <button class="sw-btn active" onclick="setState('term','E1',this)">E-1 · 仅减仓·结算倒计时</button>
-          <button class="sw-btn" onclick="setState('term','E2',this)">E-2 · TWAP 结算完成</button>
+  <div class="state-list">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-gray">H5 Mobile</span>
+        <span class="state-title-text">Perp / h5_change TradFi</span>
+        <span class="state-trigger">移动端 Market 入口触发</span>
+      </div>
+      <div style="background:#16181d;padding:28px 24px;display:flex;justify-content:center;">
+        <div class="h5-wrap">
+          <div class="h5-sheet">
+            <div class="h5-header">
+              <span class="h5-title">Market</span>
+              <span class="h5-close">✕</span>
+            </div>
+            <div class="h5-search">
+              <span style="color:var(--text-2);font-size:13px;">🔍</span>
+              <input type="text" placeholder="Search Symbol / Coin Name">
+            </div>
+            <div class="h5-tabs">
+              <div class="h5-tab" onclick="switchH5Tab(this)">All</div>
+              <div class="h5-tab" onclick="switchH5Tab(this)">Crypto</div>
+              <div class="h5-tab active" onclick="switchH5Tab(this)">Stocks</div>
+              <div class="h5-tab" onclick="switchH5Tab(this)">Commodities</div>
+            </div>
+            <div class="h5-table-head">
+              <div class="h5-th-left">Symbols ⬍ &nbsp;/&nbsp; Vol ⬍</div>
+              <div class="h5-th-right">
+                <span>Mark Price ⬍</span>
+                <span>/</span>
+                <span>24h Chg% ⬍</span>
+              </div>
+            </div>
+            <!-- Row 1: Pre-IPO -->
+            <div class="h5-row">
+              <span class="h5-star">★</span>
+              <div style="width:28px;height:28px;border-radius:50%;background:#d59b02;position:relative;overflow:hidden;flex-shrink:0;margin-right:8px;"><div style="position:absolute;top:21.4%;right:12.49%;bottom:29.76%;left:12.63%;"><img src="https://www.figma.com/api/mcp/asset/7f5ef3c8-cae1-4f77-8586-a6b5cf872a3e" style="width:100%;height:100%;display:block;"></div></div>
+              <div class="h5-row-info">
+                <div class="h5-row-top">
+                  <span class="h5-row-name">XAU-PERP</span>
+                  <span class="h5-row-lev">25x</span>
+                </div>
+                <div class="h5-row-sub">
+                  <span class="preipo">Pre-IPO</span><span class="h5-sub-sep"> / </span><span class="h5-sub-name" data-name="Gold US Dollar"></span><span class="h5-sub-sep"> / </span><span class="h5-sub-vol">$6.97M</span>
+                </div>
+              </div>
+              <div class="h5-row-right">
+                <div class="h5-price">53,345.34</div>
+                <div class="h5-chg">+3.43%</div>
+              </div>
+            </div>
+            <!-- Row 2: long-name truncation demo -->
+            <div class="h5-row">
+              <span class="h5-star" style="color:var(--text-2);">☆</span>
+              <div style="width:28px;height:28px;border-radius:50%;background:#0052ff;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;">C</div>
+              <div class="h5-row-info">
+                <div class="h5-row-top"><span class="h5-row-name">CRCL-PERP</span><span class="h5-row-lev">25x</span></div>
+                <div class="h5-row-sub">
+                  <span class="preipo">Pre-IPO</span><span class="h5-sub-sep"> / </span><span class="h5-sub-name" data-name="Circle Internet Financial, Inc."></span><span class="h5-sub-sep"> / </span><span class="h5-sub-vol">$2.14M</span>
+                </div>
+              </div>
+              <div class="h5-row-right"><div class="h5-price">29,880.00</div><div class="h5-chg" style="color:var(--red);">-1.22%</div></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="h5-row">
+              <span class="h5-star" style="color:var(--text-2);">☆</span>
+              <div style="width:28px;height:28px;border-radius:50%;background:#d59b02;position:relative;overflow:hidden;flex-shrink:0;margin-right:8px;"><div style="position:absolute;top:21.4%;right:12.49%;bottom:29.76%;left:12.63%;"><img src="https://www.figma.com/api/mcp/asset/7f5ef3c8-cae1-4f77-8586-a6b5cf872a3e" style="width:100%;height:100%;display:block;"></div></div>
+              <div class="h5-row-info">
+                <div class="h5-row-top"><span class="h5-row-name">XAU-PERP</span><span class="h5-row-lev">25x</span></div>
+                <div class="h5-row-sub"><span class="h5-sub-name" data-name="Gold US Dollar"></span><span class="h5-sub-sep"> / </span><span class="h5-sub-vol">$6.97M</span></div>
+              </div>
+              <div class="h5-row-right"><div class="h5-price">53,345.34</div><div class="h5-chg">+3.43%</div></div>
+            </div>
+            <!-- Row 4 -->
+            <div class="h5-row">
+              <span class="h5-star" style="color:var(--text-2);">☆</span>
+              <div style="width:28px;height:28px;border-radius:50%;background:#d59b02;position:relative;overflow:hidden;flex-shrink:0;margin-right:8px;"><div style="position:absolute;top:21.4%;right:12.49%;bottom:29.76%;left:12.63%;"><img src="https://www.figma.com/api/mcp/asset/7f5ef3c8-cae1-4f77-8586-a6b5cf872a3e" style="width:100%;height:100%;display:block;"></div></div>
+              <div class="h5-row-info">
+                <div class="h5-row-top"><span class="h5-row-name">XAU-PERP</span><span class="h5-row-lev">25x</span></div>
+                <div class="h5-row-sub"><span class="h5-sub-name" data-name="Gold US Dollar"></span><span class="h5-sub-sep"> / </span><span class="h5-sub-vol">$6.97M</span></div>
+              </div>
+              <div class="h5-row-right"><div class="h5-price">53,345.34</div><div class="h5-chg">+3.43%</div></div>
+            </div>
+          </div>
         </div>
-        <div class="pip-outer" id="pip-term"></div>
       </div>
-      <div class="demo-info" id="info-term"></div>
     </div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════
+     CATEGORY 4 — 标题栏状态机
+══════════════════════════════════════ -->
+<div class="category">
+  <div class="cat-header">
+    <div class="cat-num">4</div>
+    <div class="cat-title-wrap">
+      <div class="cat-title">Web · 标题栏 Symbol 标签</div>
+      <div class="cat-desc">Pre-IPO → IPO Merge → country_stock，标签随阶段演进，切 stock 后消失。</div>
+    </div>
+  </div>
+  <div class="state-list">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-orange">3 Stages</span>
+        <span class="state-title-text">SPCX-PERP 标题栏标签流转</span>
+        <span class="state-trigger">点击按钮切换阶段</span>
+      </div>
+      <div class="state-body">
+        <!-- LIVE COMPONENT -->
+        <div class="state-preview">
+          <div class="titlebar-demo">
+            <div class="tb-stage-btns">
+              <button class="tb-stage-btn active" onclick="setTBStage(1,this)">① Pre-IPO</button>
+              <button class="tb-stage-btn" onclick="setTBStage(2,this)">② IPO Merge</button>
+              <button class="tb-stage-btn" onclick="setTBStage(3,this)">③ country_stock</button>
+            </div>
+            <div class="tb-bar">
+              <div style="width:28px;height:28px;border-radius:50%;background:#000;position:relative;overflow:hidden;flex-shrink:0;"><div style="position:absolute;top:38.06%;right:25.16%;bottom:31.43%;left:18.91%;"><img src="https://www.figma.com/api/mcp/asset/44605869-3697-4873-a20d-5220541319ff" style="width:100%;height:100%;display:block;"></div><div style="position:absolute;top:20.21%;right:-44.54%;bottom:31.43%;left:17.91%;"><img src="https://www.figma.com/api/mcp/asset/a23de238-3dff-45bc-8fec-325ef55eb8dc" style="width:100%;height:100%;display:block;"></div></div>
+              <div class="tb-sym-block">
+                <div class="tb-sym-row">
+                  <span class="tb-sym-name">SPCX-PERP</span>
+                  <span class="tb-arrow">▾</span>
+                </div>
+                <div class="tb-sym-sub">
+                  <span>Space Exploration Te...</span>
+                  <span id="tbTag" class="tb-tag preipo">Pre-IPO<span class="tb-bars"><span style="display:inline-block;width:2.5px;height:8px;background:#f69b1d;border-radius:1px;"></span><span style="display:inline-block;width:2.5px;height:5px;background:#f69b1d;border-radius:1px;"></span></span></span>
+                </div>
+              </div>
+            </div>
+            <div class="tb-note" id="tbNote">
+              <strong>阶段 1 · Pre-IPO</strong><br>
+              标题旁常驻橙色 Pre-IPO 标签。
+            </div>
+          </div>
+        </div>
+        <!-- ANNOTATIONS -->
+        <div class="state-info">
+          <div class="comp">
+            <div class="comp-label">① Pre-IPO 橙色</div>
+            <div class="comp-what">标题旁常驻橙色 Pre-IPO 标签。</div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">② IPO Merge 红色 <span class="tag tag-local">开发手动</span></div>
+            <div class="comp-what">标签切换为红色 IPO Merge。</div>
+          </div>
+          <div class="comp">
+            <div class="comp-label">③ country_stock — 标签消失 <span class="tag tag-local">开发手动</span></div>
+            <div class="comp-what">IPO 完成后开发手动将 symbol 类型切为 country_stock（如 US_STOCK），所有 Pre-IPO 标签消失，前端按普通 TradFi Perp 规则展示。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CATEGORY 5 — ipo_time 数据来源 & 日期变更处理
+══════════════════════════════════════ -->
+<div class="category">
+  <div class="cat-header">
+    <div class="cat-num">5</div>
+    <div class="cat-title-wrap">
+      <div class="cat-title">ipo_time 数据来源 & 日期变更处理</div>
+      <div class="cat-desc"><code>ipo_time</code> 字段决定弹窗状态流转的核心时间节点，来源和准确性直接影响倒计时展示。</div>
+    </div>
+  </div>
+
+  <div class="state-list">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-gray">数据来源</span>
+        <span class="state-title-text">何时可以填入 ipo_time</span>
+      </div>
+      <div style="padding:24px;">
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>时间节点</th>
+              <th>来源</th>
+              <th>确定程度</th>
+              <th>能否使用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>路演开始<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前 1～2 周</span></td>
+              <td style="font-size:13px;color:#555;">Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
+              <td><span class="cert-soft">软确认 ~90%</span></td>
+              <td><span class="usable-yes">✓ 可以填入</span><br><span style="font-size:12px;color:#888;">覆盖 State 2 / State 3 倒计时展示</span></td>
+            </tr>
+            <tr>
+              <td>424B4 提交<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前一晚</span></td>
+              <td style="font-size:13px;color:#555;">SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
+              <td><span class="cert-hard">硬确认 100%</span></td>
+              <td><span class="usable-late">△ 最准但太晚</span><br><span style="font-size:12px;color:#888;">此时距 IPO 不足 24h，进入 State 1</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:16px;padding:12px 16px;background:#f8f8f8;border-radius:8px;font-size:13px;color:#555;line-height:1.7;">
+          <strong style="color:#1a1a1a;">推荐做法：</strong>路演开始时填入软确认日期，覆盖 State 2/3 倒计时展示。等 424B4 确认后若日期有出入，再按下方变更流程更新。
+        </div>
+
+        <!-- 日期变更 Alert -->
+        <div class="alert-block">
+          <div class="alert-title">
+            <span>⚠</span> 约 10% 概率：路演日期 ≠ 最终 IPO 日期（推迟或提前）
+          </div>
+          <div class="alert-body">
+            公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期。此时需要手动更新 <code>ipo_time</code>，前端状态将自动重算。
+          </div>
+          <div class="alert-steps">
+            <div class="alert-step">
+              <div class="alert-step-num">1</div>
+              <div>监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ/NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div>
+            </div>
+            <div class="alert-step">
+              <div class="alert-step-num">2</div>
+              <div>前端倒计时基于 <code>ipo_time</code> 实时计算，更新字段后弹窗状态自动跳转——若新日期更远则从 State 1 退回 State 3/2，若更近则加速进入 State 1。</div>
+            </div>
+            <div class="alert-step">
+              <div class="alert-step-num">3</div>
+              <div>日期变更属于高风险操作，建议同步在平台公告用户，避免因倒计时突变引发误操作。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </div><!-- /page -->
+
 <script>
-/* ── Figma-exact icon assets ── */
-const FA={
+/* ════════════════════════
+   PRE-IPO POPUP LOGIC
+════════════════════════ */
+const FA = {
   sunCenter:'https://www.figma.com/api/mcp/asset/d7669b0a-394f-4239-9c22-463e2264924a',
   sunDot:'https://www.figma.com/api/mcp/asset/75271ce5-26c8-49cf-a822-0259911093b1',
   afterIcon:'https://www.figma.com/api/mcp/asset/38079e8f-538b-4471-859e-54f646774e53',
   liqMod1:'https://www.figma.com/api/mcp/asset/c96f6409-ce76-4d58-a940-4b87557d40a4',
   liqMod2:'https://www.figma.com/api/mcp/asset/64e2fbeb-db28-4846-8ae9-2e18c7137fca',
   liqLow:'https://www.figma.com/api/mcp/asset/31082f8e-491e-49d3-9652-f98f74d7f1f8',
-  learnMore:'https://www.figma.com/api/mcp/asset/a822ff3f-089a-4af4-92f5-0bf6570217b8',
 };
-function sunSVG(){
-  const c=FA.sunCenter,d=FA.sunDot;
-  return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${c}" style="position:absolute;left:4.67px;width:6.667px;height:6.667px;top:4.74px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:0.89px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:13.11px"><img src="${d}" style="position:absolute;left:12.97px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:1.03px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:11.31px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:11.31px"></div>`;
-}
-function afterSVG(){
-  return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.afterIcon}" style="position:absolute;height:10.862px;left:0.69px;top:1.48px;width:13.94px"></div>`;
-}
-function learnIcon(){
-  return`<img src="${FA.learnMore}" style="width:16px;height:16px;flex-shrink:0;">`;
-}
-function liqBars(t){
-  if(t==='moderate')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.liqMod1}" style="position:absolute;height:8px;left:1.11px;top:2.67px;width:6.867px"><img src="${FA.liqMod2}" style="position:absolute;height:8px;left:6.44px;top:2.67px;width:4.2px"></div>`;
-  if(t==='low')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;background:#e05252;height:8px;left:1.67px;border-radius:100px;top:4px;width:1.533px"></div><img src="${FA.liqLow}" style="position:absolute;height:8px;left:2.89px;top:2.67px;width:9.533px"></div>`;
-  return '';
-}
+function sunIcon(){const c=FA.sunCenter,d=FA.sunDot;return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${c}" style="position:absolute;left:4.67px;width:6.667px;height:6.667px;top:4.74px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:0.89px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:13.11px"><img src="${d}" style="position:absolute;left:12.97px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:1.03px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:11.31px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:11.31px"></div>`;}
+function afterIcon(){return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.afterIcon}" style="position:absolute;height:10.862px;left:0.69px;top:1.48px;width:13.94px"></div>`;}
+function listingIcon(){return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;left:1px;right:1px;bottom:3px;height:1px;background:#9b7fd4;border-radius:1px"></div><div style="position:absolute;left:4px;bottom:3px;width:8px;height:4px;background:#9b7fd4;border-radius:4px 4px 0 0"></div><div style="position:absolute;left:7px;top:1px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div></div>`;}
+function liqIndicator(t){if(t==='moderate')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.liqMod1}" style="position:absolute;height:8px;left:1.11px;top:2.67px;width:6.867px"><img src="${FA.liqMod2}" style="position:absolute;height:8px;left:6.44px;top:2.67px;width:4.2px"></div>`;if(t==='low')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;background:#e05252;height:8px;left:1.67px;border-radius:100px;top:4px;width:1.533px"></div><img src="${FA.liqLow}" style="position:absolute;height:8px;left:2.89px;top:2.67px;width:9.533px"></div>`;return '';}
 
-/* ── Render popup ── */
-function renderCard(c){
-  const icon = c.icon==='sun' ? sunSVG() : afterSVG();
-  let rightHTML;
-  if(c.tbd){
-    rightHTML=`<span class="pip-tbd">TBD</span>`;
-  } else if(c.dateOnly){
-    rightHTML=`<span class="pip-date">${c.dateOnly}</span>`;
-  } else if(c.liq){
-    rightHTML=`${liqBars(c.liqT)}<span class="pip-liq${c.liqT==='low'?' red':''}">${c.liq}</span>`;
-  } else {
-    rightHTML=`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-      <div style="display:flex;align-items:center;gap:5px">
-        ${c.cd?`<span class="pip-cd">${c.cd}</span>`:''}
-        ${c.tag?`<span class="pip-next">${c.tag}</span>`:''}
-      </div>
-      ${c.date?`<span class="pip-date">${c.date}</span>`:''}
-    </div>`;
-  }
-  // Two-line card if it has countdown
-  const leftCol = (c.cd||c.tbd) && !c.liq
-    ? `<div class="pip-card-col">
-        <span class="pip-card-name">${c.name}</span>
-        ${c.cd?`<div class="pip-card-sub"><span class="pip-cd">${c.cd}</span><span class="pip-next">${c.tag||'Next Phase'}</span></div>`:''}
-      </div>`
-    : `<span class="pip-card-name">${c.name}</span>`;
-  const rightFinal = (c.cd||c.tbd) && !c.liq
-    ? `<span class="pip-date">${c.date||''}</span>`
-    : rightHTML;
-  return `<div class="pip-card${c.hl?' hl':''}">
-    <div class="pip-card-l">${icon}${leftCol}</div>
-    <div class="pip-card-r">${rightFinal}</div>
-  </div>`;
-}
-
-function renderPip(d){
-  return `<div class="pip">
-    <div class="pip-hdr">
-      <span class="pip-title">Pre-IPO Assets</span>
-      <span class="pip-learn">${learnIcon()}Learn More</span>
-    </div>
-    <p class="pip-desc">${d.desc}</p>
-    <div class="pip-cards">${d.cards.map(renderCard).join('')}</div>
-    <p class="pip-foot">${d.fn}</p>
-  </div>`;
-}
-function renderInfo(sid,path,i){
-  const cls={unk:'sid-u',ipo:'sid-i',dl:'sid-d',spac:'sid-s',term:'sid-t'}[path];
-  return`
-    <div class="ib"><div class="il">当前状态</div><div class="it"><span class="sid ${cls}">${sid}</span>${i.name}</div></div>
-    <div class="ib"><div class="il">触发条件</div><div class="it">${i.trigger}</div></div>
-    <div class="ib"><div class="il">高亮卡说明</div><div class="it">${i.hl}</div></div>
-    ${i.risk?`<div class="ib"><div class="il" style="color:#c62828">风险 / 仓位限制</div><div class="irisk">${i.risk}</div></div>`:''}
-    ${i.note?`<div class="ib"><div class="il">备注</div><div class="it" style="color:#555">${i.note}</div></div>`:''}`;
-}
-
-/* ── Copy strings ── */
-const FN='During the weekend/holiday, some symbols may be under position risk control; only reduce-only orders are allowed.';
-const FN_IPO='During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.';
-const FN_DL='This symbol will list via Direct Listing. No Rebase will occur. High price volatility is expected on and around the opening day.';
-const FN_SPC='This symbol will go public via SPAC merger (S-4 filing). No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
-const FN_UNK='Listing method has not been confirmed. Path and schedule will be updated once an SEC filing is detected by the system.';
-const FN_ANN='Path confirmed via public announcement. Official SEC filing is pending. Information may be updated once the S-1 or S-4 is reviewed by the SEC.';
-const D_IPO='This perpetual trades 24/7, and its price is based on various market estimates. Prices may fluctuate during the Pre-IPO phase — please be mindful of the risks. When the underlying asset officially launches on the IPO market, the liquidity and price protection may adjust to regular {stock} market hours.';
-const D_DL='This perpetual trades 24/7. This symbol will list via Direct Listing — no Rebase will occur. High price volatility is expected on and around the opening day.';
-const D_SPC='This perpetual trades 24/7. This symbol will go public via SPAC merger (S-4 filing). No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
-const D_UNK='This perpetual trades 24/7. Listing method (IPO or Direct Listing) has not been confirmed. Path and schedule will be updated once an SEC filing is detected by the system.';
-const D_IPO_ANN='This perpetual trades 24/7. The company has publicly announced its intention to pursue a traditional IPO. Listing path is confirmed via public announcement — official S-1 filing is pending SEC review. Key details (price range, exact date) may change before the filing is declared effective.';
-const D_DL_ANN='This perpetual trades 24/7. The company has publicly announced a Direct Listing — no new shares will be issued and no Rebase will occur. S-1 filing is pending SEC review. High price volatility is expected on and around the opening day.';
-const D_SPC_ANN='This perpetual trades 24/7. The company has signed a binding SPAC merger agreement and issued a public announcement. S-4 filing is pending SEC review. No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
-const D_TERM='The planned IPO or listing has been cancelled, postponed indefinitely, or the contract has reached its expiry without a valid SEC filing. This symbol is in reduce-only mode and will be settled at TWAP pricing.';
-const FN_TERM='Only reduce-only orders are permitted. The contract will be settled at TWAP pricing at the specified settlement date. Please close your positions before settlement. For details, refer to official announcements.';
-
-/* ── State data ── */
-const STATES={
-  unk:{
-    C1:{pip:{desc:D_UNK,fn:FN_UNK,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',          liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Listing Date', tbd:true}
-    ]},info:{name:'路径与日期完全未知',trigger:'上线初始状态 · 尚未收到任何 SEC 文件',hl:'仅 Pre-IPO 卡高亮 · 下卡 Est. Listing Date 显示 TBD',note:'流动性 Moderate · 无仓位限制 · 一旦 S-1 / S-4 到达立即切对应路径'}},
-    C2:{pip:{desc:D_UNK,fn:FN_UNK,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',          liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Listing Date', cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}
-    ]},info:{name:'有估算日期，路径仍未知',trigger:'市场有分析师估算日期，后端录入 est_date（非官方 SEC 文件）',hl:'Pre-IPO 高亮 · 下卡显示估算倒计时',note:'与 C-1 差异：下卡有倒计时但路径未确认 · 日期可信度较低'}},
-  },
-  ipo:{
-    A0:{pip:{desc:D_IPO_ANN,fn:FN_ANN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. IPO Date', tbd:true}
-    ]},info:{name:'IPO 已公告 · S-1 文件待达',trigger:'公司发布新闻稿宣布 IPO 意向 / 启动路演 · 尚未向 SEC 提交 S-1',hl:'Pre-IPO 高亮 · 路径已知但 SEC 尚未确认 · 下卡 Est. IPO Date 显示 TBD',note:'JOBS Act 允许 EGC 先提交机密 S-1；正式公开 S-1 到达前此状态可能持续数周至数月 · 一旦 S-1 到达立即切 A-4'}},
-    A4:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'IPO Date', tbd:true}
-    ]},info:{name:'S-1 已到达 · Ticker 确认 · IPO 日期 TBD',trigger:'S-1 公开提交至 SEC · IPO 路径正式确认',hl:'Pre-IPO 高亮 · 下卡 IPO Date 显示 TBD',note:'S-1 到达后：股票代码（Ticker）和拟挂牌交易所即可从 S-1 文件中确认 · 但具体上市交易日由承销商在「定价夜」确定，通常在 S-1 生效后数周至数月 · 此状态可持续较长时间'}},
-    A3:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'IPO Date', cd:'5 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'IPO 日期已确认 · 倒计时中',trigger:'ipo_date 已配置（通常在 IPO 定价夜前 1-7 天才确定） · current_time 距 ipo_date 超过 24h',hl:'Pre-IPO 高亮 · 倒计时精度为天',note:'IPO 上市日期通常在 SEC 宣布 S-1 生效 + 路演完成后的定价夜方才确认，实践中通常仅 1-7 天前确定'}},
-    A1:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'IPO Date', cd:'01:26:56',tag:'Next Phase',date:'2026-05-30 21:00 UTC'}
-    ]},info:{name:'IPO 倒计时 &lt;24h',trigger:'current_time 距 ipo_date 不足 24 小时',hl:'Pre-IPO 高亮 · 倒计时精度升级为 HH:MM:SS',risk:'临近 IPO，价格波动风险最高 · 建议前端加入显著警示横幅'}},
-    A5:{pip:{desc:D_IPO,fn:FN_IPO,cards:[
-      {hl:true, icon:'after',name:'Pre-Listing',   liq:'Low Liquidity',liqT:'low'},
-      {hl:false,icon:'after',name:'Market Opening', cd:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'Pre-Listing（IPO 已发生，市场未开）',trigger:'ipo_date &lt; current_time &lt; market_open_time · 约 2 天窗口',hl:'高亮切换至 Pre-Listing · 下卡显示 Market Opening 倒计时',risk:'is_reduce_only = true · 仅允许减仓 · 流动性 Low · 开市前价格波动最剧烈'}},
-    A6:{pip:{desc:D_IPO,fn:FN_IPO,cards:[
-      {hl:false,icon:'after',name:'Market Opening', dateOnly:'2026-06-12 21:00 UTC'},
-      {hl:true, icon:'after',name:'Market Merging', liq:'Low Liquidity',liqT:'low'}
-    ]},info:{name:'Market Merging（股市已开，混合过渡）',trigger:'current_time &gt; market_open_time · 开发尚未手动切换 symbol 类型',hl:'高亮切换至 Market Merging · Market Opening 变为历史节点（显示日期）',risk:'价格混合参考 OTC + 股市 · blend_alpha 从 0→1 过渡 · 开发手动切 symbol.type 后弹窗消失'}},
-  },
-  dl:{
-    B0:{pip:{desc:D_DL_ANN,fn:FN_ANN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',           liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Opening Date',  tbd:true}
-    ]},info:{name:'Direct Listing 已公告 · S-1 文件待达',trigger:'公司发布新闻稿确认采用直接上市 · 尚未向 SEC 提交 S-1（Spotify/Coinbase 模式：公告在 S-1 前数周发出）',hl:'Pre-IPO 高亮 · 路径已确认无新股发行 · 下卡 Est. Opening Date 显示 TBD',note:'直接上市无路演、无承销商分配 · 价格发现完全依赖市场 · 无 Rebase · S-1 到达后切 B-3'}},
-    B3:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Opening Date',  tbd:true}
-    ]},info:{name:'S-1 已到达 · Ticker 确认 · 开市日 TBD',trigger:'S-1（无新股发行）提交至 SEC · DL 路径正式确认',hl:'Pre-IPO 高亮 · 下卡 Opening Date 显示 TBD',note:'S-1 到达后：股票代码和目标交易所可从文件确认 · 开市日期由交易所在 S-1 生效后数天内设定（无路演、无定价夜） · 无 Rebase · 实际开市日通常在 S-1 生效后 1-2 周内'}},
-    B2:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Opening Date',  cd:'5 Days',tag:'Next Phase',date:'2026-06-15 21:00 UTC'}
-    ]},info:{name:'DL · 开市日已确认 · 倒计时',trigger:'交易所设定 market_open_date · 通常在 S-1 生效后 1-14 天内',hl:'Pre-IPO 高亮 · 倒计时显示开市日',note:'无承销商定价环节 · 开市当天价格发现完全依赖市场，无 Rebase 锚定，波动可能极高'}},
-    B4:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'after',name:'Pre-Opening',   liq:'Low Liquidity',liqT:'low'},
-      {hl:false,icon:'after',name:'Market Opening', cd:'2 Days',tag:'Next Phase',date:'2026-06-15 21:00 UTC'}
-    ]},info:{name:'Pre-Opening（开市前窗口）',trigger:'进入开市前窗口 · DL 无 IPO 节点，直接从 Pre-IPO 跳至此阶段',hl:'高亮切换至 Pre-Opening · 下卡显示 Market Opening 倒计时',risk:'is_reduce_only = true · 流动性 Low · 无 Rebase，开市价格发现完全市场化'}},
-    B5:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:false,icon:'after',name:'Pre-Opening',    dateOnly:'2026-06-15 21:00 UTC'},
-      {hl:true, icon:'after',name:'Market Merging', liq:'Low Liquidity',liqT:'low'}
-    ]},info:{name:'Market Merging（DL 版）',trigger:'current_time &gt; market_open_time · 开发尚未切换 symbol 类型',hl:'高亮切换至 Market Merging · Pre-Opening 变历史节点',risk:'同 A-6 · blend_alpha 逐步收敛 · 开发手动切换后弹窗消失'}},
-  },
-  term:{
-    E1:{pip:{desc:D_TERM,fn:FN_TERM,cards:[
-      {hl:true, icon:'after',name:'Settlement',     liq:'Low Liquidity',liqT:'low'},
-      {hl:false,icon:'after',name:'Contract Expiry', cd:'5 Days',tag:'Reduce Only',date:'2026-07-15 21:00 UTC'}
-    ]},info:{name:'上市取消 · 仅减仓 · TWAP 结算倒计时',trigger:'公司公告取消上市 / SPAC 投票失败 / 长期无 SEC 文件 / 平台主动触发',hl:'高亮切换至 Settlement · 下卡显示 Contract Expiry 倒计时 · Tag 显示 "Reduce Only"',risk:'is_reduce_only = true · 所有新开仓被拒绝 · 结算时以 TWAP 价格强制平仓 · 用户需在结算前自行减仓'}},
-    E2:{pip:{desc:D_TERM,fn:FN_TERM,cards:[
-      {hl:true, icon:'after',name:'Settlement',liq:'Low Liquidity',liqT:'low'},
-      {hl:false,icon:'after',name:'Contract Delisted',dateOnly:'2026-07-20 21:00 UTC'}
-    ]},info:{name:'TWAP 结算完成 · 合约即将下线',trigger:'TWAP 结算价格已锁定 · 合约下线时间已确定',hl:'Settlement 高亮 · Contract Delisted 显示下线时间',risk:'结算已完成 · 所有仓位已按 TWAP 价格强制平仓 · 合约即将永久下线'}},
-  },
-  spac:{
-    D0:{pip:{desc:D_SPC_ANN,fn:FN_ANN,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Merger Date', tbd:true}
-    ]},info:{name:'SPAC 合并协议签署 · S-4 文件待达',trigger:'SPAC 与目标公司签署合并协议（DA）并于同日发布新闻稿（证券法要求） · S-4 在数周至数月后才提交 SEC',hl:'Pre-Merger 高亮（此路径无 Pre-IPO 发行阶段）· 合并协议具有约束力 · 下卡显示 TBD',note:'SPAC 路径最早确认：DA 签署即为法律确认 · S-4 仅是 SEC 审核流程 · 若投票失败 SPAC 可能回溯终止合并 · S-4 到达后切 D-3'}},
-    D3:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Merger Date', tbd:true}
-    ]},info:{name:'S-4 已到达 · SPAC 路径确认 · 合并日 TBD',trigger:'S-4（合并代理声明）提交至 SEC · SEC 审核期通常 75-90 天',hl:'Pre-Merger 高亮（SPAC 路径卡名固定为 Pre-Merger）· 下卡 Merger Date 显示 TBD',note:'S-4 到达后路径确认 · 合并完成日期需等股东投票时间表确定（通常在 S-4 生效后 30-60 天）'}},
-    D1:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Merger Date', cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}
-    ]},info:{name:'Pre-Merger · 合并远期（&gt;31 天）',trigger:'merger_date 已配置 · 距今超过 31 天（SPAC 特有：合并日期通常提前 2-4 个月确定）',hl:'Pre-Merger 高亮 · 下卡显示合并日倒计时',note:'SPAC 与 IPO/DL 最大区别：合并日期确定时通常还有数月时间，因此存在长周期倒计时'}},
-    D2:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Merger Date', cd:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'Pre-Merger · 合并近期（≤31 天）',trigger:'merger_date 距今 24h ～ 31 天',hl:'Pre-Merger 高亮 · 倒计时以天为单位',note:'股东投票通常在合并前 ~7 天触发 · 届时切换至 D-4'}},
-    D4:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Shareholder Vote',  liq:'Low Liquidity',liqT:'low'},
-      {hl:false,icon:'after',name:'Merger Completion', cd:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'Shareholder Vote · 股东投票',trigger:'进入股东投票期 · SPAC 特有节点 · IPO / DL 路径无此状态',hl:'高亮切换至 Shareholder Vote · 下卡显示合并完成倒计时',risk:'is_reduce_only = true · 投票结果未知风险极高 · 投票失败则合约可能按 TWAP 结算下线'}},
-    D5:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:false,icon:'after',name:'Merger Completion', dateOnly:'2026-06-12 21:00 UTC'},
-      {hl:true, icon:'after',name:'Market Merging',    liq:'Low Liquidity',liqT:'low'}
-    ]},info:{name:'Market Merging（SPAC 版）',trigger:'合并完成后 · 开发尚未切换 symbol 类型',hl:'高亮切换至 Market Merging · Merger Completion 变历史节点',risk:'同 A-6 / B-5 · 开发手动切 symbol.type 后弹窗消失'}},
-  }
+const FN1='During the weekend/holiday, some symbols may be under position risk control; only reduce-only orders are allowed.';
+const FN2='During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.';
+const PIP_STATES={
+  1:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN2},
+  2:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN2},
+  3:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN2},
+  4:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',tbd:true}],fn:FN2},
+  5:{cards:[{hl:true,icon:'after',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'after',name:'Market Opening',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN2},
+  6:{cards:[{hl:false,icon:'after',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'after',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}],fn:FN2},
 };
 
-/* ── State machine ── */
-const cur={unk:'C1',ipo:'A1',dl:'B2',spac:'D1',term:'E1'};
-function setState(path,sid,btn){
-  cur[path]=sid;
-  btn.closest('.sw-row').querySelectorAll('.sw-btn').forEach(b=>b.classList.remove('active'));
+function getIcon(t){if(t==='sun')return sunIcon();if(t==='listing')return listingIcon();return afterIcon();}
+function renderPIP(n){
+  const s=PIP_STATES[n];let h='';
+  s.cards.forEach(c=>{
+    const ic=getIcon(c.icon);
+    const cs=c.hl?'border:1px solid #f9f9f9;border-radius:16px;background:#2b2f35;':'border-bottom:0.5px solid #3d4149;background:#202328;';
+    let left='',right='';
+    if(c.countdown){
+      const tag=c.tag?`<span class="pip-next-tag">${c.tag}</span>`:'';
+      left=`${ic}<div class="pip-card-col"><span class="pip-card-sub-label">${c.name}</span><div class="pip-countdown-row"><span class="pip-countdown">${c.countdown}</span>${tag}</div></div>`;
+      right=`<span class="pip-date">${c.date}</span>`;
+    }else if(c.tbd){
+      left=`${ic}<div class="pip-card-col"><span class="pip-card-sub-label">${c.name}</span></div>`;
+      right=`<span class="pip-tbd">To Be Disclosed</span>`;
+    }else if(c.dateOnly){
+      left=`${ic}<span class="pip-status-name">${c.name}</span>`;
+      right=`<span class="pip-date">${c.dateOnly}</span>`;
+    }else{
+      left=`${ic}<span class="pip-status-name">${c.name}</span>`;
+      const lc=c.liqT==='low'?'pip-liquidity red':'pip-liquidity';
+      right=`<span class="${lc}">${c.liq}</span>${liqIndicator(c.liqT)}`;
+    }
+    h+=`<div class="pip-card" style="${cs}"><div class="pip-card-left">${left}</div><div class="pip-card-right">${right}</div></div>`;
+  });
+  document.getElementById('pipCards2').innerHTML=h;
+  document.getElementById('pipFootnote2').textContent=s.fn;
+}
+function setPIPState(n,btn){
+  renderPIP(n);
+  document.querySelectorAll('#pipSwitcher .dsw-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  render(path);
 }
-function render(path){
-  const s=STATES[path][cur[path]];
-  if(!s) return;
-  document.getElementById('pip-'+path).innerHTML=renderPip(s.pip);
-  document.getElementById('info-'+path).innerHTML=renderInfo(cur[path],path,s.info);
-}
-['unk','ipo','dl','spac','term'].forEach(render);
+renderPIP(1);
 
-/* ── Tabs ── */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+/* ════════════════════════
+   SYMBOL SELECTOR LOGIC
+════════════════════════ */
+function setSDPhase(phase, btn){
+  const sub = document.getElementById('spcxSub');
+  if(phase==='preipo'){
+    sub.innerHTML='<span class="sd-preipo-tag">Pre-IPO</span><span style="color:var(--text-2);margin:0 2px">|</span><span>Space Exploration Te...</span>';
+  } else if(phase==='merge'){
+    sub.innerHTML='<span style="color:#e05252;font-size:11px;font-weight:600;">IPO Merge</span><span style="color:var(--text-2);margin:0 2px">|</span><span>Space Exploration Te...</span>';
+  } else {
+    sub.innerHTML='<span>Space Exploration Te...</span>';
+  }
+  document.querySelectorAll('#sdPhaseSwitcher .dsw-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+let sdActiveTab='Stocks';
+function switchSDTab(tab,el){
+  sdActiveTab=tab;
+  document.querySelectorAll('.sd-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  filterSD();
+}
+function filterSD(){
+  const q=document.getElementById('sdInput').value.toLowerCase();
+  document.querySelectorAll('#sdRows .sd-row').forEach(r=>{
+    const cat=r.dataset.cat;
+    const search=r.dataset.search;
+    const tabMatch=sdActiveTab==='All'||sdActiveTab==='Favorite'||cat===sdActiveTab;
+    const searchMatch=!q||search.includes(q);
+    r.style.display=(tabMatch&&searchMatch)?'':'none';
+  });
+}
+
+/* ════════════════════════
+   H5 TAB LOGIC
+════════════════════════ */
+function switchH5Tab(el){
+  document.querySelectorAll('.h5-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ════════════════════════
+   TITLE BAR STATE MACHINE
+════════════════════════ */
+function tbBars(color,heights){return `<span class="tb-bars">${heights.map(h=>`<span style="display:inline-block;width:2.5px;height:${h}px;background:${color};border-radius:1px;"></span>`).join('')}</span>`;}
+const TB_STAGES={
+  1:{tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO</strong><br>标题旁常驻橙色 Pre-IPO 标签。'},
+  2:{tagClass:'merge',tagHtml:`IPO Merge${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 2 · IPO Merge</strong><br>标签切换为红色 IPO Merge。'},
+  3:{tagClass:'none',tagHtml:'',note:'<strong>阶段 3 · country_stock</strong><br>IPO 完成后开发手动将 symbol 类型切为 country_stock（如 US_STOCK），所有 Pre-IPO 标签消失，前端按普通 TradFi Perp 规则展示。'},
+};
+function setTBStage(n,btn){
+  const s=TB_STAGES[n];
+  const tag=document.getElementById('tbTag');
+  tag.className='tb-tag '+s.tagClass;
+  tag.innerHTML=s.tagHtml;
+  tag.style.display=s.tagClass==='none'?'none':'';
+  document.getElementById('tbNote').innerHTML=s.note;
+  document.querySelectorAll('.tb-stage-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── H5 sub-row: name truncated to max 7 chars + "..." ──
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.h5-sub-name').forEach(el=>{
+    const n=el.dataset.name||'';
+    el.textContent=n.length>7?n.slice(0,7)+'...':n;
   });
 });
 </script>
