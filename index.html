@@ -245,10 +245,10 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
         <!-- LIVE COMPONENT -->
         <div class="state-preview">
           <div class="demo-switcher" id="pipSwitcher">
-            <button class="dsw-btn active" onclick="setPIPState(1,this)">≤24h</button>
+            <button class="dsw-btn active" onclick="setPIPState(1,this)">TBD</button>
             <button class="dsw-btn" onclick="setPIPState(2,this)">1 Mon+</button>
             <button class="dsw-btn" onclick="setPIPState(3,this)">14 Days</button>
-            <button class="dsw-btn" onclick="setPIPState(4,this)">TBD</button>
+            <button class="dsw-btn" onclick="setPIPState(4,this)">≤24h</button>
             <button class="dsw-btn" onclick="setPIPState(5,this)">Pre-Listing</button>
             <button class="dsw-btn" onclick="setPIPState(6,this)">Merging</button>
           </div>
@@ -280,12 +280,12 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
             <div class="comp-label">6 种触发条件</div>
             <div class="comp-what">
               <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-top:2px;">
-                <div><b style="color:#f69b1d">State 1</b> — <code>current &lt; ipo_time</code> 且剩余 &lt;24h</div>
+                <div><b style="color:#878b93">State 1</b> — <code>ipo_time</code> 未配置，日期暂未披露（路演尚未开始）</div>
                 <div><b style="color:#f69b1d">State 2</b> — <code>current &lt; ipo_time</code> 且剩余 &gt;31 天</div>
-                <div><b style="color:#f69b1d">State 3</b> — <code>current &lt; ipo_time</code> 且 24h &lt; 剩余 &lt;31 天</div>
-                <div><b style="color:#878b93">State 4</b> — <code>ipo_time</code> 未配置，暂未披露</div>
-                <div><b style="color:#9b7fd4">State 5</b> — <code>ipo_time &lt; current &lt; market_open</code>（IPO 到开市，约 2 天）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">IPO 已发生，开市前约 2 天。高亮卡变为 Pre-Listing，下卡显示 Market Opening 倒计时。</span></div>
-                <div><b style="color:#e05252">State 6</b> — <code>current &gt; market_open</code> 且开发尚未手动切换为对应 stock 类别（US/KR）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">开市时间已过，高亮移至下卡 Market Merging Phase。上卡只显示开市日期（历史节点）。<br>开市初期价格波动最剧烈，可能跳空。开发手动将 symbol 类型切为对应 stock 类别后此弹窗消失。</span></div>
+                <div><b style="color:#f69b1d">State 3</b> — <code>current &lt; ipo_time</code> 且 24h &lt; 剩余 ≤31 天</div>
+                <div><b style="color:#f69b1d">State 4</b> — <code>current &lt; ipo_time</code> 且剩余 &lt;24h（倒计时精度升级为 HH:MM:SS）</div>
+                <div><b style="color:#9b7fd4">State 5</b> — <code>ipo_time &lt; current &lt; market_open</code>（IPO 已发生，开市前约 2 天）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">进入 Reduce-Only，高亮卡变为 Pre-Listing，下卡显示 Market Opening 倒计时。</span></div>
+                <div><b style="color:#e05252">State 6</b> — <code>current &gt; market_open</code> 且开发尚未手动切换为对应 stock 类别（US/KR）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">开市初期价格最剧烈，可能跳空。高亮移至 Market Merging Phase，上卡显示 Market Opening 历史日期。开发手动切 symbol 类型后弹窗消失。</span></div>
               </div>
             </div>
           </div>
@@ -681,10 +681,10 @@ function liqIndicator(t){if(t==='moderate')return`<div style="position:relative;
 const FN1='During the weekend/holiday, some symbols may be under position risk control; only reduce-only orders are allowed.';
 const FN2='During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.';
 const PIP_STATES={
-  1:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN2},
+  1:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',tbd:true}],fn:FN2},
   2:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN2},
   3:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN2},
-  4:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',tbd:true}],fn:FN2},
+  4:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN2},
   5:{cards:[{hl:true,icon:'after',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'after',name:'Market Opening',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN2},
   6:{cards:[{hl:false,icon:'after',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'after',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}],fn:FN2},
 };
