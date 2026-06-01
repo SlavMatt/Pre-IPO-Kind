@@ -34,6 +34,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
 .pb-ipo{background:#fff3e0;color:#b25a00;}
 .pb-dl{background:#e8f0fe;color:#1a56c4;}
 .pb-spac{background:#f0e6ff;color:#6b21a8;}
+.pb-term{background:#fee2e2;color:#c62828;}
 
 /* ─── FLOW DIAGRAM ─── */
 .flow-wrap{background:#fff;border-radius:16px;border:1px solid #e4e4e4;padding:24px 28px 28px;margin-bottom:24px;overflow-x:auto;}
@@ -56,6 +57,8 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
 .fn-spac{background:#f5f3ff;color:#6d28d9;border:1.5px solid #c4b5fd;}
 .fn-spac-hot{background:#ede9fe;color:#5b21b6;border:1.5px solid #a78bfa;}
 .fn-end{background:#eef2ff;color:#3730a3;border:1.5px solid #a5b4fc;}
+.fn-term{background:#fee2e2;color:#c62828;border:1.5px solid #fca5a5;}
+.fn-term-end{background:#1f2937;color:#9ca3af;border:1.5px solid #374151;}
 .fn-ipo-ann{background:#fffbeb;color:#92400e;border:1.5px dashed #fcd34d;}
 .fn-dl-ann{background:#dbeafe;color:#1e40af;border:1.5px dashed #60a5fa;}
 .fn-spac-ann{background:#ede9fe;color:#5b21b6;border:1.5px dashed #a78bfa;}
@@ -66,6 +69,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
 .fa.ipo .fa-line,.fa.ipo .fa-head{background:#fdba74;border-left-color:#fdba74;}
 .fa.dl .fa-line,.fa.dl .fa-head{background:#93c5fd;border-left-color:#93c5fd;}
 .fa.spac .fa-line,.fa.spac .fa-head{background:#c4b5fd;border-left-color:#c4b5fd;}
+.fa.term .fa-line{background:#fca5a5;}.fa.term .fa-head{border-left-color:#fca5a5;}
 
 /* ─── DEMO BLOCK ─── */
 .demo-block{background:#fff;border-radius:16px;border:1px solid #e4e4e4;overflow:hidden;margin-bottom:24px;}
@@ -83,7 +87,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
 .it{font-size:13px;color:#1a1a1a;line-height:1.55;}
 .irisk{font-size:13px;color:#c62828;background:#fff8f8;border-left:3px solid #e05252;padding:6px 10px;border-radius:0 6px 6px 0;line-height:1.5;}
 .sid{font-size:10px;font-weight:800;font-family:'SF Mono','Courier New',monospace;padding:1px 6px;border-radius:4px;color:#fff;margin-right:4px;}
-.sid-u{background:#6b7280;}.sid-i{background:#f69b1d;}.sid-d{background:#4a7cf7;}.sid-s{background:#9333ea;}
+.sid-u{background:#6b7280;}.sid-i{background:#f69b1d;}.sid-d{background:#4a7cf7;}.sid-s{background:#9333ea;}.sid-t{background:#e05252;}
 
 /* ─── PIP POPUP (Figma pixel-perfect) ─── */
 .pip-outer{width:480px;}
@@ -123,6 +127,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
   <button class="tab-btn" data-tab="ipo">Path A · IPO<span class="tbadge">7</span></button>
   <button class="tab-btn" data-tab="dl">Path B · Direct Listing<span class="tbadge">6</span></button>
   <button class="tab-btn" data-tab="spac">Path D · SPAC<span class="tbadge">6</span></button>
+  <button class="tab-btn" data-tab="term">Path E · 终止/下线<span class="tbadge">2</span></button>
 </div>
 
 <!-- ═══════════════ TAB: UNKNOWN ═══════════════ -->
@@ -426,48 +431,102 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
   </div>
 </div>
 
+<!-- ═══════════════ TAB: TERMINATED ═══════════════ -->
+<div class="tab-panel" id="panel-term">
+
+  <div class="flow-wrap">
+    <div class="flow-label">Path E · 终止 / 下线 — 上市计划取消或长期无 SEC 文件</div>
+    <div class="flow">
+      <div class="fn">
+        <div class="fn-box fn-gray">Pre-IPO<br>上线</div>
+        <div class="fn-states">C-1 / C-2</div>
+        <div class="fn-event">路径/日期<br>未知</div>
+      </div>
+      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
+      <div class="fn">
+        <div class="fn-box fn-gray" style="border-style:dashed">…任意节点…</div>
+        <div class="fn-states">A-x / B-x / D-x</div>
+        <div class="fn-event">已知路径中<br>可随时触发<br>终止事件</div>
+      </div>
+      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
+      <div class="fn">
+        <div class="fn-box fn-term">上市取消<br>触发终止</div>
+        <div class="fn-states">— 事件 —</div>
+        <div class="fn-event">公司公告 / 投票失败<br>/ 长期无 SEC 文件<br>/ 合约到期</div>
+      </div>
+      <div class="fa term"><div class="fa-line"></div><div class="fa-head"></div></div>
+      <div class="fn">
+        <div class="fn-box fn-term">仅减仓<br>结算倒计时</div>
+        <div class="fn-states">E-1</div>
+        <div class="fn-event">is_reduce_only<br>= true<br>TWAP 结算</div>
+      </div>
+      <div class="fa term"><div class="fa-line"></div><div class="fa-head"></div></div>
+      <div class="fn">
+        <div class="fn-box fn-term">TWAP<br>结算完成</div>
+        <div class="fn-states">E-2</div>
+        <div class="fn-event">结算价格<br>已确定</div>
+      </div>
+      <div class="fa"><div class="fa-line"></div><div class="fa-head"></div></div>
+      <div class="fn">
+        <div class="fn-box fn-term-end">合约<br>下线</div>
+        <div class="fn-states">结束</div>
+        <div class="fn-event">Pre-IPO 弹窗<br>消失<br>合约永久关闭</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:#999;line-height:1.7">
+      <b style="color:#c62828">终止触发场景：</b>
+      ① 公司公告撤回 IPO/DL 计划 &nbsp;|&nbsp;
+      ② SPAC 股东投票未通过（D-4 节点失败）&nbsp;|&nbsp;
+      ③ 长期未收到任何 SEC 文件（平台主动下线）&nbsp;|&nbsp;
+      ④ SEC 拒绝注册申请（S-1 / S-4 被退回）
+    </div>
+  </div>
+
+  <div class="demo-block">
+    <div class="demo-hdr">
+      <span class="pbadge pb-term">Path E · 终止</span>
+      <span style="font-size:15px;font-weight:700;">上市计划取消 · 合约进入结算</span>
+      <span style="font-size:12px;color:#888;margin-left:auto;">is_reduce_only = true · TWAP 结算 · 结算完成后合约下线</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-preview">
+        <div class="preview-lbl">Live Component · Figma Match</div>
+        <div class="sw-row">
+          <button class="sw-btn active" onclick="setState('term','E1',this)">E-1 · 仅减仓·结算倒计时</button>
+          <button class="sw-btn" onclick="setState('term','E2',this)">E-2 · TWAP 结算完成</button>
+        </div>
+        <div class="pip-outer" id="pip-term"></div>
+      </div>
+      <div class="demo-info" id="info-term"></div>
+    </div>
+  </div>
+</div>
+
 </div><!-- /page -->
 <script>
-/* ── Icons ── */
+/* ── Figma-exact icon assets ── */
+const FA={
+  sunCenter:'https://www.figma.com/api/mcp/asset/d7669b0a-394f-4239-9c22-463e2264924a',
+  sunDot:'https://www.figma.com/api/mcp/asset/75271ce5-26c8-49cf-a822-0259911093b1',
+  afterIcon:'https://www.figma.com/api/mcp/asset/38079e8f-538b-4471-859e-54f646774e53',
+  liqMod1:'https://www.figma.com/api/mcp/asset/c96f6409-ce76-4d58-a940-4b87557d40a4',
+  liqMod2:'https://www.figma.com/api/mcp/asset/64e2fbeb-db28-4846-8ae9-2e18c7137fca',
+  liqLow:'https://www.figma.com/api/mcp/asset/31082f8e-491e-49d3-9652-f98f74d7f1f8',
+  learnMore:'https://www.figma.com/api/mcp/asset/a822ff3f-089a-4af4-92f5-0bf6570217b8',
+};
 function sunSVG(){
-  return`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-    <circle cx="8" cy="8" r="2.8" fill="#f69b1d"/>
-    <circle cx="8" cy="1.8" r="1" fill="#f69b1d"/>
-    <circle cx="8" cy="14.2" r="1" fill="#f69b1d"/>
-    <circle cx="1.8" cy="8" r="1" fill="#f69b1d"/>
-    <circle cx="14.2" cy="8" r="1" fill="#f69b1d"/>
-    <circle cx="3.5" cy="3.5" r="1" fill="#f69b1d"/>
-    <circle cx="12.5" cy="3.5" r="1" fill="#f69b1d"/>
-    <circle cx="3.5" cy="12.5" r="1" fill="#f69b1d"/>
-    <circle cx="12.5" cy="12.5" r="1" fill="#f69b1d"/>
-  </svg>`;
+  const c=FA.sunCenter,d=FA.sunDot;
+  return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${c}" style="position:absolute;left:4.67px;width:6.667px;height:6.667px;top:4.74px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:0.89px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:13.11px"><img src="${d}" style="position:absolute;left:12.97px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:1.03px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:11.31px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:11.31px"></div>`;
 }
 function afterSVG(){
-  return`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-    <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z" fill="#5b6170"/>
-    <circle cx="11.5" cy="4" r=".9" fill="#7b8396"/>
-    <circle cx="13.2" cy="6.5" r=".65" fill="#7b8396"/>
-  </svg>`;
+  return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.afterIcon}" style="position:absolute;height:10.862px;left:0.69px;top:1.48px;width:13.94px"></div>`;
 }
 function learnIcon(){
-  return`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-    <rect x="1" y="1" width="14" height="14" rx="4" fill="#f69b1d" opacity=".18"/>
-    <path d="M8 7.5v3.5" stroke="#f69b1d" stroke-width="1.5" stroke-linecap="round"/>
-    <circle cx="8" cy="5.5" r=".9" fill="#f69b1d"/>
-  </svg>`;
+  return`<img src="${FA.learnMore}" style="width:16px;height:16px;flex-shrink:0;">`;
 }
 function liqBars(t){
-  if(t==='moderate') return`<span style="display:inline-flex;align-items:flex-end;gap:1.5px;height:13px">
-    <span style="display:block;width:3px;height:5px;background:#f69b1d;border-radius:1px"></span>
-    <span style="display:block;width:3px;height:9px;background:#f69b1d;border-radius:1px"></span>
-    <span style="display:block;width:3px;height:13px;background:#f69b1d;border-radius:1px"></span>
-    <span style="display:block;width:3px;height:9px;background:#3d4149;border-radius:1px"></span>
-  </span>`;
-  if(t==='low') return`<span style="display:inline-flex;align-items:flex-end;gap:1.5px;height:13px">
-    <span style="display:block;width:3px;height:13px;background:#e05252;border-radius:1px"></span>
-    <span style="display:block;width:3px;height:9px;background:#3d4149;border-radius:1px"></span>
-    <span style="display:block;width:3px;height:5px;background:#3d4149;border-radius:1px"></span>
-  </span>`;
+  if(t==='moderate')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.liqMod1}" style="position:absolute;height:8px;left:1.11px;top:2.67px;width:6.867px"><img src="${FA.liqMod2}" style="position:absolute;height:8px;left:6.44px;top:2.67px;width:4.2px"></div>`;
+  if(t==='low')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;background:#e05252;height:8px;left:1.67px;border-radius:100px;top:4px;width:1.533px"></div><img src="${FA.liqLow}" style="position:absolute;height:8px;left:2.89px;top:2.67px;width:9.533px"></div>`;
   return '';
 }
 
@@ -518,7 +577,7 @@ function renderPip(d){
   </div>`;
 }
 function renderInfo(sid,path,i){
-  const cls={unk:'sid-u',ipo:'sid-i',dl:'sid-d',spac:'sid-s'}[path];
+  const cls={unk:'sid-u',ipo:'sid-i',dl:'sid-d',spac:'sid-s',term:'sid-t'}[path];
   return`
     <div class="ib"><div class="il">当前状态</div><div class="it"><span class="sid ${cls}">${sid}</span>${i.name}</div></div>
     <div class="ib"><div class="il">触发条件</div><div class="it">${i.trigger}</div></div>
@@ -541,6 +600,8 @@ const D_UNK='This perpetual trades 24/7. Listing method (IPO or Direct Listing) 
 const D_IPO_ANN='This perpetual trades 24/7. The company has publicly announced its intention to pursue a traditional IPO. Listing path is confirmed via public announcement — official S-1 filing is pending SEC review. Key details (price range, exact date) may change before the filing is declared effective.';
 const D_DL_ANN='This perpetual trades 24/7. The company has publicly announced a Direct Listing — no new shares will be issued and no Rebase will occur. S-1 filing is pending SEC review. High price volatility is expected on and around the opening day.';
 const D_SPC_ANN='This perpetual trades 24/7. The company has signed a binding SPAC merger agreement and issued a public announcement. S-4 filing is pending SEC review. No Rebase will occur. Volatility may spike around the shareholder vote and merger completion date.';
+const D_TERM='The planned IPO or listing has been cancelled, postponed indefinitely, or the contract has reached its expiry without a valid SEC filing. This symbol is in reduce-only mode and will be settled at TWAP pricing.';
+const FN_TERM='Only reduce-only orders are permitted. The contract will be settled at TWAP pricing at the specified settlement date. Please close your positions before settlement. For details, refer to official announcements.';
 
 /* ── State data ── */
 const STATES={
@@ -610,6 +671,16 @@ const STATES={
       {hl:true, icon:'after',name:'Market Merging', liq:'Low Liquidity',liqT:'low'}
     ]},info:{name:'Market Merging（DL 版）',trigger:'current_time &gt; market_open_time · 开发尚未切换 symbol 类型',hl:'高亮切换至 Market Merging · Pre-Opening 变历史节点',risk:'同 A-6 · blend_alpha 逐步收敛 · 开发手动切换后弹窗消失'}},
   },
+  term:{
+    E1:{pip:{desc:D_TERM,fn:FN_TERM,cards:[
+      {hl:true, icon:'after',name:'Settlement',     liq:'Low Liquidity',liqT:'low'},
+      {hl:false,icon:'after',name:'Contract Expiry', cd:'5 Days',tag:'Reduce Only',date:'2026-07-15 21:00 UTC'}
+    ]},info:{name:'上市取消 · 仅减仓 · TWAP 结算倒计时',trigger:'公司公告取消上市 / SPAC 投票失败 / 长期无 SEC 文件 / 平台主动触发',hl:'高亮切换至 Settlement · 下卡显示 Contract Expiry 倒计时 · Tag 显示 "Reduce Only"',risk:'is_reduce_only = true · 所有新开仓被拒绝 · 结算时以 TWAP 价格强制平仓 · 用户需在结算前自行减仓'}},
+    E2:{pip:{desc:D_TERM,fn:FN_TERM,cards:[
+      {hl:true, icon:'after',name:'Settlement',liq:'Low Liquidity',liqT:'low'},
+      {hl:false,icon:'after',name:'Contract Delisted',dateOnly:'2026-07-20 21:00 UTC'}
+    ]},info:{name:'TWAP 结算完成 · 合约即将下线',trigger:'TWAP 结算价格已锁定 · 合约下线时间已确定',hl:'Settlement 高亮 · Contract Delisted 显示下线时间',risk:'结算已完成 · 所有仓位已按 TWAP 价格强制平仓 · 合约即将永久下线'}},
+  },
   spac:{
     D0:{pip:{desc:D_SPC_ANN,fn:FN_ANN,cards:[
       {hl:true, icon:'after',name:'Pre-Merger',      liq:'Moderate Liquidity',liqT:'moderate'},
@@ -639,7 +710,7 @@ const STATES={
 };
 
 /* ── State machine ── */
-const cur={unk:'C1',ipo:'A1',dl:'B1',spac:'D1'};
+const cur={unk:'C1',ipo:'A1',dl:'B1',spac:'D1',term:'E1'};
 function setState(path,sid,btn){
   cur[path]=sid;
   btn.closest('.sw-row').querySelectorAll('.sw-btn').forEach(b=>b.classList.remove('active'));
@@ -652,7 +723,7 @@ function render(path){
   document.getElementById('pip-'+path).innerHTML=renderPip(s.pip);
   document.getElementById('info-'+path).innerHTML=renderInfo(cur[path],path,s.info);
 }
-['unk','ipo','dl','spac'].forEach(render);
+['unk','ipo','dl','spac','term'].forEach(render);
 
 /* ── Tabs ── */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
