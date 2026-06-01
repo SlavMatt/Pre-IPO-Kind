@@ -729,11 +729,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
   <thead><tr><th>listing_type</th><th>路径名称</th><th>SEC 文件</th><th>是否 Rebase</th><th>特殊节点</th><th>本期支持</th></tr></thead>
   <tbody>
     <tr><td><code>IPO</code></td><td>传统 IPO</td><td>S-1</td><td>是</td><td>无</td><td>✓</td></tr>
-    <tr><td><code>DL</code></td><td>Direct Listing</td><td>S-1</td><td>否</td><td>无（文案不同）</td><td>待扩展</td></tr>
-    <tr><td><code>SPAC</code></td><td>SPAC 合并</td><td>S-4</td><td>否</td><td>股东投票、终止路径</td><td>待扩展</td></tr>
+    <tr><td><code>DL</code></td><td>Direct Listing</td><td>S-1</td><td>否</td><td>无（文案不同）</td><td>✓</td></tr>
+    <tr><td><code>SPAC</code></td><td>SPAC 合并</td><td>S-4</td><td>否</td><td>股东投票、终止路径</td><td>✓</td></tr>
   </tbody>
 </table>
-<div class="doc-note">Direct Listing 与 IPO 使用相同 State 逻辑，仅需切换弹窗描述文案；SPAC 需额外增加股东投票 State 和合约终止路径，本期暂不支持。</div>
+<div class="doc-note">Direct Listing 与 IPO 使用相同 State 逻辑，仅需切换弹窗描述文案；SPAC 需额外增加 merge_status 字段和 State T（合约终止）路径。</div>
 
 <hr class="doc-divider">
 
@@ -741,7 +741,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 <div class="doc-h1">2. TradFi 品类归属与交易时段</div>
 
 <div class="doc-h2">2.1 TradFi 品类定义</div>
-<p class="doc-p">除 Crypto Perp 外，平台增设 TradFi Perp 类型，并细分多个子类型。Pre-IPO 合约属于<strong>股票 · 美股个股</strong>子类型的特殊前置阶段，上市后自动归入该子类型的常规规则。</p>
+<p class="doc-p">除 Crypto Perp 外，平台增设 TradFi Perp 类型，并细分多个子类型。Pre-IPO 合约在交易时段上属于 <strong>Crypto 24/7</strong>，是美股个股的特殊前置阶段，上市后自动归入该子类型的常规规则。</p>
 <ul class="doc-ul">
   <li>不同子类型遵循不同的开收盘、冬夏令时、节假日规则</li>
   <li>本期只针对子类型配置 IANA 时区，不针对具体交易对单独配置</li>
@@ -749,10 +749,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 <table class="doc-table">
   <thead><tr><th>分类</th><th>子类型</th><th>例子</th><th>本期</th><th>IANA 时区</th></tr></thead>
   <tbody>
-    <tr style="background:#fffbf0;">
-      <td><strong>股票</strong></td><td><strong>美股个股 ← Pre-IPO 归属</strong></td><td>TESLA</td><td>Y</td><td>America/New_York</td>
-    </tr>
+    <tr><td><strong>股票</strong></td><td>美股个股</td><td>TSLA</td><td>Y</td><td>America/New_York</td></tr>
     <tr><td></td><td>韩股个股</td><td>SAMSUNG</td><td>Y</td><td>Asia/Seoul</td></tr>
+    <tr style="background:#fffbf0;"><td><strong>Pre-IPO</strong></td><td>Pre-IPO 永续合约</td><td>SPCX</td><td>Y</td><td>24/7（无时区限制）</td></tr>
     <tr><td><strong>股指</strong></td><td>美股股指</td><td>SPX500, NASDAQ100</td><td>Y</td><td>America/New_York</td></tr>
     <tr><td></td><td>东证</td><td>TOPIX</td><td>--</td><td>Asia/Tokyo</td></tr>
     <tr><td><strong>金属</strong></td><td>贵金属</td><td>XAU, XAG</td><td>Y</td><td>America/New_York</td></tr>
@@ -920,8 +919,72 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 5. 三种上市路径后端操作对照 ─── -->
-<div class="doc-h1">5. 三种上市路径后端操作对照</div>
+<!-- ─── 5. ipo_time 数据来源 ─── -->
+<div class="doc-h1">5. ipo_time 数据来源</div>
+
+<div class="doc-h2">5.1 数据来源与确定程度</div>
+<p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
+<table class="doc-table">
+  <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>路演开始<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前 1～2 周</span></td>
+      <td>Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
+      <td>软确认，约 90% 不变</td>
+      <td>✓ 可填入 <code>ipo_time</code>，覆盖 State 2 / State 3 倒计时展示</td>
+    </tr>
+    <tr>
+      <td>424B4 提交<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前一晚</span></td>
+      <td>SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
+      <td>硬确认，100%</td>
+      <td>△ 最准，但此时距 IPO 不足 24h，弹窗已进入 State 4</td>
+    </tr>
+  </tbody>
+</table>
+<div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 5.2 变更流程更新。</div>
+
+<div class="doc-h2">5.2 日期变更处理（约 10% 概率）</div>
+<p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
+<div class="doc-steps">
+  <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">前端倒计时基于 <code>ipo_time</code> 实时计算，更新后弹窗状态自动跳转——若新日期更远则从 State 4 退回 State 3 / 2；若更近则加速进入 State 4。</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">日期变更属于高风险操作，建议同步在平台向用户发出公告，避免因倒计时突变引发误操作。</div></div>
+</div>
+
+<hr class="doc-divider">
+
+<!-- ─── 6. 非活跃阶段开仓限制 ─── -->
+<div class="doc-h1">6. 非活跃阶段开仓限制</div>
+
+<div class="doc-h2">6.1 Reduce-Only 自动触发条件</div>
+<p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
+<ul class="doc-ul">
+  <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
+  <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
+</ul>
+
+<div class="doc-h2">6.2 管理员手动开关</div>
+<p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
+<table class="doc-table">
+  <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>全局 Reduce-Only 开关</td>
+      <td>所有 TradFi 合约</td>
+      <td>极端市场情况下对整个 TradFi 品类统一收紧</td>
+    </tr>
+    <tr>
+      <td>单交易对 Reduce-Only 开关</td>
+      <td>指定合约（如 SPCX-PERP）</td>
+      <td>Pre-IPO 场景优先使用，避免影响其他正常合约</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="doc-divider">
+
+<!-- ─── 7. 三种上市路径后端操作对照 ─── -->
+<div class="doc-h1">7. 三种上市路径后端操作对照</div>
 <p class="doc-p">下表按 State 顺序列出 IPO、Direct Listing、SPAC 三种上市路径在各阶段所需的后端操作。前端弹窗逻辑三种路径完全共用，无需区分。</p>
 <table class="doc-table">
   <thead><tr><th>State</th><th>触发条件</th><th>IPO</th><th>Direct Listing</th><th>SPAC</th></tr></thead>
@@ -964,70 +1027,6 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
   </tbody>
 </table>
 <div class="doc-note">State 2 / 3 / 4 由系统根据 ipo_time 与 current_time 的差值自动匹配，后端无需额外操作。SPAC 的 State T 是三种路径中唯一存在的合约终止出口。</div>
-
-<hr class="doc-divider">
-
-<!-- ─── 6. ipo_time 数据来源 ─── -->
-<div class="doc-h1">6. ipo_time 数据来源</div>
-
-<div class="doc-h2">6.1 数据来源与确定程度</div>
-<p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
-<table class="doc-table">
-  <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
-  <tbody>
-    <tr>
-      <td>路演开始<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前 1～2 周</span></td>
-      <td>Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
-      <td>软确认，约 90% 不变</td>
-      <td>✓ 可填入 <code>ipo_time</code>，覆盖 State 2 / State 3 倒计时展示</td>
-    </tr>
-    <tr>
-      <td>424B4 提交<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前一晚</span></td>
-      <td>SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
-      <td>硬确认，100%</td>
-      <td>△ 最准，但此时距 IPO 不足 24h，弹窗已进入 State 4</td>
-    </tr>
-  </tbody>
-</table>
-<div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 6.2 变更流程更新。</div>
-
-<div class="doc-h2">6.2 日期变更处理（约 10% 概率）</div>
-<p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
-<div class="doc-steps">
-  <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">前端倒计时基于 <code>ipo_time</code> 实时计算，更新后弹窗状态自动跳转——若新日期更远则从 State 4 退回 State 3 / 2；若更近则加速进入 State 4。</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">日期变更属于高风险操作，建议同步在平台向用户发出公告，避免因倒计时突变引发误操作。</div></div>
-</div>
-
-<hr class="doc-divider">
-
-<!-- ─── 7. 非活跃阶段开仓限制 ─── -->
-<div class="doc-h1">7. 非活跃阶段开仓限制</div>
-
-<div class="doc-h2">7.1 Reduce-Only 自动触发条件</div>
-<p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
-<ul class="doc-ul">
-  <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
-  <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
-</ul>
-
-<div class="doc-h2">7.2 管理员手动开关</div>
-<p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
-<table class="doc-table">
-  <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
-  <tbody>
-    <tr>
-      <td>全局 Reduce-Only 开关</td>
-      <td>所有 TradFi 合约</td>
-      <td>极端市场情况下对整个 TradFi 品类统一收紧</td>
-    </tr>
-    <tr>
-      <td>单交易对 Reduce-Only 开关</td>
-      <td>指定合约（如 SPCX-PERP）</td>
-      <td>Pre-IPO 场景优先使用，避免影响其他正常合约</td>
-    </tr>
-  </tbody>
-</table>
 
 <hr class="doc-divider">
 
