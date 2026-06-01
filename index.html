@@ -920,10 +920,57 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 5. ipo_time 数据来源 ─── -->
-<div class="doc-h1">5. ipo_time 数据来源</div>
+<!-- ─── 5. 三种上市路径后端操作对照 ─── -->
+<div class="doc-h1">5. 三种上市路径后端操作对照</div>
+<p class="doc-p">下表按 State 顺序列出 IPO、Direct Listing、SPAC 三种上市路径在各阶段所需的后端操作。前端弹窗逻辑三种路径完全共用，无需区分。</p>
+<table class="doc-table">
+  <thead><tr><th>State</th><th>触发条件</th><th>IPO</th><th>Direct Listing</th><th>SPAC</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>State 1</strong><br><span style="font-size:12px;color:#888">TBD</span></td>
+      <td><code>ipo_time</code> 为空</td>
+      <td>上线时填：<code>is_pre_ipo = true</code><br><code>listing_type = IPO</code><br><code>ipo_time</code> 留空</td>
+      <td>上线时填：<code>is_pre_ipo = true</code><br><code>listing_type = DL</code><br><code>ipo_time</code> 留空</td>
+      <td>上线时填：<code>is_pre_ipo = true</code><br><code>listing_type = SPAC</code><br><code>merge_status = pending</code><br><code>ipo_time</code> 留空</td>
+    </tr>
+    <tr>
+      <td><strong>State 2 / 3 / 4</strong><br><span style="font-size:12px;color:#888">倒计时</span></td>
+      <td><code>ipo_time</code> 有值，按剩余时长自动匹配</td>
+      <td>路演开始时填入 <code>ipo_time</code>（软确认日期）</td>
+      <td>路演 / SEC 批准公告后填入 <code>ipo_time</code></td>
+      <td>股东投票通过后填入 <code>ipo_time</code>（合并完成日）<br>同时更新 <code>merge_status = approved</code></td>
+    </tr>
+    <tr>
+      <td><strong>State 5</strong><br><span style="font-size:12px;color:#888">Pre-Listing</span></td>
+      <td><code>ipo_time &lt; now &lt; market_open_time</code></td>
+      <td>424B4 确认后填入 <code>market_open_time</code><br>（IPO 日 + 约 2 个工作日 09:30 ET）</td>
+      <td>SEC 批准后填入 <code>market_open_time</code></td>
+      <td>合并完成确认后填入 <code>market_open_time</code></td>
+    </tr>
+    <tr>
+      <td><strong>State 6</strong><br><span style="font-size:12px;color:#888">Merging</span></td>
+      <td><code>now &gt; market_open_time</code><br>且 <code>symbol_type = PRE_IPO</code></td>
+      <td>手动切换标题栏标签<br>处理 <code>blend_alpha</code> 0→1 融合<br>价格稳定后切 <code>symbol_type = US_STOCK</code></td>
+      <td>手动切换标题栏标签<br>无 <code>blend_alpha</code><br>价格稳定后切 <code>symbol_type = US_STOCK</code></td>
+      <td>手动切换标题栏标签<br>无 <code>blend_alpha</code><br>价格稳定后切 <code>symbol_type = US_STOCK</code></td>
+    </tr>
+    <tr>
+      <td><strong>State T</strong><br><span style="font-size:12px;color:#888">合约终止</span></td>
+      <td><code>merge_status = terminated</code></td>
+      <td style="color:#aaa;text-align:center">—</td>
+      <td style="color:#aaa;text-align:center">—</td>
+      <td>投票失败时更新 <code>merge_status = terminated</code><br>引导用户平仓 / 触发清算流程</td>
+    </tr>
+  </tbody>
+</table>
+<div class="doc-note">State 2 / 3 / 4 由系统根据 ipo_time 与 current_time 的差值自动匹配，后端无需额外操作。SPAC 的 State T 是三种路径中唯一存在的合约终止出口。</div>
 
-<div class="doc-h2">5.1 数据来源与确定程度</div>
+<hr class="doc-divider">
+
+<!-- ─── 6. ipo_time 数据来源 ─── -->
+<div class="doc-h1">6. ipo_time 数据来源</div>
+
+<div class="doc-h2">6.1 数据来源与确定程度</div>
 <p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
 <table class="doc-table">
   <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
@@ -942,9 +989,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
     </tr>
   </tbody>
 </table>
-<div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 4.2 变更流程更新。</div>
+<div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 6.2 变更流程更新。</div>
 
-<div class="doc-h2">5.2 日期变更处理（约 10% 概率）</div>
+<div class="doc-h2">6.2 日期变更处理（约 10% 概率）</div>
 <p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
 <div class="doc-steps">
   <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
@@ -954,17 +1001,17 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 6. 非活跃阶段开仓限制 ─── -->
-<div class="doc-h1">6. 非活跃阶段开仓限制</div>
+<!-- ─── 7. 非活跃阶段开仓限制 ─── -->
+<div class="doc-h1">7. 非活跃阶段开仓限制</div>
 
-<div class="doc-h2">6.1 Reduce-Only 自动触发条件</div>
+<div class="doc-h2">7.1 Reduce-Only 自动触发条件</div>
 <p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
 <ul class="doc-ul">
   <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
   <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
 </ul>
 
-<div class="doc-h2">6.2 管理员手动开关</div>
+<div class="doc-h2">7.2 管理员手动开关</div>
 <p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
 <table class="doc-table">
   <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
@@ -984,8 +1031,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 7. 手动操作节点时序 ─── -->
-<div class="doc-h1">7. 手动操作节点时序</div>
+<!-- ─── 8. 手动操作节点时序 ─── -->
+<div class="doc-h1">8. 手动操作节点时序</div>
 <p class="doc-p">以下节点均需开发人员在确认现实状态后手动触发，系统不自动执行，目的是避免数据延迟造成错误切换。</p>
 <table class="doc-table">
   <thead><tr><th>操作顺序</th><th>触发时机</th><th>操作内容</th><th>前端变化</th></tr></thead>
