@@ -124,8 +124,8 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
 
 <div class="tab-nav">
   <button class="tab-btn active" data-tab="unk">路径未知<span class="tbadge">2</span></button>
-  <button class="tab-btn" data-tab="ipo">Path A · IPO<span class="tbadge">7</span></button>
-  <button class="tab-btn" data-tab="dl">Path B · Direct Listing<span class="tbadge">6</span></button>
+  <button class="tab-btn" data-tab="ipo">Path A · IPO<span class="tbadge">6</span></button>
+  <button class="tab-btn" data-tab="dl">Path B · Direct Listing<span class="tbadge">5</span></button>
   <button class="tab-btn" data-tab="spac">Path D · SPAC<span class="tbadge">6</span></button>
   <button class="tab-btn" data-tab="term">Path E · 终止/下线<span class="tbadge">2</span></button>
 </div>
@@ -190,9 +190,9 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
       </div>
       <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
       <div class="fn">
-        <div class="fn-box fn-ipo-hot">IPO 倒计时<br>远期→近期→24h</div>
-        <div class="fn-states">A-2 → A-3 → A-1</div>
-        <div class="fn-event">ipo_date 确定<br>倒计时精度渐增</div>
+        <div class="fn-box fn-ipo-hot">IPO 倒计时<br>定价夜→&lt;24h</div>
+        <div class="fn-states">A-3 → A-1</div>
+        <div class="fn-event">ipo_date 确定<br>（定价夜前 1-7天）<br>精度：天→小时</div>
       </div>
       <div class="fa ipo"><div class="fa-line"></div><div class="fa-head"></div></div>
       <div class="fn">
@@ -226,7 +226,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
     <div class="demo-hdr">
       <span class="pbadge pb-ipo">Path A · IPO</span>
       <span style="font-size:15px;font-weight:700;">传统 IPO 路径 · 弹窗状态</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→A-0 · S-1 确认→A-4 · ipo_date 填入具体日期或 "TBD" · IPO 后有 ~2 天 Pre-Listing 窗口</span>
+      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→A-0 · S-1 确认→A-4（Ticker已知,日期TBD） · 定价夜日期确认→A-3→A-1 · IPO后Pre-Listing窗口</span>
     </div>
     <div class="demo-body">
       <div class="demo-preview">
@@ -234,8 +234,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
         <div class="sw-row">
           <button class="sw-btn" onclick="setState('ipo','A0',this)">A-0 · 公告待达</button>
           <button class="sw-btn" onclick="setState('ipo','A4',this)">A-4 · TBD</button>
-          <button class="sw-btn" onclick="setState('ipo','A2',this)">A-2 · 远期</button>
-          <button class="sw-btn" onclick="setState('ipo','A3',this)">A-3 · 近期</button>
+          <button class="sw-btn" onclick="setState('ipo','A3',this)">A-3 · 倒计时</button>
           <button class="sw-btn active" onclick="setState('ipo','A1',this)">A-1 · &lt;24h</button>
           <button class="sw-btn" onclick="setState('ipo','A5',this)">A-5 · Pre-Listing</button>
           <button class="sw-btn" onclick="setState('ipo','A6',this)">A-6 · Merging</button>
@@ -284,9 +283,9 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
       </div>
       <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
       <div class="fn">
-        <div class="fn-box fn-dl-hot">DL 倒计时<br>远期→近期</div>
-        <div class="fn-states">B-1 → B-2</div>
-        <div class="fn-event">market_open_date<br>确定后倒计时</div>
+        <div class="fn-box fn-dl-hot">开市倒计时</div>
+        <div class="fn-states">B-2</div>
+        <div class="fn-event">交易所设定<br>market_open_date<br>（S-1 生效后数天）</div>
       </div>
       <div class="fa dl"><div class="fa-line"></div><div class="fa-head"></div></div>
       <div class="fn">
@@ -319,7 +318,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
     <div class="demo-hdr">
       <span class="pbadge pb-dl">Path B · Direct Listing</span>
       <span style="font-size:15px;font-weight:700;">直接上市路径 · 弹窗状态</span>
-      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→B-0 · S-1（无新股）确认→B-3 · 无 Rebase · 关键节点为 market_open_date</span>
+      <span style="font-size:12px;color:#888;margin-left:auto;">公司公告→B-0 · S-1（无新股）确认→B-3（Ticker已知,日期TBD） · 交易所定日期→B-2 · 无Rebase</span>
     </div>
     <div class="demo-body">
       <div class="demo-preview">
@@ -327,8 +326,7 @@ body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;backgro
         <div class="sw-row">
           <button class="sw-btn" onclick="setState('dl','B0',this)">B-0 · 公告待达</button>
           <button class="sw-btn" onclick="setState('dl','B3',this)">B-3 · TBD</button>
-          <button class="sw-btn active" onclick="setState('dl','B1',this)">B-1 · 远期</button>
-          <button class="sw-btn" onclick="setState('dl','B2',this)">B-2 · 近期</button>
+          <button class="sw-btn active" onclick="setState('dl','B2',this)">B-2 · 倒计时</button>
           <button class="sw-btn" onclick="setState('dl','B4',this)">B-4 · Pre-Opening</button>
           <button class="sw-btn" onclick="setState('dl','B5',this)">B-5 · Merging</button>
         </div>
@@ -621,21 +619,17 @@ const STATES={
       {hl:false,icon:'after',name:'Est. IPO Date', tbd:true}
     ]},info:{name:'IPO 已公告 · S-1 文件待达',trigger:'公司发布新闻稿宣布 IPO 意向 / 启动路演 · 尚未向 SEC 提交 S-1',hl:'Pre-IPO 高亮 · 路径已知但 SEC 尚未确认 · 下卡 Est. IPO Date 显示 TBD',note:'JOBS Act 允许 EGC 先提交机密 S-1；正式公开 S-1 到达前此状态可能持续数周至数月 · 一旦 S-1 到达立即切 A-4'}},
     A4:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. IPO Date', tbd:true}
-    ]},info:{name:'IPO 路径已确认，日期 TBD',trigger:'S-1 到达确认 IPO 路径，但 ipo_date 字段值为 "TBD"',hl:'Pre-IPO 高亮 · 下卡 Est. IPO Date 显示 TBD',note:'与 C-1 区别：路径已明确为 IPO，只是公司尚未公布具体日期'}},
-    A2:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. IPO Date', cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}
-    ]},info:{name:'IPO 倒计时 &gt;31 天（远期）',trigger:'ipo_date 已配置 · current_time 距 ipo_date 超过 31 天',hl:'Pre-IPO 高亮 · 倒计时以 "X Mon Y Days" 格式展示',note:'流动性正常 · 无仓位限制 · 倒计时精度：月 + 天'}},
+      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'IPO Date', tbd:true}
+    ]},info:{name:'S-1 已到达 · Ticker 确认 · IPO 日期 TBD',trigger:'S-1 公开提交至 SEC · IPO 路径正式确认',hl:'Pre-IPO 高亮 · 下卡 IPO Date 显示 TBD',note:'S-1 到达后：股票代码（Ticker）和拟挂牌交易所即可从 S-1 文件中确认 · 但具体上市交易日由承销商在「定价夜」确定，通常在 S-1 生效后数周至数月 · 此状态可持续较长时间'}},
     A3:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. IPO Date', cd:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'IPO 倒计时 14 天（近期）',trigger:'current_time 距 ipo_date 在 24h ～ 31 天之间',hl:'Pre-IPO 高亮 · 倒计时精度切换为天',note:'此窗口可在 UI 加入"即将 IPO"显著提示'}},
+      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'IPO Date', cd:'5 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
+    ]},info:{name:'IPO 日期已确认 · 倒计时中',trigger:'ipo_date 已配置（通常在 IPO 定价夜前 1-7 天才确定） · current_time 距 ipo_date 超过 24h',hl:'Pre-IPO 高亮 · 倒计时精度为天',note:'IPO 上市日期通常在 SEC 宣布 S-1 生效 + 路演完成后的定价夜方才确认，实践中通常仅 1-7 天前确定'}},
     A1:{pip:{desc:D_IPO,fn:FN,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. IPO Date', cd:'01:26:56',tag:'Next Phase',date:'2026-05-30 21:00 UTC'}
-    ]},info:{name:'IPO 倒计时 &lt;24h（临近）',trigger:'current_time 距 ipo_date 不足 24 小时',hl:'Pre-IPO 高亮 · 倒计时精度升级为 HH:MM:SS',risk:'临近 IPO，价格波动风险最高 · 建议前端加入显著警示横幅'}},
+      {hl:true, icon:'sun',  name:'Pre-IPO',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'IPO Date', cd:'01:26:56',tag:'Next Phase',date:'2026-05-30 21:00 UTC'}
+    ]},info:{name:'IPO 倒计时 &lt;24h',trigger:'current_time 距 ipo_date 不足 24 小时',hl:'Pre-IPO 高亮 · 倒计时精度升级为 HH:MM:SS',risk:'临近 IPO，价格波动风险最高 · 建议前端加入显著警示横幅'}},
     A5:{pip:{desc:D_IPO,fn:FN_IPO,cards:[
       {hl:true, icon:'after',name:'Pre-Listing',   liq:'Low Liquidity',liqT:'low'},
       {hl:false,icon:'after',name:'Market Opening', cd:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
@@ -651,17 +645,13 @@ const STATES={
       {hl:false,icon:'after',name:'Est. Opening Date',  tbd:true}
     ]},info:{name:'Direct Listing 已公告 · S-1 文件待达',trigger:'公司发布新闻稿确认采用直接上市 · 尚未向 SEC 提交 S-1（Spotify/Coinbase 模式：公告在 S-1 前数周发出）',hl:'Pre-IPO 高亮 · 路径已确认无新股发行 · 下卡 Est. Opening Date 显示 TBD',note:'直接上市无路演、无承销商分配 · 价格发现完全依赖市场 · 无 Rebase · S-1 到达后切 B-3'}},
     B3:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',           liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Opening Date',  tbd:true}
-    ]},info:{name:'DL 路径已确认，开市日 TBD',trigger:'S-1（无新股）到达确认直接上市，但 market_open_date 未定',hl:'Pre-IPO 高亮 · 下卡 Est. Opening Date 显示 TBD',note:'与 A-4 差异：下卡标题为 "Opening Date" 而非 "IPO Date" · 无 Rebase'}},
-    B1:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',           liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Opening Date',  cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}
-    ]},info:{name:'DL · 开市日远期',trigger:'market_open_date 已配置 · 距今 &gt;31 天',hl:'Pre-IPO 高亮 · 下卡显示 "Est. Opening Date" 倒计时',note:'DL 无 IPO 发行环节，直接进入开市 · 无 Rebase 是与 IPO 最大差异'}},
+      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'Opening Date',  tbd:true}
+    ]},info:{name:'S-1 已到达 · Ticker 确认 · 开市日 TBD',trigger:'S-1（无新股发行）提交至 SEC · DL 路径正式确认',hl:'Pre-IPO 高亮 · 下卡 Opening Date 显示 TBD',note:'S-1 到达后：股票代码和目标交易所可从文件确认 · 开市日期由交易所在 S-1 生效后数天内设定（无路演、无定价夜） · 无 Rebase · 实际开市日通常在 S-1 生效后 1-2 周内'}},
     B2:{pip:{desc:D_DL,fn:FN_DL,cards:[
-      {hl:true, icon:'sun',  name:'Pre-IPO',           liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Opening Date',  cd:'14 Days',tag:'Next Phase',date:'2026-06-15 21:00 UTC'}
-    ]},info:{name:'DL · 开市日近期',trigger:'market_open_date 距今 24h ～ 31 天',hl:'Pre-IPO 高亮 · 倒计时以天为单位',note:'开市当天价格发现完全依赖市场，无 Rebase 锚定，波动可能极高'}},
+      {hl:true, icon:'sun',  name:'Pre-IPO',      liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'Opening Date',  cd:'5 Days',tag:'Next Phase',date:'2026-06-15 21:00 UTC'}
+    ]},info:{name:'DL · 开市日已确认 · 倒计时',trigger:'交易所设定 market_open_date · 通常在 S-1 生效后 1-14 天内',hl:'Pre-IPO 高亮 · 倒计时显示开市日',note:'无承销商定价环节 · 开市当天价格发现完全依赖市场，无 Rebase 锚定，波动可能极高'}},
     B4:{pip:{desc:D_DL,fn:FN_DL,cards:[
       {hl:true, icon:'after',name:'Pre-Opening',   liq:'Low Liquidity',liqT:'low'},
       {hl:false,icon:'after',name:'Market Opening', cd:'2 Days',tag:'Next Phase',date:'2026-06-15 21:00 UTC'}
@@ -687,17 +677,17 @@ const STATES={
       {hl:false,icon:'after',name:'Est. Merger Date', tbd:true}
     ]},info:{name:'SPAC 合并协议签署 · S-4 文件待达',trigger:'SPAC 与目标公司签署合并协议（DA）并于同日发布新闻稿（证券法要求） · S-4 在数周至数月后才提交 SEC',hl:'Pre-Merger 高亮（此路径无 Pre-IPO 发行阶段）· 合并协议具有约束力 · 下卡显示 TBD',note:'SPAC 路径最早确认：DA 签署即为法律确认 · S-4 仅是 SEC 审核流程 · 若投票失败 SPAC 可能回溯终止合并 · S-4 到达后切 D-3'}},
     D3:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',     liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Merger Date',tbd:true}
-    ]},info:{name:'SPAC 路径已确认，合并日 TBD',trigger:'S-4 到达确认 SPAC 路径，但股东投票/合并完成日期未定',hl:'Pre-Merger 高亮（注意：SPAC 起始卡为 Pre-Merger，非 Pre-IPO）',note:'与 A-4 / B-3 区别：上卡名称为 Pre-Merger，所有图标均用 after'}},
+      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'Merger Date', tbd:true}
+    ]},info:{name:'S-4 已到达 · SPAC 路径确认 · 合并日 TBD',trigger:'S-4（合并代理声明）提交至 SEC · SEC 审核期通常 75-90 天',hl:'Pre-Merger 高亮（SPAC 路径卡名固定为 Pre-Merger）· 下卡 Merger Date 显示 TBD',note:'S-4 到达后路径确认 · 合并完成日期需等股东投票时间表确定（通常在 S-4 生效后 30-60 天）'}},
     D1:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',     liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Merger Date',cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}
-    ]},info:{name:'Pre-Merger · 合并远期',trigger:'S-4 确认 SPAC · merger_date 已配置 · 距今 &gt;31 天',hl:'Pre-Merger 高亮 · 下卡显示合并日倒计时',note:'SPAC 无 "IPO Date" 概念 · 关键事件为合并完成（Merger Completion）'}},
+      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'Merger Date', cd:'3 Mon 24 Days',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}
+    ]},info:{name:'Pre-Merger · 合并远期（&gt;31 天）',trigger:'merger_date 已配置 · 距今超过 31 天（SPAC 特有：合并日期通常提前 2-4 个月确定）',hl:'Pre-Merger 高亮 · 下卡显示合并日倒计时',note:'SPAC 与 IPO/DL 最大区别：合并日期确定时通常还有数月时间，因此存在长周期倒计时'}},
     D2:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
-      {hl:true, icon:'after',name:'Pre-Merger',     liq:'Moderate Liquidity',liqT:'moderate'},
-      {hl:false,icon:'after',name:'Est. Merger Date',cd:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
-    ]},info:{name:'Pre-Merger · 合并近期',trigger:'merger_date 距今 24h ～ 31 天',hl:'Pre-Merger 高亮 · 倒计时以天为单位',note:'股东投票通常在合并前 ~7 天 · 届时切换至 D-4'}},
+      {hl:true, icon:'after',name:'Pre-Merger',  liq:'Moderate Liquidity',liqT:'moderate'},
+      {hl:false,icon:'after',name:'Merger Date', cd:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
+    ]},info:{name:'Pre-Merger · 合并近期（≤31 天）',trigger:'merger_date 距今 24h ～ 31 天',hl:'Pre-Merger 高亮 · 倒计时以天为单位',note:'股东投票通常在合并前 ~7 天触发 · 届时切换至 D-4'}},
     D4:{pip:{desc:D_SPC,fn:FN_SPC,cards:[
       {hl:true, icon:'after',name:'Shareholder Vote',  liq:'Low Liquidity',liqT:'low'},
       {hl:false,icon:'after',name:'Merger Completion', cd:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}
@@ -710,7 +700,7 @@ const STATES={
 };
 
 /* ── State machine ── */
-const cur={unk:'C1',ipo:'A1',dl:'B1',spac:'D1',term:'E1'};
+const cur={unk:'C1',ipo:'A1',dl:'B2',spac:'D1',term:'E1'};
 function setState(path,sid,btn){
   cur[path]=sid;
   btn.closest('.sw-row').querySelectorAll('.sw-btn').forEach(b=>b.classList.remove('active'));
