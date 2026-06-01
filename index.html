@@ -223,44 +223,31 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 .pt-btn.active{color:#1a1a1a;border-bottom-color:#1a1a1a;}
 
 /* ════════════════════════════════════════
-   BACKEND DOC STYLES
+   BACKEND DOC — WORD-STYLE
 ════════════════════════════════════════ */
-.be-section{background:#fff;border-radius:16px;padding:32px;margin-bottom:32px;border:1px solid #e4e4e4;}
-.be-section-title{font-size:18px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
-.be-section-desc{font-size:13px;color:#666;margin-bottom:24px;line-height:1.6;}
-.be-table{width:100%;border-collapse:collapse;font-size:13px;}
-.be-table th{text-align:left;font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;padding:8px 14px;border-bottom:2px solid #e8e8e8;background:#fafafa;}
-.be-table td{padding:12px 14px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.6;}
-.be-table tr:last-child td{border-bottom:none;}
-.be-table code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace;}
-.be-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-right:4px;}
-.be-badge-str{background:#e8f0fe;color:#1a56c4;}
-.be-badge-int{background:#fff3e0;color:#b25a00;}
-.be-badge-bool{background:#e6f4ea;color:#1a6e35;}
-.be-badge-ts{background:#f3e8fd;color:#6d28d9;}
-.be-badge-manual{background:#fde8e8;color:#c0393a;}
-.be-badge-auto{background:#e8f5e9;color:#2e7d32;}
-.logic-block{background:#f8f9fa;border-radius:10px;padding:20px 24px;font-size:13px;line-height:1.9;border:1px solid #e8e8e8;}
-.logic-block code{background:#e8e8e8;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:12px;}
-.logic-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start;}
-.logic-row:last-child{border-bottom:none;}
-.logic-state{flex-shrink:0;width:56px;font-size:12px;font-weight:700;color:#888;padding-top:1px;}
-.logic-cond{flex:1;font-size:13px;color:#1a1a1a;line-height:1.6;}
-.logic-cond code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace;}
-.logic-tag{flex-shrink:0;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;}
-.lt-normal{background:#e8f5e9;color:#2e7d32;}
-.lt-reduce{background:#fde8e8;color:#c0393a;}
-.switch-row{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start;}
-.switch-row:last-child{border-bottom:none;}
-.switch-name{font-size:13px;font-weight:600;width:180px;flex-shrink:0;color:#1a1a1a;}
-.switch-desc{font-size:13px;color:#555;flex:1;line-height:1.6;}
-.switch-desc code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:12px;}
-.manual-step{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start;}
-.manual-step:last-child{border-bottom:none;}
-.manual-step-num{width:24px;height:24px;border-radius:50%;background:#1a1a1a;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.manual-step-body{flex:1;font-size:13px;color:#333;line-height:1.6;}
-.manual-step-body code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:12px;}
-.manual-step-body strong{color:#1a1a1a;}
+.doc-wrap{background:#fff;border-radius:16px;padding:48px 56px;margin-bottom:32px;border:1px solid #e4e4e4;font-size:14px;line-height:1.75;color:#1a1a1a;}
+.doc-title{font-size:22px;font-weight:700;margin-bottom:32px;padding-bottom:12px;border-bottom:2px solid #1a1a1a;}
+.doc-h1{font-size:17px;font-weight:700;margin:36px 0 8px;}
+.doc-h2{font-size:15px;font-weight:700;margin:24px 0 6px;}
+.doc-h3{font-size:14px;font-weight:700;margin:18px 0 4px;color:#333;}
+.doc-p{margin-bottom:8px;color:#222;line-height:1.75;}
+.doc-p code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:13px;}
+.doc-ul{margin:8px 0 12px 0;padding:0;list-style:none;}
+.doc-ul li{padding:2px 0 2px 14px;position:relative;color:#333;}
+.doc-ul li::before{content:"·";position:absolute;left:0;color:#888;}
+.doc-ul li code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:12px;}
+.doc-note{font-size:13px;color:#666;padding:10px 14px;background:#f8f8f8;border-left:3px solid #ddd;margin:10px 0 16px;line-height:1.7;}
+.doc-note code{background:#eee;padding:1px 4px;border-radius:3px;font-size:12px;font-family:monospace;}
+.doc-table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 20px;}
+.doc-table th{background:#f0f0f0;font-weight:700;padding:8px 12px;text-align:left;border:1px solid #d0d0d0;font-size:12px;}
+.doc-table td{padding:8px 12px;border:1px solid #d0d0d0;vertical-align:top;line-height:1.65;}
+.doc-table td code{background:#f0f0f0;padding:1px 4px;border-radius:3px;font-family:monospace;font-size:12px;}
+.doc-table .td-gray{background:#fafafa;font-weight:600;}
+.doc-steps{margin:10px 0 16px;display:flex;flex-direction:column;gap:6px;}
+.doc-step{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:#222;line-height:1.65;}
+.doc-step-n{flex-shrink:0;font-weight:700;color:#888;width:20px;}
+.doc-step-body code{background:#f0f0f0;padding:1px 4px;border-radius:3px;font-family:monospace;font-size:12px;}
+.doc-divider{border:none;border-top:1px solid #eee;margin:28px 0;}
 
 </style>
 </head>
@@ -720,183 +707,252 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
      BACKEND TAB
 ══════════════════════════════════════ -->
 <div id="tab-be" style="display:none">
+<div class="doc-wrap">
+<div class="doc-title">Pre-IPO 交易阶段后端说明</div>
 
-  <!-- BE 1 · 核心字段 -->
-  <div class="be-section">
-    <div class="be-section-title">核心字段</div>
-    <div class="be-section-desc">决定 Pre-IPO 弹窗状态的所有后端字段。前端完全依赖这些字段实时计算当前 State。</div>
-    <table class="be-table">
-      <thead><tr><th>字段名</th><th>类型</th><th>说明</th><th>由谁写入</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><code>is_pre_ipo</code></td>
-          <td><span class="be-badge be-badge-bool">Boolean</span></td>
-          <td>该合约是否处于 Pre-IPO 阶段。为 <code>true</code> 时前端展示弹窗入口标签。</td>
-          <td><span class="be-badge be-badge-manual">开发手动</span></td>
-        </tr>
-        <tr>
-          <td><code>ipo_time</code></td>
-          <td><span class="be-badge be-badge-ts">Timestamp</span></td>
-          <td>预计 IPO 发生时间（UTC）。路演开始时填入软确认日期；424B4 发布后若有变动需更新。未填写时弹窗展示 State 1 (TBD)。</td>
-          <td><span class="be-badge be-badge-manual">开发手动</span></td>
-        </tr>
-        <tr>
-          <td><code>market_open_time</code></td>
-          <td><span class="be-badge be-badge-ts">Timestamp</span></td>
-          <td>IPO 后正式开市时间（UTC）。通常为 IPO 日期后约 2 个工作日的 09:30 ET。触发 State 5 → State 6 的切换节点。</td>
-          <td><span class="be-badge be-badge-manual">开发手动</span></td>
-        </tr>
-        <tr>
-          <td><code>symbol_type</code></td>
-          <td><span class="be-badge be-badge-str">String</span></td>
-          <td>合约子类型标识。Pre-IPO 阶段值为 <code>"PRE_IPO"</code>；IPO Merge 完成后开发手动切换为 <code>"US_STOCK"</code> 或 <code>"KR_STOCK"</code>，前端据此隐藏所有 Pre-IPO 标签。</td>
-          <td><span class="be-badge be-badge-manual">开发手动</span></td>
-        </tr>
-        <tr>
-          <td><code>listing_type</code></td>
-          <td><span class="be-badge be-badge-str">String</span></td>
-          <td>上市路径类型。目前支持 <code>"IPO"</code>（传统 IPO）。Direct Listing 填 <code>"DL"</code>，SPAC 填 <code>"SPAC"</code>（后两者需对应扩展弹窗逻辑）。</td>
-          <td><span class="be-badge be-badge-manual">开发手动</span></td>
-        </tr>
-        <tr>
-          <td><code>is_reduce_only</code></td>
-          <td><span class="be-badge be-badge-bool">Boolean</span></td>
-          <td>当前是否为只减仓模式。State 5（Pre-Listing）和 State 6（Merging）期间为 <code>true</code>，用户无法开新仓。可由开关独立控制（见下方开关配置）。</td>
-          <td><span class="be-badge be-badge-auto">系统自动 / 开关</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<!-- ─── 1. 概述 ─── -->
+<div class="doc-h1">1. Pre-IPO 概述</div>
 
-  <!-- BE 2 · State 判断逻辑 -->
-  <div class="be-section">
-    <div class="be-section-title">State 判断逻辑</div>
-    <div class="be-section-desc">前端根据 <code>current_time</code> 与 <code>ipo_time</code>、<code>market_open_time</code> 的关系实时计算当前 State，按优先级从上到下匹配，命中第一条即止。</div>
-    <div class="logic-block">
-      <div class="logic-row">
-        <div class="logic-state" style="color:#878b93;">State 1</div>
-        <div class="logic-cond"><code>ipo_time</code> 未配置（null / 空）<br><span style="color:#888;font-size:12px;">路演尚未开始，IPO 日期未披露。弹窗下卡显示 To Be Disclosed。</span></div>
-        <div class="logic-tag lt-normal">正常交易</div>
-      </div>
-      <div class="logic-row">
-        <div class="logic-state" style="color:#f69b1d;">State 2</div>
-        <div class="logic-cond"><code>current &lt; ipo_time</code> 且 <code>ipo_time - current &gt; 31d</code><br><span style="color:#888;font-size:12px;">倒计时格式：X Mon X Days</span></div>
-        <div class="logic-tag lt-normal">正常交易</div>
-      </div>
-      <div class="logic-row">
-        <div class="logic-state" style="color:#f69b1d;">State 3</div>
-        <div class="logic-cond"><code>current &lt; ipo_time</code> 且 <code>24h &lt; ipo_time - current ≤ 31d</code><br><span style="color:#888;font-size:12px;">倒计时格式：X Days</span></div>
-        <div class="logic-tag lt-normal">正常交易</div>
-      </div>
-      <div class="logic-row">
-        <div class="logic-state" style="color:#f69b1d;">State 4</div>
-        <div class="logic-cond"><code>current &lt; ipo_time</code> 且 <code>ipo_time - current ≤ 24h</code><br><span style="color:#888;font-size:12px;">倒计时格式：HH:MM:SS（精确到秒）</span></div>
-        <div class="logic-tag lt-normal">正常交易</div>
-      </div>
-      <div class="logic-row">
-        <div class="logic-state" style="color:#9b7fd4;">State 5</div>
-        <div class="logic-cond"><code>ipo_time &lt; current &lt; market_open_time</code><br><span style="color:#888;font-size:12px;">IPO 已发生，开市前约 2 天。<code>is_reduce_only = true</code></span></div>
-        <div class="logic-tag lt-reduce">Reduce-Only</div>
-      </div>
-      <div class="logic-row">
-        <div class="logic-state" style="color:#e05252;">State 6</div>
-        <div class="logic-cond"><code>current &gt; market_open_time</code> 且 <code>symbol_type = "PRE_IPO"</code>（开发尚未手动切换）<br><span style="color:#888;font-size:12px;">开市已过，价格融合中。<code>is_reduce_only = true</code>。开发切 <code>symbol_type</code> 后此状态退出，弹窗消失。</span></div>
-        <div class="logic-tag lt-reduce">Reduce-Only</div>
-      </div>
-    </div>
-  </div>
+<div class="doc-h2">1.1 概述</div>
+<p class="doc-p">Pre-IPO 永续合约允许用户在目标公司正式上市前进行交易。合约与平台现有 TradFi Perp 共享同一 perp 账户，使用 USDC 作为保证金和结算资产，采用 7×24 小时连续交易模式。</p>
+<ul class="doc-ul">
+  <li>保证金：USDC</li>
+  <li>合约类型：永续</li>
+  <li>交易时间：7×24 小时；与普通 TradFi Perp 不同，Pre-IPO 阶段不受现实市场开收盘时间限制，但不同阶段的风险等级和交易限制不同</li>
+  <li>价格来源：基于 OTC 场外估值；IPO 后逐步融合至真实市场价格（blend_alpha 0→1）</li>
+</ul>
+<p class="doc-p">Pre-IPO 阶段结束的标志是开发将 <code>symbol_type</code> 由 <code>PRE_IPO</code> 切换为对应 country_stock 类型（如 <code>US_STOCK</code>），此后合约按普通 TradFi Perp 规则运行。</p>
 
-  <!-- BE 3 · Reduce-Only 开关配置 -->
-  <div class="be-section">
-    <div class="be-section-title">Reduce-Only 开关配置</div>
-    <div class="be-section-desc">State 5 / State 6 的只减仓模式可由系统自动触发，也可由管理员通过以下开关手动干预。开关仅影响 open order，平仓的 reduce 单不受限制。</div>
-    <div style="padding:4px 0;">
-      <div class="switch-row">
-        <div class="switch-name">全局开关</div>
-        <div class="switch-desc">影响所有 TradFi 合约。开启时所有 TradFi 交易对进入 Reduce-Only 模式。需配置 <code>开始时间</code> – <code>结束时间</code>。</div>
-      </div>
-      <div class="switch-row">
-        <div class="switch-name">单交易对开关</div>
-        <div class="switch-desc">仅影响指定合约（如 SPCX-PERP）。Pre-IPO 场景通常优先用此开关，避免影响其他正常合约。需配置 <code>开始时间</code> – <code>结束时间</code>。</div>
-      </div>
-      <div class="switch-row">
-        <div class="switch-name">State 5/6 自动触发</div>
-        <div class="switch-desc">当 <code>is_pre_ipo = true</code> 且满足 State 5 / State 6 条件时，系统自动将该合约设为 Reduce-Only，无需手动开关。</div>
-      </div>
-    </div>
-  </div>
+<div class="doc-h2">1.2 上市路径类型</div>
+<p class="doc-p">不同的上市路径对应不同的前端弹窗文案和（部分情况下）不同的 State 逻辑。当前后端字段 <code>listing_type</code> 用于标识路径类型。</p>
+<table class="doc-table">
+  <thead><tr><th>listing_type</th><th>路径名称</th><th>SEC 文件</th><th>是否 Rebase</th><th>特殊节点</th><th>本期支持</th></tr></thead>
+  <tbody>
+    <tr><td><code>IPO</code></td><td>传统 IPO</td><td>S-1</td><td>是</td><td>无</td><td>✓</td></tr>
+    <tr><td><code>DL</code></td><td>Direct Listing</td><td>S-1</td><td>否</td><td>无（文案不同）</td><td>待扩展</td></tr>
+    <tr><td><code>SPAC</code></td><td>SPAC 合并</td><td>S-4</td><td>否</td><td>股东投票、终止路径</td><td>待扩展</td></tr>
+  </tbody>
+</table>
+<div class="doc-note">Direct Listing 与 IPO 使用相同 State 逻辑，仅需切换弹窗描述文案；SPAC 需额外增加股东投票 State 和合约终止路径，本期暂不支持。</div>
 
-  <!-- BE 4 · ipo_time 数据来源 & 变更处理 -->
-  <div class="be-section">
-    <div class="be-section-title">ipo_time 数据来源 & 变更处理</div>
-    <div class="be-section-desc"><code>ipo_time</code> 是驱动弹窗状态流转的核心时间节点，来源准确性直接影响倒计时展示。</div>
-    <table class="be-table" style="margin-bottom:20px;">
-      <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>能否使用</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>路演开始<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前 1～2 周</span></td>
-          <td>Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
-          <td><span class="cert-soft">软确认 ~90%</span></td>
-          <td><span class="usable-yes">✓ 可以填入</span><br><span style="font-size:12px;color:#888;">覆盖 State 2 / 3 倒计时</span></td>
-        </tr>
-        <tr>
-          <td>424B4 提交<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前一晚</span></td>
-          <td>SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
-          <td><span class="cert-hard">硬确认 100%</span></td>
-          <td><span class="usable-late">△ 最准但太晚</span><br><span style="font-size:12px;color:#888;">此时距 IPO 不足 24h，进入 State 4</span></td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="padding:12px 16px;background:#f8f8f8;border-radius:8px;font-size:13px;color:#555;line-height:1.7;margin-bottom:16px;">
-      <strong style="color:#1a1a1a;">推荐做法：</strong>路演开始时填入软确认日期，覆盖 State 2/3 倒计时展示。等 424B4 确认后若日期有出入，再按下方变更流程更新。
-    </div>
-    <div class="alert-block">
-      <div class="alert-title"><span>⚠</span> 约 10% 概率：路演日期 ≠ 最终 IPO 日期（推迟或提前）</div>
-      <div class="alert-body">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期。此时需要手动更新 <code>ipo_time</code>，前端状态将自动重算。</div>
-      <div class="alert-steps">
-        <div class="alert-step"><div class="alert-step-num">1</div><div>监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
-        <div class="alert-step"><div class="alert-step-num">2</div><div>前端倒计时基于 <code>ipo_time</code> 实时计算，更新字段后弹窗状态自动跳转——若新日期更远则从 State 4 退回 State 3/2，若更近则加速进入 State 4。</div></div>
-        <div class="alert-step"><div class="alert-step-num">3</div><div>日期变更属于高风险操作，建议同步在平台发出公告，避免因倒计时突变引发用户误操作。</div></div>
-      </div>
-    </div>
-  </div>
+<hr class="doc-divider">
 
-  <!-- BE 5 · 手动操作节点 -->
-  <div class="be-section">
-    <div class="be-section-title">手动操作节点</div>
-    <div class="be-section-desc">以下节点均需开发人员在确认现实状态后手动触发，不自动执行，避免数据延迟造成错误切换。</div>
-    <div style="padding:4px 0;">
-      <div class="manual-step">
-        <div class="manual-step-num">1</div>
-        <div class="manual-step-body">
-          <strong>填入 ipo_time</strong>（路演开始时）<br>
-          将路演公布的 IPO 日期（UTC 时间）填入 <code>ipo_time</code>。弹窗从 State 1（TBD）跳转至 State 2 或 State 3，倒计时开始显示。
-        </div>
-      </div>
-      <div class="manual-step">
-        <div class="manual-step-num">2</div>
-        <div class="manual-step-body">
-          <strong>填入 market_open_time</strong>（IPO 定价后）<br>
-          424B4 确认后，按 IPO 日期 + 约 2 个工作日计算正式开市时间，填入 <code>market_open_time</code>。此时也可根据 424B4 核对并更新 <code>ipo_time</code>。
-        </div>
-      </div>
-      <div class="manual-step">
-        <div class="manual-step-num">3</div>
-        <div class="manual-step-body">
-          <strong>切换标题栏标签为 IPO Merge</strong>（开市后）<br>
-          <code>market_open_time</code> 到达后，手动将前端标题栏标签从橙色 Pre-IPO 切换为红色 IPO Merge，提示用户价格正在融合阶段。
-        </div>
-      </div>
-      <div class="manual-step">
-        <div class="manual-step-num">4</div>
-        <div class="manual-step-body">
-          <strong>切换 symbol_type 为 country_stock</strong>（Merge 稳定后）<br>
-          确认股票已稳定上市、OTC → 市场价格融合完成后，将 <code>symbol_type</code> 从 <code>"PRE_IPO"</code> 切换为 <code>"US_STOCK"</code>（或 <code>"KR_STOCK"</code>）。前端所有 Pre-IPO 标签消失，合约变为普通 TradFi Perp，按正常 TradFi 交易时段和流动性规则展示。
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- ─── 2. 核心字段配置 ─── -->
+<div class="doc-h1">2. 核心字段配置</div>
+<p class="doc-p">以下字段决定 Pre-IPO 弹窗的所有状态流转。前端实时读取这些字段计算当前 State，无本地缓存。</p>
 
+<table class="doc-table">
+  <thead><tr><th>字段名</th><th>类型</th><th>说明</th><th>写入方式</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>is_pre_ipo</code></td><td>Boolean</td>
+      <td>是否处于 Pre-IPO 阶段。为 true 时前端展示弹窗入口标签及所有 Pre-IPO UI。</td>
+      <td>开发手动</td>
+    </tr>
+    <tr>
+      <td><code>listing_type</code></td><td>String</td>
+      <td>上市路径。取值：<code>IPO</code> / <code>DL</code> / <code>SPAC</code>。决定前端弹窗文案和 State 逻辑分支。</td>
+      <td>开发手动</td>
+    </tr>
+    <tr>
+      <td><code>ipo_time</code></td><td>Timestamp (UTC)</td>
+      <td>预计 IPO / 上市发生时间。路演开始时填入软确认日期；424B4 发布后如有变动需更新。未填写时弹窗展示 State 1（TBD）。</td>
+      <td>开发手动</td>
+    </tr>
+    <tr>
+      <td><code>market_open_time</code></td><td>Timestamp (UTC)</td>
+      <td>IPO 后正式开市时间，通常为 IPO 日期后约 2 个工作日的 09:30 ET。触发 State 5 → State 6 的切换节点。</td>
+      <td>开发手动</td>
+    </tr>
+    <tr>
+      <td><code>symbol_type</code></td><td>String</td>
+      <td>合约子类型。Pre-IPO 阶段为 <code>PRE_IPO</code>；IPO Merge 完成后切换为 <code>US_STOCK</code> 或 <code>KR_STOCK</code>，前端据此隐藏所有 Pre-IPO 标签，合约进入普通 TradFi Perp 逻辑。</td>
+      <td>开发手动</td>
+    </tr>
+    <tr>
+      <td><code>is_reduce_only</code></td><td>Boolean</td>
+      <td>当前是否为只减仓模式。State 5 / State 6 期间为 true，用户无法开新仓。可由系统自动触发，也可由管理员开关手动控制。</td>
+      <td>系统自动 / 开关</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="doc-divider">
+
+<!-- ─── 3. State 判断逻辑 ─── -->
+<div class="doc-h1">3. State 判断逻辑</div>
+
+<div class="doc-h2">3.1 各 State 定义</div>
+<p class="doc-p">前端依据 <code>current_time</code>、<code>ipo_time</code>、<code>market_open_time</code> 三个时间戳实时计算当前 State。共 6 个 State，按时间顺序排列如下：</p>
+<table class="doc-table">
+  <thead><tr><th>State</th><th>触发条件</th><th>倒计时格式</th><th>弹窗高亮卡</th><th>交易限制</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>State 1</td>
+      <td><code>ipo_time</code> 未配置（null / 空）</td>
+      <td>—</td>
+      <td>Pre-IPO · To Be Disclosed</td>
+      <td>正常交易</td>
+    </tr>
+    <tr>
+      <td>State 2</td>
+      <td><code>current &lt; ipo_time</code> 且剩余 &gt; 31 天</td>
+      <td>X Mon X Days</td>
+      <td>Pre-IPO · Est. IPO Date 倒计时</td>
+      <td>正常交易</td>
+    </tr>
+    <tr>
+      <td>State 3</td>
+      <td><code>current &lt; ipo_time</code> 且 24h &lt; 剩余 ≤ 31 天</td>
+      <td>X Days</td>
+      <td>Pre-IPO · Est. IPO Date 倒计时</td>
+      <td>正常交易</td>
+    </tr>
+    <tr>
+      <td>State 4</td>
+      <td><code>current &lt; ipo_time</code> 且剩余 ≤ 24h</td>
+      <td>HH:MM:SS</td>
+      <td>Pre-IPO · Est. IPO Date 倒计时</td>
+      <td>正常交易</td>
+    </tr>
+    <tr>
+      <td>State 5</td>
+      <td><code>ipo_time &lt; current &lt; market_open_time</code></td>
+      <td>—</td>
+      <td>Pre-Listing · Market Opening 倒计时</td>
+      <td><strong>Reduce-Only</strong></td>
+    </tr>
+    <tr>
+      <td>State 6</td>
+      <td><code>current &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code></td>
+      <td>—</td>
+      <td>Market Merging Phase · Market Opening 历史日期</td>
+      <td><strong>Reduce-Only</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="doc-h2">3.2 倒计时精度规则</div>
+<table class="doc-table">
+  <thead><tr><th>剩余时间区间</th><th>格式</th><th>示例</th></tr></thead>
+  <tbody>
+    <tr><td>&gt; 31 天</td><td>X Mon X Days</td><td>3 Mon 24 Days</td></tr>
+    <tr><td>24h &lt; 剩余 ≤ 31 天</td><td>X Days</td><td>14 Days</td></tr>
+    <tr><td>≤ 24h</td><td>HH:MM:SS（实时更新）</td><td>01:26:56</td></tr>
+  </tbody>
+</table>
+
+<div class="doc-h2">3.3 综合判断逻辑（优先级）</div>
+<p class="doc-p">按以下顺序从上往下判断，命中第一条即确定当前 State，不继续向下匹配：</p>
+<div class="doc-steps">
+  <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">判断 <code>is_pre_ipo</code> 是否为 true → 否则不展示弹窗，退出</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">判断 <code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code> → State 6</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">判断 <code>ipo_time &lt; current_time &lt; market_open_time</code> → State 5</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 4 步</div><div class="doc-step-body">判断 <code>ipo_time</code> 是否为空 → State 1（TBD）</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 5 步</div><div class="doc-step-body">计算 <code>ipo_time - current_time</code>，按剩余时长匹配 State 2 / 3 / 4</div></div>
+</div>
+
+<hr class="doc-divider">
+
+<!-- ─── 4. ipo_time 数据来源 ─── -->
+<div class="doc-h1">4. ipo_time 数据来源</div>
+
+<div class="doc-h2">4.1 数据来源与确定程度</div>
+<p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
+<table class="doc-table">
+  <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>路演开始<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前 1～2 周</span></td>
+      <td>Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
+      <td>软确认，约 90% 不变</td>
+      <td>✓ 可填入 <code>ipo_time</code>，覆盖 State 2 / State 3 倒计时展示</td>
+    </tr>
+    <tr>
+      <td>424B4 提交<br><span style="font-weight:400;font-size:12px;color:#666;">IPO 前一晚</span></td>
+      <td>SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
+      <td>硬确认，100%</td>
+      <td>△ 最准，但此时距 IPO 不足 24h，弹窗已进入 State 4</td>
+    </tr>
+  </tbody>
+</table>
+<div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 4.2 变更流程更新。</div>
+
+<div class="doc-h2">4.2 日期变更处理（约 10% 概率）</div>
+<p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
+<div class="doc-steps">
+  <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">前端倒计时基于 <code>ipo_time</code> 实时计算，更新后弹窗状态自动跳转——若新日期更远则从 State 4 退回 State 3 / 2；若更近则加速进入 State 4。</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">日期变更属于高风险操作，建议同步在平台向用户发出公告，避免因倒计时突变引发误操作。</div></div>
+</div>
+
+<hr class="doc-divider">
+
+<!-- ─── 5. 非活跃阶段开仓限制 ─── -->
+<div class="doc-h1">5. 非活跃阶段开仓限制</div>
+
+<div class="doc-h2">5.1 Reduce-Only 自动触发条件</div>
+<p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
+<ul class="doc-ul">
+  <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
+  <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
+</ul>
+
+<div class="doc-h2">5.2 管理员手动开关</div>
+<p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
+<table class="doc-table">
+  <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>全局 Reduce-Only 开关</td>
+      <td>所有 TradFi 合约</td>
+      <td>极端市场情况下对整个 TradFi 品类统一收紧</td>
+    </tr>
+    <tr>
+      <td>单交易对 Reduce-Only 开关</td>
+      <td>指定合约（如 SPCX-PERP）</td>
+      <td>Pre-IPO 场景优先使用，避免影响其他正常合约</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="doc-divider">
+
+<!-- ─── 6. 手动操作节点时序 ─── -->
+<div class="doc-h1">6. 手动操作节点时序</div>
+<p class="doc-p">以下节点均需开发人员在确认现实状态后手动触发，系统不自动执行，目的是避免数据延迟造成错误切换。</p>
+<table class="doc-table">
+  <thead><tr><th>操作顺序</th><th>触发时机</th><th>操作内容</th><th>前端变化</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>① 填入 <code>ipo_time</code></td>
+      <td>路演开始时（IPO 前 1～2 周）</td>
+      <td>将路演公布的 IPO 日期（UTC）填入 <code>ipo_time</code></td>
+      <td>弹窗从 State 1（TBD）跳转至 State 2 或 State 3，倒计时开始展示</td>
+    </tr>
+    <tr>
+      <td>② 填入 <code>market_open_time</code></td>
+      <td>424B4 确认后</td>
+      <td>按 IPO 日期 + 约 2 个工作日计算正式开市时间，填入 <code>market_open_time</code>；同时核对并按需更新 <code>ipo_time</code></td>
+      <td>系统准备好 State 5 的触发节点</td>
+    </tr>
+    <tr>
+      <td>③ 切换标题栏标签</td>
+      <td><code>market_open_time</code> 到达后</td>
+      <td>手动将前端标题栏标签从橙色 Pre-IPO 切换为红色 IPO Merge</td>
+      <td>标题栏标签变为红色 IPO Merge，提示用户进入价格融合阶段</td>
+    </tr>
+    <tr>
+      <td>④ 切换 <code>symbol_type</code></td>
+      <td>确认价格融合稳定后</td>
+      <td>将 <code>symbol_type</code> 从 <code>PRE_IPO</code> 切换为 <code>US_STOCK</code>（或 <code>KR_STOCK</code>）</td>
+      <td>所有 Pre-IPO 标签消失，弹窗关闭，合约按普通 TradFi Perp 规则展示</td>
+    </tr>
+  </tbody>
+</table>
+<div class="doc-note">操作 ③ 和 ④ 均为手动触发，原因是需要人工确认股票已稳定上市、价格数据正常，避免因数据延迟造成用户端展示错误。</div>
+
+</div><!-- /doc-wrap -->
 </div><!-- /tab-be -->
 
 </div><!-- /page -->
