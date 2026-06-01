@@ -737,8 +737,74 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 2. 核心字段配置 ─── -->
-<div class="doc-h1">2. 核心字段配置</div>
+<!-- ─── 2. TradFi 品类归属与交易时段 ─── -->
+<div class="doc-h1">2. TradFi 品类归属与交易时段</div>
+
+<div class="doc-h2">2.1 TradFi 品类定义</div>
+<p class="doc-p">除 Crypto Perp 外，平台增设 TradFi Perp 类型，并细分多个子类型。Pre-IPO 合约属于<strong>股票 · 美股个股</strong>子类型的特殊前置阶段，上市后自动归入该子类型的常规规则。</p>
+<ul class="doc-ul">
+  <li>不同子类型遵循不同的开收盘、冬夏令时、节假日规则</li>
+  <li>本期只针对子类型配置 IANA 时区，不针对具体交易对单独配置</li>
+</ul>
+<table class="doc-table">
+  <thead><tr><th>分类</th><th>子类型</th><th>例子</th><th>本期</th><th>IANA 时区</th></tr></thead>
+  <tbody>
+    <tr style="background:#fffbf0;">
+      <td><strong>股票</strong></td><td><strong>美股个股 ← Pre-IPO 归属</strong></td><td>TESLA</td><td>Y</td><td>America/New_York</td>
+    </tr>
+    <tr><td></td><td>韩股个股</td><td>SAMSUNG</td><td>Y</td><td>Asia/Seoul</td></tr>
+    <tr><td><strong>股指</strong></td><td>美股股指</td><td>SPX500, NASDAQ100</td><td>Y</td><td>America/New_York</td></tr>
+    <tr><td></td><td>东证</td><td>TOPIX</td><td>--</td><td>Asia/Tokyo</td></tr>
+    <tr><td><strong>金属</strong></td><td>贵金属</td><td>XAU, XAG</td><td>Y</td><td>America/New_York</td></tr>
+    <tr><td></td><td>工业金属</td><td>铜</td><td>--</td><td>America/New_York</td></tr>
+    <tr><td><strong>大宗</strong></td><td>能源</td><td>WTI</td><td>Y</td><td>America/New_York</td></tr>
+    <tr><td></td><td>农产品/软商品</td><td>CBOT 大豆</td><td>--</td><td>America/Chicago</td></tr>
+    <tr><td><strong>外汇</strong></td><td>直盘</td><td>EUR/USD</td><td>--</td><td>America/New_York, Europe/London</td></tr>
+    <tr><td></td><td>间接盘</td><td>USD/JPY</td><td>--</td><td>America/New_York, Asia/Tokyo</td></tr>
+    <tr><td></td><td>交叉盘</td><td>JPY/CHF</td><td>--</td><td>Asia/Tokyo, Europe/London</td></tr>
+  </tbody>
+</table>
+
+<div class="doc-h2">2.2 Pre-IPO 阶段交易时段</div>
+<p class="doc-p">Pre-IPO 阶段不受现实市场开收盘时间限制，采用 7×24 连续交易，但不同 State 的流动性和交易限制不同。以下为 Pre-IPO 专属时段定义：</p>
+<table class="doc-table">
+  <thead><tr><th>交易时段类型</th><th>适用 State</th><th>时间</th><th>名称</th><th>流动性</th><th>交易限制</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Pre-IPO 倒计时</td><td>State 1 – 4</td><td>7×24（连续）</td><td>pre-ipo</td><td>中流动性</td><td>正常交易</td>
+    </tr>
+    <tr>
+      <td>Pre-Listing</td><td>State 5</td><td>7×24（约 2 天窗口）</td><td>pre-listing</td><td>低流动性</td><td><strong>Reduce-Only</strong></td>
+    </tr>
+    <tr>
+      <td>Market Merging</td><td>State 6</td><td>开市后至开发手动切换</td><td>market-merging</td><td>低流动性</td><td><strong>Reduce-Only</strong></td>
+    </tr>
+  </tbody>
+</table>
+<div class="doc-note">Pre-IPO 阶段不配置 IANA 时区，交易时段与现实市场时间无关。State 5 / State 6 的 Reduce-Only 由系统根据 <code>ipo_time</code> 和 <code>market_open_time</code> 自动触发。</div>
+
+<div class="doc-h2">2.3 美股个股常规交易时段（Pre-IPO 结束后适用）</div>
+<p class="doc-p">当开发将 <code>symbol_type</code> 切换为 <code>US_STOCK</code> 后，合约退出 Pre-IPO 阶段，按以下美股个股常规时段规则运行（America/New_York，自动适配冬夏令时）：</p>
+<table class="doc-table">
+  <thead><tr><th>交易时段类型</th><th>时间（非特殊说明即周中）</th><th>名称</th><th>流动性</th><th>指示灯</th><th>DIP 前端状态名称</th></tr></thead>
+  <tbody>
+    <tr><td>盘前</td><td>04:00 – 09:30</td><td>pre-market</td><td>中流动性</td><td>3</td><td>Pre-Market</td></tr>
+    <tr><td>盘中</td><td>09:30 – 16:00</td><td>regular</td><td>高流动性</td><td>5</td><td>Regular</td></tr>
+    <tr><td>盘后</td><td>16:00 – 20:00</td><td>off-hours</td><td>中流动性</td><td>3</td><td>Off-Hours</td></tr>
+    <tr><td>夜盘</td><td>20:00 – 04:00</td><td>overnight</td><td>低流动性</td><td>2</td><td>Overnight</td></tr>
+    <tr><td>周末休市</td><td>周五 20:00 – 周一 04:00</td><td>weekend</td><td>差流动性</td><td>1</td><td>Weekend</td></tr>
+    <tr><td>节日</td><td>节日状态期间</td><td>holiday</td><td>差流动性</td><td>1</td><td>Holiday</td></tr>
+  </tbody>
+</table>
+<ul class="doc-ul">
+  <li>完整展示美股实际交易时段，有利于用户根据流动性情况管理仓位和策略</li>
+  <li>weekend 与 holiday 不合并，二者低流动性影响的时间周期长度未必相同</li>
+</ul>
+
+<hr class="doc-divider">
+
+<!-- ─── 3. 核心字段配置 ─── -->
+<div class="doc-h1">3. 核心字段配置</div>
 <p class="doc-p">以下字段决定 Pre-IPO 弹窗的所有状态流转。前端实时读取这些字段计算当前 State，无本地缓存。</p>
 
 <table class="doc-table">
@@ -779,10 +845,10 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 3. State 判断逻辑 ─── -->
-<div class="doc-h1">3. State 判断逻辑</div>
+<!-- ─── 4. State 判断逻辑 ─── -->
+<div class="doc-h1">4. State 判断逻辑</div>
 
-<div class="doc-h2">3.1 各 State 定义</div>
+<div class="doc-h2">4.1 各 State 定义</div>
 <p class="doc-p">前端依据 <code>current_time</code>、<code>ipo_time</code>、<code>market_open_time</code> 三个时间戳实时计算当前 State。共 6 个 State，按时间顺序排列如下：</p>
 <table class="doc-table">
   <thead><tr><th>State</th><th>触发条件</th><th>倒计时格式</th><th>弹窗高亮卡</th><th>交易限制</th></tr></thead>
@@ -832,7 +898,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
   </tbody>
 </table>
 
-<div class="doc-h2">3.2 倒计时精度规则</div>
+<div class="doc-h2">4.2 倒计时精度规则</div>
 <table class="doc-table">
   <thead><tr><th>剩余时间区间</th><th>格式</th><th>示例</th></tr></thead>
   <tbody>
@@ -842,7 +908,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
   </tbody>
 </table>
 
-<div class="doc-h2">3.3 综合判断逻辑（优先级）</div>
+<div class="doc-h2">4.3 综合判断逻辑（优先级）</div>
 <p class="doc-p">按以下顺序从上往下判断，命中第一条即确定当前 State，不继续向下匹配：</p>
 <div class="doc-steps">
   <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">判断 <code>is_pre_ipo</code> 是否为 true → 否则不展示弹窗，退出</div></div>
@@ -854,10 +920,10 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 4. ipo_time 数据来源 ─── -->
-<div class="doc-h1">4. ipo_time 数据来源</div>
+<!-- ─── 5. ipo_time 数据来源 ─── -->
+<div class="doc-h1">5. ipo_time 数据来源</div>
 
-<div class="doc-h2">4.1 数据来源与确定程度</div>
+<div class="doc-h2">5.1 数据来源与确定程度</div>
 <p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
 <table class="doc-table">
   <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
@@ -878,7 +944,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 </table>
 <div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 4.2 变更流程更新。</div>
 
-<div class="doc-h2">4.2 日期变更处理（约 10% 概率）</div>
+<div class="doc-h2">5.2 日期变更处理（约 10% 概率）</div>
 <p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
 <div class="doc-steps">
   <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
@@ -888,17 +954,17 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 5. 非活跃阶段开仓限制 ─── -->
-<div class="doc-h1">5. 非活跃阶段开仓限制</div>
+<!-- ─── 6. 非活跃阶段开仓限制 ─── -->
+<div class="doc-h1">6. 非活跃阶段开仓限制</div>
 
-<div class="doc-h2">5.1 Reduce-Only 自动触发条件</div>
+<div class="doc-h2">6.1 Reduce-Only 自动触发条件</div>
 <p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
 <ul class="doc-ul">
   <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
   <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
 </ul>
 
-<div class="doc-h2">5.2 管理员手动开关</div>
+<div class="doc-h2">6.2 管理员手动开关</div>
 <p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
 <table class="doc-table">
   <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
@@ -918,8 +984,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <hr class="doc-divider">
 
-<!-- ─── 6. 手动操作节点时序 ─── -->
-<div class="doc-h1">6. 手动操作节点时序</div>
+<!-- ─── 7. 手动操作节点时序 ─── -->
+<div class="doc-h1">7. 手动操作节点时序</div>
 <p class="doc-p">以下节点均需开发人员在确认现实状态后手动触发，系统不自动执行，目的是避免数据延迟造成错误切换。</p>
 <table class="doc-table">
   <thead><tr><th>操作顺序</th><th>触发时机</th><th>操作内容</th><th>前端变化</th></tr></thead>
