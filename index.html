@@ -302,6 +302,70 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
     </div>
   </div>
 
+  <!-- ipo_time 数据来源 & 日期变更处理 -->
+  <div style="margin-top:24px;">
+    <div class="state-block">
+      <div class="state-head">
+        <span class="state-badge badge-gray">数据来源</span>
+        <span class="state-title-text">ipo_time 数据来源 & 日期变更处理</span>
+        <span class="state-trigger"><code>ipo_time</code> 字段决定弹窗状态流转的核心时间节点</span>
+      </div>
+      <div style="padding:24px;">
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>时间节点</th>
+              <th>来源</th>
+              <th>确定程度</th>
+              <th>能否使用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>路演开始<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前 1～2 周</span></td>
+              <td style="font-size:13px;color:#555;">Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
+              <td><span class="cert-soft">软确认 ~90%</span></td>
+              <td><span class="usable-yes">✓ 可以填入</span><br><span style="font-size:12px;color:#888;">覆盖 State 2 / State 3 倒计时展示</span></td>
+            </tr>
+            <tr>
+              <td>424B4 提交<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前一晚</span></td>
+              <td style="font-size:13px;color:#555;">SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
+              <td><span class="cert-hard">硬确认 100%</span></td>
+              <td><span class="usable-late">△ 最准但太晚</span><br><span style="font-size:12px;color:#888;">此时距 IPO 不足 24h，进入 State 1</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:16px;padding:12px 16px;background:#f8f8f8;border-radius:8px;font-size:13px;color:#555;line-height:1.7;">
+          <strong style="color:#1a1a1a;">推荐做法：</strong>路演开始时填入软确认日期，覆盖 State 2/3 倒计时展示。等 424B4 确认后若日期有出入，再按下方变更流程更新。
+        </div>
+
+        <div class="alert-block">
+          <div class="alert-title">
+            <span>⚠</span> 约 10% 概率：路演日期 ≠ 最终 IPO 日期（推迟或提前）
+          </div>
+          <div class="alert-body">
+            公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期。此时需要手动更新 <code>ipo_time</code>，前端状态将自动重算。
+          </div>
+          <div class="alert-steps">
+            <div class="alert-step">
+              <div class="alert-step-num">1</div>
+              <div>监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ/NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div>
+            </div>
+            <div class="alert-step">
+              <div class="alert-step-num">2</div>
+              <div>前端倒计时基于 <code>ipo_time</code> 实时计算，更新字段后弹窗状态自动跳转——若新日期更远则从 State 1 退回 State 3/2，若更近则加速进入 State 1。</div>
+            </div>
+            <div class="alert-step">
+              <div class="alert-step-num">3</div>
+              <div>日期变更属于高风险操作，建议同步在平台公告用户，避免因倒计时突变引发误操作。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ══════════════════════════════════════
@@ -587,82 +651,6 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
           <div class="comp">
             <div class="comp-label">③ country_stock — 标签消失 <span class="tag tag-local">开发手动</span></div>
             <div class="comp-what">IPO 完成后开发手动将 symbol 类型切为 country_stock（如 US_STOCK），所有 Pre-IPO 标签消失，前端按普通 TradFi Perp 规则展示。</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     CATEGORY 5 — ipo_time 数据来源 & 日期变更处理
-══════════════════════════════════════ -->
-<div class="category">
-  <div class="cat-header">
-    <div class="cat-num">5</div>
-    <div class="cat-title-wrap">
-      <div class="cat-title">ipo_time 数据来源 & 日期变更处理</div>
-      <div class="cat-desc"><code>ipo_time</code> 字段决定弹窗状态流转的核心时间节点，来源和准确性直接影响倒计时展示。</div>
-    </div>
-  </div>
-
-  <div class="state-list">
-    <div class="state-block">
-      <div class="state-head">
-        <span class="state-badge badge-gray">数据来源</span>
-        <span class="state-title-text">何时可以填入 ipo_time</span>
-      </div>
-      <div style="padding:24px;">
-        <table class="info-table">
-          <thead>
-            <tr>
-              <th>时间节点</th>
-              <th>来源</th>
-              <th>确定程度</th>
-              <th>能否使用</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>路演开始<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前 1～2 周</span></td>
-              <td style="font-size:13px;color:#555;">Bloomberg / Reuters / CNBC 路演报道；承销商路演材料</td>
-              <td><span class="cert-soft">软确认 ~90%</span></td>
-              <td><span class="usable-yes">✓ 可以填入</span><br><span style="font-size:12px;color:#888;">覆盖 State 2 / State 3 倒计时展示</span></td>
-            </tr>
-            <tr>
-              <td>424B4 提交<br><span style="font-weight:400;color:#888;font-size:12px;">IPO 前一晚</span></td>
-              <td style="font-size:13px;color:#555;">SEC EDGAR 最终招股书；精确日期 + 发行价同时披露</td>
-              <td><span class="cert-hard">硬确认 100%</span></td>
-              <td><span class="usable-late">△ 最准但太晚</span><br><span style="font-size:12px;color:#888;">此时距 IPO 不足 24h，进入 State 1</span></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style="margin-top:16px;padding:12px 16px;background:#f8f8f8;border-radius:8px;font-size:13px;color:#555;line-height:1.7;">
-          <strong style="color:#1a1a1a;">推荐做法：</strong>路演开始时填入软确认日期，覆盖 State 2/3 倒计时展示。等 424B4 确认后若日期有出入，再按下方变更流程更新。
-        </div>
-
-        <!-- 日期变更 Alert -->
-        <div class="alert-block">
-          <div class="alert-title">
-            <span>⚠</span> 约 10% 概率：路演日期 ≠ 最终 IPO 日期（推迟或提前）
-          </div>
-          <div class="alert-body">
-            公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期。此时需要手动更新 <code>ipo_time</code>，前端状态将自动重算。
-          </div>
-          <div class="alert-steps">
-            <div class="alert-step">
-              <div class="alert-step-num">1</div>
-              <div>监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ/NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div>
-            </div>
-            <div class="alert-step">
-              <div class="alert-step-num">2</div>
-              <div>前端倒计时基于 <code>ipo_time</code> 实时计算，更新字段后弹窗状态自动跳转——若新日期更远则从 State 1 退回 State 3/2，若更近则加速进入 State 1。</div>
-            </div>
-            <div class="alert-step">
-              <div class="alert-step-num">3</div>
-              <div>日期变更属于高风险操作，建议同步在平台公告用户，避免因倒计时突变引发误操作。</div>
-            </div>
           </div>
         </div>
       </div>
