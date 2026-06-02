@@ -725,23 +725,34 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 
 <div class="doc-h2">1.2 上市路径类型</div>
 <p class="doc-p">不同的上市路径对应不同的前端弹窗文案和（部分情况下）不同的 State 逻辑。当前后端字段 <code>listing_type</code> 用于标识路径类型。</p>
+
+<div class="doc-h3">Symbol 标准</div>
+<p class="doc-p">使用目标公司预期上市 ticker + <code>-PERP</code>（以路演和 S-1 / S-4 文件为准）。SPAC 使用目标公司 ticker，不用壳公司 ticker（壳公司与最终上市主体不同）。</p>
+
+<div class="doc-h3">Index 来源</div>
+<p class="doc-p">Pre-IPO 阶段标的未在交易所上市，Index 价格综合参考已上线同标的合约的市场报价：</p>
+<ul class="doc-ul">
+  <li>Hyperliquid（XYZ）为主要来源；若 XYZ 未上线，需至少参考 1 个主流 CEX</li>
+  <li>辅助参考：OKX、Binance 等主流 CEX</li>
+</ul>
+
 <table class="doc-table">
-  <thead><tr><th>listing_type</th><th>路径名称</th><th>SEC 文件</th><th>是否 Rebase</th><th>特殊节点</th><th>本期支持</th></tr></thead>
+  <thead><tr><th>listing_type</th><th>路径名称</th><th>SEC 文件</th><th>本期支持</th></tr></thead>
   <tbody>
-    <tr><td><code>IPO</code></td><td>传统 IPO</td><td>S-1</td><td>是</td><td>无</td><td>✓</td></tr>
-    <tr><td><code>DL</code></td><td>Direct Listing</td><td>S-1</td><td>否</td><td>无（文案不同）</td><td>✓</td></tr>
-    <tr><td><code>SPAC</code></td><td>SPAC 合并</td><td>S-4</td><td>否</td><td>股东投票、终止路径</td><td>✓</td></tr>
+    <tr><td><code>IPO</code></td><td>传统 IPO</td><td>S-1</td><td>✓</td></tr>
+    <tr><td><code>DL</code></td><td>Direct Listing</td><td>S-1</td><td>✓</td></tr>
+    <tr><td><code>SPAC</code></td><td>SPAC 合并</td><td>S-4</td><td>✓</td></tr>
   </tbody>
 </table>
-<div class="doc-note">Direct Listing 与 IPO 使用相同 State 逻辑，仅需切换弹窗描述文案；SPAC 需额外增加 merge_status 字段和 State T（合约终止）路径。</div>
+<div class="doc-note">IPO 和 DL 流程基本相同，只有 SPAC 的上市逻辑上有一个股东投票的环节，会导致比其他两种更早退市。</div>
 
 <hr class="doc-divider">
 
-<!-- ─── 2. TradFi 品类归属与交易时段 ─── -->
-<div class="doc-h1">2. TradFi 品类归属与交易时段</div>
+<!-- ─── 2. Pre-IPO 品类归属与交易时段 ─── -->
+<div class="doc-h1">2. Pre-IPO 品类归属与交易时段</div>
 
-<div class="doc-h2">2.1 TradFi 品类定义</div>
-<p class="doc-p">除 Crypto Perp 外，平台增设 TradFi Perp 类型，并细分多个子类型。Pre-IPO 合约在交易时段上属于 <strong>Crypto 24/7</strong>，是美股个股的特殊前置阶段，上市后自动归入该子类型的常规规则。</p>
+<div class="doc-h2">2.1 Pre-IPO 品类定义</div>
+<p class="doc-p">Pre-IPO 合约在交易时段上属于 <strong>Crypto 24/7</strong>，是个股的特殊前置阶段，上市后自动归入该子类型的常规规则。</p>
 <ul class="doc-ul">
   <li>不同子类型遵循不同的开收盘、冬夏令时、节假日规则</li>
   <li>本期只针对子类型配置 IANA 时区，不针对具体交易对单独配置</li>
@@ -751,20 +762,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
   <tbody>
     <tr><td><strong>股票</strong></td><td>美股个股</td><td>TSLA</td><td>Y</td><td>America/New_York</td></tr>
     <tr><td></td><td>韩股个股</td><td>SAMSUNG</td><td>Y</td><td>Asia/Seoul</td></tr>
-    <tr style="background:#fffbf0;"><td><strong>Pre-IPO</strong></td><td>Pre-IPO 永续合约</td><td>SPCX</td><td>Y</td><td>24/7（无时区限制）</td></tr>
-    <tr><td><strong>股指</strong></td><td>美股股指</td><td>SPX500, NASDAQ100</td><td>Y</td><td>America/New_York</td></tr>
-    <tr><td></td><td>东证</td><td>TOPIX</td><td>--</td><td>Asia/Tokyo</td></tr>
-    <tr><td><strong>金属</strong></td><td>贵金属</td><td>XAU, XAG</td><td>Y</td><td>America/New_York</td></tr>
-    <tr><td></td><td>工业金属</td><td>铜</td><td>--</td><td>America/New_York</td></tr>
-    <tr><td><strong>大宗</strong></td><td>能源</td><td>WTI</td><td>Y</td><td>America/New_York</td></tr>
-    <tr><td></td><td>农产品/软商品</td><td>CBOT 大豆</td><td>--</td><td>America/Chicago</td></tr>
-    <tr><td><strong>外汇</strong></td><td>直盘</td><td>EUR/USD</td><td>--</td><td>America/New_York, Europe/London</td></tr>
-    <tr><td></td><td>间接盘</td><td>USD/JPY</td><td>--</td><td>America/New_York, Asia/Tokyo</td></tr>
-    <tr><td></td><td>交叉盘</td><td>JPY/CHF</td><td>--</td><td>Asia/Tokyo, Europe/London</td></tr>
+    <tr style="background:#fffbf0;"><td><strong>Pre-IPO（新增）</strong></td><td>Pre-IPO 永续合约</td><td>SPCX</td><td>Y</td><td>24/7（无时区限制）</td></tr>
   </tbody>
 </table>
 
-<div class="doc-h2">2.2 Pre-IPO 阶段交易时段</div>
+<div class="doc-h2">2.2 Pre-IPO 交易时段与流动性</div>
 <p class="doc-p">Pre-IPO 阶段不受现实市场开收盘时间限制，采用 7×24 连续交易，但不同 State 的流动性和交易限制不同。以下为 Pre-IPO 专属时段定义：</p>
 <table class="doc-table">
   <thead><tr><th>交易时段类型</th><th>适用 State</th><th>时间</th><th>名称</th><th>流动性</th><th>交易限制</th></tr></thead>
@@ -780,25 +782,10 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
     </tr>
   </tbody>
 </table>
-<div class="doc-note">Pre-IPO 阶段不配置 IANA 时区，交易时段与现实市场时间无关。State 5 / State 6 的 Reduce-Only 由系统根据 <code>ipo_time</code> 和 <code>market_open_time</code> 自动触发。</div>
+<div class="doc-note">Pre-IPO 阶段不配置 IANA 时区，交易时段与现实市场时间无关。State 5 / State 6 的 Reduce-Only 通过管理员手动配置单交易对 Reduce-Only 开关（1.0）生效；State 5 可在确认 <code>ipo_time</code> 后预填开始 / 结束时间，State 6 结束时间需等开发切换 <code>symbol_type</code> 后手动关闭开关。</div>
 
-<div class="doc-h2">2.3 美股个股常规交易时段（Pre-IPO 结束后适用）</div>
-<p class="doc-p">当开发将 <code>symbol_type</code> 切换为 <code>US_STOCK</code> 后，合约退出 Pre-IPO 阶段，按以下美股个股常规时段规则运行（America/New_York，自动适配冬夏令时）：</p>
-<table class="doc-table">
-  <thead><tr><th>交易时段类型</th><th>时间（非特殊说明即周中）</th><th>名称</th><th>流动性</th><th>指示灯</th><th>DIP 前端状态名称</th></tr></thead>
-  <tbody>
-    <tr><td>盘前</td><td>04:00 – 09:30</td><td>pre-market</td><td>中流动性</td><td>3</td><td>Pre-Market</td></tr>
-    <tr><td>盘中</td><td>09:30 – 16:00</td><td>regular</td><td>高流动性</td><td>5</td><td>Regular</td></tr>
-    <tr><td>盘后</td><td>16:00 – 20:00</td><td>off-hours</td><td>中流动性</td><td>3</td><td>Off-Hours</td></tr>
-    <tr><td>夜盘</td><td>20:00 – 04:00</td><td>overnight</td><td>低流动性</td><td>2</td><td>Overnight</td></tr>
-    <tr><td>周末休市</td><td>周五 20:00 – 周一 04:00</td><td>weekend</td><td>差流动性</td><td>1</td><td>Weekend</td></tr>
-    <tr><td>节日</td><td>节日状态期间</td><td>holiday</td><td>差流动性</td><td>1</td><td>Holiday</td></tr>
-  </tbody>
-</table>
-<ul class="doc-ul">
-  <li>完整展示美股实际交易时段，有利于用户根据流动性情况管理仓位和策略</li>
-  <li>weekend 与 holiday 不合并，二者低流动性影响的时间周期长度未必相同</li>
-</ul>
+<div class="doc-h2">2.3 个股常规交易时段（Pre-IPO 结束后适用）</div>
+<p class="doc-p">当开发将 <code>symbol_type</code> 切换为 <code>COUNTRY_STOCK</code> 后，合约退出 Pre-IPO 阶段，按美股 / 韩股个股常规时段规则运行，详见 1.0 TradFi 交易模块概述。</p>
 
 <hr class="doc-divider">
 
@@ -830,14 +817,19 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
       <td>开发手动</td>
     </tr>
     <tr>
+      <td><code>target_iana_id</code></td><td>String</td>
+      <td>目标上市市场的 IANA 时区，创建合约时预填。Pre-IPO 期间不生效（24/7 交易）；<code>symbol_type</code> 切换后自动激活。示例：美股 <code>America/New_York</code>，韩股 <code>Asia/Seoul</code>。</td>
+      <td>开发手动（合约创建时）</td>
+    </tr>
+    <tr>
       <td><code>symbol_type</code></td><td>String</td>
-      <td>合约子类型。Pre-IPO 阶段为 <code>PRE_IPO</code>；IPO Merge 完成后切换为 <code>US_STOCK</code> 或 <code>KR_STOCK</code>，前端据此隐藏所有 Pre-IPO 标签，合约进入普通 TradFi Perp 逻辑。</td>
+      <td>Pre-IPO 阶段为 <code>PRE_IPO</code>；IPO Merge 完成后切换为 <code>US_STOCK</code> 或 <code>KR_STOCK</code>，前端据此隐藏所有 Pre-IPO 标签，合约进入普通 TradFi Perp 逻辑。</td>
       <td>开发手动</td>
     </tr>
     <tr>
       <td><code>is_reduce_only</code></td><td>Boolean</td>
-      <td>当前是否为只减仓模式。State 5 / State 6 期间为 true，用户无法开新仓。可由系统自动触发，也可由管理员开关手动控制。</td>
-      <td>系统自动 / 开关</td>
+      <td>当前是否为只减仓模式。State 5 / State 6 期间为 true，用户无法开新仓。由管理员通过单交易对 Reduce-Only 开关（1.0）手动配置时间段控制。</td>
+      <td>管理员手动（1.0 开关）</td>
     </tr>
   </tbody>
 </table>
@@ -911,10 +903,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 <p class="doc-p">按以下顺序从上往下判断，命中第一条即确定当前 State，不继续向下匹配：</p>
 <div class="doc-steps">
   <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">判断 <code>is_pre_ipo</code> 是否为 true → 否则不展示弹窗，退出</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">判断 <code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code> → State 6</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">判断 <code>ipo_time &lt; current_time &lt; market_open_time</code> → State 5</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 4 步</div><div class="doc-step-body">判断 <code>ipo_time</code> 是否为空 → State 1（TBD）</div></div>
-  <div class="doc-step"><div class="doc-step-n">第 5 步</div><div class="doc-step-body">计算 <code>ipo_time - current_time</code>，按剩余时长匹配 State 2 / 3 / 4</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 2 步</div><div class="doc-step-body">判断 <code>merge_status = terminated</code>（SPAC 投票失败）或收到开发手动终止信号（IPO / DL 监管停止）→ State T，最高优先级，立即终止</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 3 步</div><div class="doc-step-body">判断 <code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code> → State 6</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 4 步</div><div class="doc-step-body">判断 <code>ipo_time &lt; current_time &lt; market_open_time</code> → State 5</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 5 步</div><div class="doc-step-body">判断 <code>ipo_time</code> 是否为空 → State 1（TBD）</div></div>
+  <div class="doc-step"><div class="doc-step-n">第 6 步</div><div class="doc-step-body">计算 <code>ipo_time - current_time</code>，按剩余时长匹配 State 2 / 3 / 4</div></div>
 </div>
 
 <hr class="doc-divider">
@@ -922,7 +915,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 <!-- ─── 5. ipo_time 数据来源 ─── -->
 <div class="doc-h1">5. ipo_time 数据来源</div>
 
-<div class="doc-h2">5.1 数据来源与确定程度</div>
+<div class="doc-note"><strong>SPAC 特殊来源逻辑：</strong>Proxy Statement 发布时软确认 ipo_time；股东投票通过后硬确认，同步更新 <code>merge_status = approved</code>。</div>
+
+<div class="doc-h2">5.1 数据来源与确定程度（IPO / 直接上市）</div>
 <p class="doc-p">IPO 日期不是在 S-1 提交时就已确定，而是分阶段浮现。以下为各节点的数据来源和可用性评估：</p>
 <table class="doc-table">
   <thead><tr><th>时间节点</th><th>来源</th><th>确定程度</th><th>建议使用</th></tr></thead>
@@ -943,7 +938,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 </table>
 <div class="doc-note">推荐做法：路演开始时填入软确认日期，等 424B4 发布后如有出入再按 5.2 变更流程更新。</div>
 
-<div class="doc-h2">5.2 日期变更处理（约 10% 概率）</div>
+<div class="doc-h2">5.2 日期变更处理（约 10% 概率）（IPO / 直接上市）</div>
 <p class="doc-p">公司可能因市场情况、监管审查或承销商建议，在路演后调整 IPO 日期（推迟或提前）。此时需手动更新 <code>ipo_time</code>，前端状态将自动重算。</p>
 <div class="doc-steps">
   <div class="doc-step"><div class="doc-step-n">第 1 步</div><div class="doc-step-body">监听 SEC EDGAR 的 S-1/A 修订或 NASDAQ / NYSE 公告，发现日期变动后第一时间更新后台 <code>ipo_time</code> 字段。</div></div>
@@ -956,15 +951,15 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 <!-- ─── 6. 非活跃阶段开仓限制 ─── -->
 <div class="doc-h1">6. 非活跃阶段开仓限制</div>
 
-<div class="doc-h2">6.1 Reduce-Only 自动触发条件</div>
-<p class="doc-p">当 <code>is_pre_ipo = true</code> 且满足以下任一条件时，系统自动将该合约设为 Reduce-Only，用户无法开新仓，仅允许平仓操作：</p>
+<div class="doc-h2">6.1 Reduce-Only 触发方式（1.0 单交易对开关）</div>
+<p class="doc-p">Pre-IPO 合约的 Reduce-Only 通过管理员手动配置单交易对 Reduce-Only 开关（1.0）实现，用户无法开新仓，仅允许平仓操作。两个阶段的配置方式如下：</p>
 <ul class="doc-ul">
-  <li>State 5：<code>ipo_time &lt; current_time &lt; market_open_time</code>（Pre-Listing 窗口，约 2 天）</li>
-  <li>State 6：<code>current_time &gt; market_open_time</code> 且 <code>symbol_type = PRE_IPO</code>（Merging 阶段）</li>
+  <li><strong>State 5（Pre-Listing，约 2 天）</strong>：时间边界已知，可在确认 <code>ipo_time</code> 和 <code>market_open_time</code> 后预填开关的开始时间（= <code>ipo_time</code>）和结束时间（= <code>market_open_time</code>），提前排程生效。</li>
+  <li><strong>State 6（Market Merging）</strong>：开始时间设为 <code>market_open_time</code>；结束时间未知，须等开发确认价格稳定、手动切换 <code>symbol_type</code> 后，再手动关闭开关解除 Reduce-Only。</li>
 </ul>
 
 <div class="doc-h2">6.2 管理员手动开关</div>
-<p class="doc-p">在自动触发之外，管理员可通过以下开关手动干预。所有开关均需配置生效时间段（开始时间 – 结束时间），仅影响 open order，平仓的 reduce 单不受限制。</p>
+<p class="doc-p">极端市场情况下，管理员可通过全局开关对所有 TradFi 合约统一收紧，优先级高于单交易对开关。Pre-IPO 正常运营期间不使用此开关。所有开关仅影响 open order，平仓的 reduce 单不受限制。</p>
 <table class="doc-table">
   <thead><tr><th>开关类型</th><th>影响范围</th><th>适用场景</th></tr></thead>
   <tbody>
@@ -1001,7 +996,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
       <td><code>ipo_time</code> 有值，按剩余时长自动匹配</td>
       <td>路演开始时填入 <code>ipo_time</code>（软确认日期）</td>
       <td>路演 / SEC 批准公告后填入 <code>ipo_time</code></td>
-      <td>股东投票通过后填入 <code>ipo_time</code>（合并完成日）<br>同时更新 <code>merge_status = approved</code></td>
+      <td>Proxy Statement 发布时填入 <code>ipo_time</code>（软确认）；投票通过后更新 <code>merge_status = approved</code></td>
     </tr>
     <tr>
       <td><strong>State 5</strong><br><span style="font-size:12px;color:#888">Pre-Listing</span></td>
@@ -1022,11 +1017,18 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
       <td><code>merge_status = terminated</code></td>
       <td style="color:#aaa;text-align:center">—</td>
       <td style="color:#aaa;text-align:center">—</td>
-      <td>投票失败时更新 <code>merge_status = terminated</code><br>引导用户平仓 / 触发清算流程</td>
+      <td>投票失败时更新 <code>merge_status = terminated</code>，进入 State T<br>引导用户平仓 / 触发清算流程</td>
+    </tr>
+    <tr>
+      <td><strong>State T</strong><br><span style="font-size:12px;color:#888">（IPO/DL）</span></td>
+      <td>收到监管/平台停止上市指令</td>
+      <td>开发手动触发 State T，引导用户平仓 / 触发清算流程</td>
+      <td>开发手动触发 State T，引导用户平仓 / 触发清算流程</td>
+      <td style="color:#aaa;text-align:center">—（已由 merge_status 驱动）</td>
     </tr>
   </tbody>
 </table>
-<div class="doc-note">State 2 / 3 / 4 由系统根据 ipo_time 与 current_time 的差值自动匹配，后端无需额外操作。SPAC 的 State T 是三种路径中唯一存在的合约终止出口。</div>
+<div class="doc-note">State 2 / 3 / 4 由系统根据 ipo_time 与 current_time 的差值自动匹配，后端无需额外操作。SPAC 的 State T 是三种路径中唯一的常规终止出口（投票失败概率约 10–15%）；IPO / DL 仅在收到监管 / 平台停止上市指令时由开发手动触发。</div>
 
 <hr class="doc-divider">
 
