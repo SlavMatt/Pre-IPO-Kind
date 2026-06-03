@@ -703,25 +703,25 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
     <div class="cat-num">4</div>
     <div class="cat-title-wrap">
       <div class="cat-title">Web · 标题栏 Symbol 标签</div>
-      <div class="cat-desc">Pre-IPO → IPO Merge → country_stock，标签随阶段演进，切 stock 后消失。</div>
+      <div class="cat-desc">标签根据 <code>listing_type</code> 分两路径：IPO 路径 4 阶段（Pre-IPO → Pre-Listing → Listing HH:MM:SS → Market Merging），DL / SPAC 路径 3 阶段（Pre-Public → Public HH:MM:SS → Market Merging）。切为 <code>country_stock</code> 后消失。</div>
     </div>
   </div>
   <div class="state-list">
     <div class="state-block">
       <div class="state-head">
-        <span class="state-badge badge-orange">3 Stages</span>
+        <span class="state-badge badge-orange">2 Paths</span>
         <span class="state-title-text">SPCX-PERP 标题栏标签流转</span>
-        <span class="state-trigger">点击按钮切换阶段</span>
+        <span class="state-trigger">选择上市路径，再切换阶段</span>
       </div>
       <div class="state-body">
         <!-- LIVE COMPONENT -->
         <div class="state-preview">
           <div class="titlebar-demo">
-            <div class="tb-stage-btns">
-              <button class="tb-stage-btn active" onclick="setTBStage(1,this)">① Pre-IPO</button>
-              <button class="tb-stage-btn" onclick="setTBStage(2,this)">② IPO Merge</button>
-              <button class="tb-stage-btn" onclick="setTBStage(3,this)">③ country_stock</button>
+            <div class="demo-switcher" id="tbTypeSwitcher" style="margin-bottom:8px;">
+              <button class="dsw-btn active" onclick="setTBType('ipo',this)">IPO · Type 1</button>
+              <button class="dsw-btn" onclick="setTBType('dl',this)">DL / SPAC · Type 2</button>
             </div>
+            <div class="tb-stage-btns" id="tbStageBtns"></div>
             <div class="tb-bar">
               <div style="width:28px;height:28px;border-radius:50%;background:#000;position:relative;overflow:hidden;flex-shrink:0;"><div style="position:absolute;top:38.06%;right:25.16%;bottom:31.43%;left:18.91%;"><img src="https://www.figma.com/api/mcp/asset/44605869-3697-4873-a20d-5220541319ff" style="width:100%;height:100%;display:block;"></div><div style="position:absolute;top:20.21%;right:-44.54%;bottom:31.43%;left:17.91%;"><img src="https://www.figma.com/api/mcp/asset/a23de238-3dff-45bc-8fec-325ef55eb8dc" style="width:100%;height:100%;display:block;"></div></div>
               <div class="tb-sym-block">
@@ -731,29 +731,39 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
                 </div>
                 <div class="tb-sym-sub">
                   <span>Space Exploration Te...</span>
-                  <span id="tbTag" class="tb-tag preipo">Pre-IPO<span class="tb-bars"><span style="display:inline-block;width:2.5px;height:8px;background:#f69b1d;border-radius:1px;"></span><span style="display:inline-block;width:2.5px;height:5px;background:#f69b1d;border-radius:1px;"></span></span></span>
+                  <span id="tbTag" class="tb-tag preipo"></span>
                 </div>
               </div>
             </div>
-            <div class="tb-note" id="tbNote">
-              <strong>阶段 1 · Pre-IPO</strong><br>
-              标题旁常驻橙色 Pre-IPO 标签。
-            </div>
+            <div class="tb-note" id="tbNote"></div>
           </div>
         </div>
         <!-- ANNOTATIONS -->
         <div class="state-info">
           <div class="comp">
-            <div class="comp-label">① Pre-IPO 橙色</div>
-            <div class="comp-what">标题旁常驻橙色 Pre-IPO 标签。</div>
+            <div class="comp-label">IPO 路径 · 4 阶段</div>
+            <div class="comp-what">
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
+                <div><b style="color:#f69b1d;">① Pre-IPO</b>（橙色）— State 1，<code>ipo_time</code> 未配置</div>
+                <div><b style="color:#f69b1d;">② Pre-Listing</b>（橙色）— States 2–4 + State 5 前期，距开市 &gt; 24h</div>
+                <div><b style="color:#f69b1d;">③ Listing HH:MM:SS</b>（橙色倒计时）— State 5 最后 24h，距 <code>market_open</code> ≤ 24h</div>
+                <div><b style="color:#e05252;">④ Market Merging</b>（红色）— State 6，集中竞价 <span class="tag tag-local">开发手动</span></div>
+              </div>
+            </div>
           </div>
           <div class="comp">
-            <div class="comp-label">② IPO Merge 红色 <span class="tag tag-local">开发手动</span></div>
-            <div class="comp-what">标签切换为红色 IPO Merge。</div>
+            <div class="comp-label">DL / SPAC 路径 · 3 阶段</div>
+            <div class="comp-what">
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
+                <div><b style="color:#f69b1d;">① Pre-Public</b>（橙色）— States 1–3，<code>market_open</code> 未配置或距开盘 &gt; 24h</div>
+                <div><b style="color:#f69b1d;">② Public HH:MM:SS</b>（橙色倒计时）— State 4，距 <code>market_open</code> ≤ 24h</div>
+                <div><b style="color:#e05252;">③ Market Merging</b>（红色）— State 5，首次开盘波动剧烈 <span class="tag tag-local">开发手动</span></div>
+              </div>
+            </div>
           </div>
           <div class="comp">
-            <div class="comp-label">③ country_stock — 标签消失 <span class="tag tag-local">开发手动</span></div>
-            <div class="comp-what">IPO 完成后开发手动将 symbol 类型切为 country_stock（如 US_STOCK），所有 Pre-IPO 标签消失，前端按普通 TradFi Perp 规则展示。</div>
+            <div class="comp-label">country_stock — 标签消失 <span class="tag tag-local">开发手动</span></div>
+            <div class="comp-what">价格稳定后开发手动将 symbol 切为 country_stock（如 US_STOCK），所有标签消失，前端按普通 TradFi Perp 规则展示。</div>
           </div>
         </div>
       </div>
@@ -1380,21 +1390,44 @@ function switchH5Tab(el){
    TITLE BAR STATE MACHINE
 ════════════════════════ */
 function tbBars(color,heights){return `<span class="tb-bars">${heights.map(h=>`<span style="display:inline-block;width:2.5px;height:${h}px;background:${color};border-radius:1px;"></span>`).join('')}</span>`;}
-const TB_STAGES={
-  1:{tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO</strong><br>标题旁常驻橙色 Pre-IPO 标签。'},
-  2:{tagClass:'merge',tagHtml:`IPO Merge${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 2 · IPO Merge</strong><br>标签切换为红色 IPO Merge。'},
-  3:{tagClass:'none',tagHtml:'',note:'<strong>阶段 3 · country_stock</strong><br>IPO 完成后开发手动将 symbol 类型切为 country_stock（如 US_STOCK），所有 Pre-IPO 标签消失，前端按普通 TradFi Perp 规则展示。'},
+const TB_PATHS={
+  ipo:[
+    {label:'Pre-IPO',tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO（橙色）</strong><br>State 1 — <code>ipo_time</code> 未配置，显示 Pre-IPO 标签。'},
+    {label:'Pre-Listing',tagClass:'listing',tagHtml:`Pre-Listing${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 2 · Pre-Listing（橙色）</strong><br>States 2–4 及 State 5 前期 — ipo_time 已配置，距开市 &gt; 24h。'},
+    {label:'Listing HH:MM:SS',tagClass:'listing-live',tagHtml:`Listing 01:26:56${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 3 · Listing HH:MM:SS（橙色倒计时）</strong><br>State 5 最后 24h — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 4 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 6 — 集中竞价阶段，盘口最易跳空。'},
+  ],
+  dl:[
+    {label:'Pre-Public',tagClass:'prepublic',tagHtml:`Pre-Public${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-Public（橙色）</strong><br>States 1–3 — <code>market_open</code> 未配置或距开盘 &gt; 24h。无 Pre-Listing 中间态。'},
+    {label:'Public HH:MM:SS',tagClass:'listing-live',tagHtml:`Public 01:26:56${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 2 · Public HH:MM:SS（橙色倒计时）</strong><br>State 4 — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 3 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 5（DL/SPAC）— 首次开盘波动剧烈，盘口最易跳空。'},
+  ]
 };
-function setTBStage(n,btn){
-  const s=TB_STAGES[n];
+let currentTBPath='ipo';
+const NUMS=['①','②','③','④'];
+function renderTBPath(path){
+  const stages=TB_PATHS[path];
+  document.getElementById('tbStageBtns').innerHTML=stages.map((s,i)=>`<button class="tb-stage-btn${i===0?' active':''}" onclick="setTBStage(${i},this)">${NUMS[i]} ${s.label}</button>`).join('');
+  applyTBStage(stages[0]);
+}
+function applyTBStage(s){
   const tag=document.getElementById('tbTag');
   tag.className='tb-tag '+s.tagClass;
   tag.innerHTML=s.tagHtml;
-  tag.style.display=s.tagClass==='none'?'none':'';
   document.getElementById('tbNote').innerHTML=s.note;
-  document.querySelectorAll('.tb-stage-btn').forEach(b=>b.classList.remove('active'));
+}
+function setTBStage(idx,btn){
+  applyTBStage(TB_PATHS[currentTBPath][idx]);
+  document.querySelectorAll('#tbStageBtns .tb-stage-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
+function setTBType(path,btn){
+  currentTBPath=path;
+  renderTBPath(path);
+  document.querySelectorAll('#tbTypeSwitcher .dsw-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+renderTBPath('ipo');
 
 /* ════════════════════════
    PAGE TAB SWITCHER
