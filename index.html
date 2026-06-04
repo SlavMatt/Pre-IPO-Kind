@@ -54,7 +54,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 /* ── State switcher (demo control) ── */
 .demo-switcher{display:flex;gap:6px;flex-wrap:wrap;align-self:flex-start;}
 .dsw-btn{padding:4px 10px;border-radius:6px;border:1px solid #3d4149;background:#2b2f35;color:#878b93;font-size:11px;cursor:pointer;font-family:-apple-system,sans-serif;white-space:nowrap;transition:all 0.15s;}
-.dsw-btn.active,.dsw-btn:hover{background:#f69b1d;border-color:#f69b1d;color:#fff;}
+.dsw-btn.active,.dsw-btn:hover{background:#F59004;border-color:#F59004;color:#fff;}
 
 /* ── Risk flow strip ── */
 .risk-strip{display:flex;border-radius:8px;overflow:hidden;margin-top:16px;}
@@ -72,7 +72,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 :root{
   --bg-0:#16181d;--bg-1:#202328;--bg-2:#2b2f35;--bg-3:#363724;
   --text-1:#f9f9f9;--text-2:#878b93;--line-1:#3d4149;
-  --orange:#f69b1d;--green:#2ebd85;--red:#e05252;
+  --orange:#F59004;--green:#2ebd85;--red:#e05252;
   --font:'HarmonyOS Sans','IBM Plex Sans',-apple-system,sans-serif;
 }
 
@@ -326,9 +326,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
             <div class="comp-what">
               <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-top:2px;">
                 <div><b style="color:#878b93">State 1</b> — <code>ipo_time</code> 未配置，日期暂未披露</div>
-                <div><b style="color:#f69b1d">State 2</b> — <code>current &lt; ipo_time</code> 且剩余 &gt;31 天</div>
-                <div><b style="color:#f69b1d">State 3</b> — <code>current &lt; ipo_time</code> 且 24h &lt; 剩余 ≤31 天</div>
-                <div><b style="color:#f69b1d">State 4</b> — <code>current &lt; ipo_time</code> 且剩余 &lt;24h（倒计时精度升级为 HH:MM:SS）</div>
+                <div><b style="color:#F59004">State 2</b> — <code>current &lt; ipo_time</code> 且剩余 &gt;31 天</div>
+                <div><b style="color:#F59004">State 3</b> — <code>current &lt; ipo_time</code> 且 24h &lt; 剩余 ≤31 天</div>
+                <div><b style="color:#F59004">State 4</b> — <code>current &lt; ipo_time</code> 且剩余 &lt;24h（倒计时精度升级为 HH:MM:SS）</div>
                 <div><b style="color:#9b7fd4">State 5</b> — <code>ipo_time &lt; current &lt; market_open</code>（IPO 已发生，开市前约 12h–2 天）<br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">Reduce-Only。高亮卡 = Pre-Listing，下卡显示 Market Opening 倒计时。</span></div>
                 <div><b style="color:#e05252">State 6</b> — <code>current &gt; market_open</code> 且 <code>symbol_type = PRE_LAUNCH</code><br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">Reduce-Only。高亮移至 Market Merging Phase，上卡显示 Market Opening 历史日期。</span></div>
               </div>
@@ -339,9 +339,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
             <div class="comp-what">
               <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-top:2px;">
                 <div><b style="color:#878b93">State 1</b> — <code>market_open</code> 未配置（Investor Day / Proxy Statement 尚未发布）</div>
-                <div><b style="color:#f69b1d">State 2</b> — <code>current &lt; market_open</code> 且剩余 &gt;31 天</div>
-                <div><b style="color:#f69b1d">State 3</b> — <code>current &lt; market_open</code> 且 24h &lt; 剩余 ≤31 天</div>
-                <div><b style="color:#f69b1d">State 4</b> — <code>current &lt; market_open</code> 且剩余 &lt;24h（HH:MM:SS）</div>
+                <div><b style="color:#F59004">State 2</b> — <code>current &lt; market_open</code> 且剩余 &gt;31 天</div>
+                <div><b style="color:#F59004">State 3</b> — <code>current &lt; market_open</code> 且 24h &lt; 剩余 ≤31 天</div>
+                <div><b style="color:#F59004">State 4</b> — <code>current &lt; market_open</code> 且剩余 &lt;24h（HH:MM:SS）</div>
                 <div><b style="color:#e05252">State 5</b> — <code>current &gt; market_open</code> 且 <code>symbol_type = PRE_LAUNCH</code><br><span style="color:#888;padding-left:6px;display:block;margin-top:2px;">Reduce-Only。Market Merging Phase。无 Pre-Listing 中间态。</span></div>
               </div>
             </div>
@@ -353,7 +353,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
                 <thead>
                   <tr>
                     <th style="text-align:left;padding:5px 8px;background:#1c1f24;color:#888;font-weight:500;border-radius:4px 0 0 0;">State</th>
-                    <th style="text-align:left;padding:5px 8px;background:#1c1f24;color:#f69b1d;font-weight:500;">IPO · Type 1（6 States）</th>
+                    <th style="text-align:left;padding:5px 8px;background:#1c1f24;color:#F59004;font-weight:500;">IPO · Type 1（6 States）</th>
                     <th style="text-align:left;padding:5px 8px;background:#1c1f24;color:#9b7fd4;font-weight:500;border-radius:0 4px 0 0;">DL / SPAC · Type 2（5 States）</th>
                   </tr>
                 </thead>
@@ -364,7 +364,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
                     <td style="padding:5px 8px;border-top:1px solid #2c2f35;">Pre-Public · To Be Disclosed</td>
                   </tr>
                   <tr>
-                    <td style="padding:5px 8px;border-top:1px solid #2c2f35;color:#f69b1d;font-weight:600;">2–4</td>
+                    <td style="padding:5px 8px;border-top:1px solid #2c2f35;color:#F59004;font-weight:600;">2–4</td>
                     <td style="padding:5px 8px;border-top:1px solid #2c2f35;">Pre-IPO · Est. IPO Date 倒计时</td>
                     <td style="padding:5px 8px;border-top:1px solid #2c2f35;">Pre-Public · Market Opening 倒计时</td>
                   </tr>
@@ -390,7 +390,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
           <div class="comp">
             <div class="comp-label">脚注 * · 只减仓提醒</div>
             <div class="comp-what" style="display:flex;flex-direction:column;gap:8px;">
-              <div><span style="font-size:11px;color:#f69b1d;font-weight:600;">IPO · Type 1</span><br>During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.</div>
+              <div><span style="font-size:11px;color:#F59004;font-weight:600;">IPO · Type 1</span><br>During the weekend/holiday/IPO phase, some symbols may be under position risk control; only reduce-only orders are allowed.</div>
               <div><span style="font-size:11px;color:#9b7fd4;font-weight:600;">DL / SPAC · Type 2</span><br>During the weekend/holiday/Pre-Public phase, some symbols may be under position risk control; only reduce-only orders are allowed.<br><span style="color:#888;font-size:11px;">（Pre-Public 指 market_open 前的整个待开市区间）</span></div>
             </div>
           </div>
@@ -743,9 +743,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
             <div class="comp-label">IPO 路径 · 4 阶段</div>
             <div class="comp-what">
               <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
-                <div><b style="color:#f69b1d;">① Pre-IPO</b>（橙色）— State 1，<code>ipo_time</code> 未配置</div>
-                <div><b style="color:#f69b1d;">② Pre-Listing</b>（橙色）— States 2–4 + State 5 前期，距开市 &gt; 24h</div>
-                <div><b style="color:#f69b1d;">③ Listing HH:MM:SS</b>（橙色倒计时）— State 5 最后 24h，距 <code>market_open</code> ≤ 24h</div>
+                <div><b style="color:#F59004;">① Pre-IPO</b>（橙色）— State 1，<code>ipo_time</code> 未配置</div>
+                <div><b style="color:#F59004;">② Pre-Listing</b>（橙色）— States 2–4 + State 5 前期，距开市 &gt; 24h</div>
+                <div><b style="color:#F59004;">③ Listing HH:MM:SS</b>（橙色倒计时）— State 5 最后 24h，距 <code>market_open</code> ≤ 24h</div>
                 <div><b style="color:#e05252;">④ Market Merging</b>（红色）— State 6，集中竞价 <span class="tag tag-local">开发手动</span></div>
               </div>
             </div>
@@ -754,8 +754,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
             <div class="comp-label">DL / SPAC 路径 · 3 阶段</div>
             <div class="comp-what">
               <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
-                <div><b style="color:#f69b1d;">① Pre-Public</b>（橙色）— States 1–3，<code>market_open</code> 未配置或距开盘 &gt; 24h</div>
-                <div><b style="color:#f69b1d;">② Public HH:MM:SS</b>（橙色倒计时）— State 4，距 <code>market_open</code> ≤ 24h</div>
+                <div><b style="color:#F59004;">① Pre-Public</b>（橙色）— States 1–3，<code>market_open</code> 未配置或距开盘 &gt; 24h</div>
+                <div><b style="color:#F59004;">② Public HH:MM:SS</b>（橙色倒计时）— State 4，距 <code>market_open</code> ≤ 24h</div>
                 <div><b style="color:#e05252;">③ Market Merging</b>（红色）— State 5，首次开盘波动剧烈 <span class="tag tag-local">开发手动</span></div>
               </div>
             </div>
@@ -785,7 +785,7 @@ function halfSunIcon(c){return`<div style="position:relative;width:16px;height:1
 function sunIcon(c){c=c||'#F59004';return`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="8.003" cy="8.073" r="3.333" fill="${c}"/><circle cx="8" cy="1.89" r="1" fill="${c}"/><circle cx="8" cy="14.11" r="1" fill="${c}"/><circle cx="13.97" cy="8" r="1" fill="${c}"/><circle cx="2.03" cy="8" r="1" fill="${c}"/><circle cx="3.5" cy="3.74" r="1" fill="${c}"/><circle cx="3.5" cy="12.31" r="1" fill="${c}"/><circle cx="12.49" cy="3.74" r="1" fill="${c}"/><circle cx="12.49" cy="12.31" r="1" fill="${c}"/></svg>`;}
 function afterIcon(){return halfSunIcon('#9747FF');}
 function listingIcon(){return halfSunIcon('#9747FF');}
-function liqIndicator(t){if(t==='moderate')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:6px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:8px;background:#f69b1d;border-radius:1px"></div></div>`;if(t==='low')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#e05252;border-radius:1px"></div><div style="width:2px;height:6px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:8px;background:#f69b1d;border-radius:1px"></div></div>`;return '';}
+function liqIndicator(t){if(t==='moderate')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:6px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:8px;background:#F59004;border-radius:1px"></div></div>`;if(t==='low')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#e05252;border-radius:1px"></div><div style="width:2px;height:6px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:8px;background:#F59004;border-radius:1px"></div></div>`;return '';}
 
 const FN_IPO='During periods of elevated liquidity risk, certain Pre-Launch trading pairs may be restricted to reduce-only orders.';
 const FN_DL='During periods of elevated liquidity risk, certain Pre-Launch trading pairs may be restricted to reduce-only orders.';
@@ -924,14 +924,14 @@ function switchH5Tab(el){
 function tbBars(color,heights){return `<span class="tb-bars">${heights.map(h=>`<span style="display:inline-block;width:2.5px;height:${h}px;background:${color};border-radius:1px;"></span>`).join('')}</span>`;}
 const TB_PATHS={
   ipo:[
-    {label:'Pre-IPO',tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO（橙色）</strong><br>State 1 — <code>ipo_time</code> 未配置，显示 Pre-IPO 标签。'},
-    {label:'Pre-Listing',tagClass:'listing',tagHtml:`Pre-Listing${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 2 · Pre-Listing（橙色）</strong><br>States 2–4 及 State 5 前期 — ipo_time 已配置，距开市 &gt; 24h。'},
-    {label:'Listing HH:MM:SS',tagClass:'listing-live',tagHtml:`Listing 01:26:56${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 3 · Listing HH:MM:SS（橙色倒计时）</strong><br>State 5 最后 24h — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Pre-IPO',tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO（橙色）</strong><br>State 1 — <code>ipo_time</code> 未配置，显示 Pre-IPO 标签。'},
+    {label:'Pre-Listing',tagClass:'listing',tagHtml:`Pre-Listing${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 2 · Pre-Listing（橙色）</strong><br>States 2–4 及 State 5 前期 — ipo_time 已配置，距开市 &gt; 24h。'},
+    {label:'Listing HH:MM:SS',tagClass:'listing-live',tagHtml:`Listing 01:26:56${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 3 · Listing HH:MM:SS（橙色倒计时）</strong><br>State 5 最后 24h — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
     {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 4 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 6 — 集中竞价阶段，盘口最易跳空。'},
   ],
   dl:[
-    {label:'Pre-Public',tagClass:'prepublic',tagHtml:`Pre-Public${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 1 · Pre-Public（橙色）</strong><br>States 1–3 — <code>market_open</code> 未配置或距开盘 &gt; 24h。无 Pre-Listing 中间态。'},
-    {label:'Public HH:MM:SS',tagClass:'listing-live',tagHtml:`Public 01:26:56${tbBars('#f69b1d',[8,5])}`,note:'<strong>阶段 2 · Public HH:MM:SS（橙色倒计时）</strong><br>State 4 — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Pre-Public',tagClass:'prepublic',tagHtml:`Pre-Public${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 1 · Pre-Public（橙色）</strong><br>States 1–3 — <code>market_open</code> 未配置或距开盘 &gt; 24h。无 Pre-Listing 中间态。'},
+    {label:'Public HH:MM:SS',tagClass:'listing-live',tagHtml:`Public 01:26:56${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 2 · Public HH:MM:SS（橙色倒计时）</strong><br>State 4 — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
     {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 3 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 5（DL/SPAC）— 首次开盘波动剧烈，盘口最易跳空。'},
   ]
 };
