@@ -780,27 +780,19 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
 /* ════════════════════════
    PRE-IPO POPUP LOGIC
 ════════════════════════ */
-const FA = {
-  sunCenter:'https://www.figma.com/api/mcp/asset/d7669b0a-394f-4239-9c22-463e2264924a',
-  sunDot:'https://www.figma.com/api/mcp/asset/75271ce5-26c8-49cf-a822-0259911093b1',
-  afterIcon:'https://www.figma.com/api/mcp/asset/38079e8f-538b-4471-859e-54f646774e53',
-  liqMod1:'https://www.figma.com/api/mcp/asset/c96f6409-ce76-4d58-a940-4b87557d40a4',
-  liqMod2:'https://www.figma.com/api/mcp/asset/64e2fbeb-db28-4846-8ae9-2e18c7137fca',
-  liqLow:'https://www.figma.com/api/mcp/asset/31082f8e-491e-49d3-9652-f98f74d7f1f8',
-};
-function sunIcon(){const c=FA.sunCenter,d=FA.sunDot;return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${c}" style="position:absolute;left:4.67px;width:6.667px;height:6.667px;top:4.74px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:0.89px"><img src="${d}" style="position:absolute;left:7px;width:2px;height:2px;top:13.11px"><img src="${d}" style="position:absolute;left:12.97px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:1.03px;width:2px;height:2px;top:7px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:2.5px;width:2px;height:2px;top:11.31px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:2.74px"><img src="${d}" style="position:absolute;left:11.49px;width:2px;height:2px;top:11.31px"></div>`;}
-function afterIcon(){return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.afterIcon}" style="position:absolute;height:10.862px;left:0.69px;top:1.48px;width:13.94px"></div>`;}
-function listingIcon(){return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;left:1px;right:1px;bottom:3px;height:1px;background:#9b7fd4;border-radius:1px"></div><div style="position:absolute;left:4px;bottom:3px;width:8px;height:4px;background:#9b7fd4;border-radius:4px 4px 0 0"></div><div style="position:absolute;left:7px;top:1px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div></div>`;}
-function liqIndicator(t){if(t==='moderate')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><img src="${FA.liqMod1}" style="position:absolute;height:8px;left:1.11px;top:2.67px;width:6.867px"><img src="${FA.liqMod2}" style="position:absolute;height:8px;left:6.44px;top:2.67px;width:4.2px"></div>`;if(t==='low')return`<div style="position:relative;width:16px;height:16px;flex-shrink:0;overflow:hidden"><div style="position:absolute;background:#e05252;height:8px;left:1.67px;border-radius:100px;top:4px;width:1.533px"></div><img src="${FA.liqLow}" style="position:absolute;height:8px;left:2.89px;top:2.67px;width:9.533px"></div>`;return '';}
+function sunIcon(color){color=color||'#f69b1d';const d=`position:absolute;width:2px;height:2px;border-radius:50%;background:${color}`;return`<div style="position:relative;width:16px;height:16px;flex-shrink:0"><div style="position:absolute;left:4.67px;top:4.74px;width:6.667px;height:6.667px;border-radius:50%;background:${color}"></div><div style="${d};left:7px;top:0.89px"></div><div style="${d};left:7px;top:13.11px"></div><div style="${d};left:12.97px;top:7px"></div><div style="${d};left:1.03px;top:7px"></div><div style="${d};left:2.5px;top:2.74px"></div><div style="${d};left:2.5px;top:11.31px"></div><div style="${d};left:11.49px;top:2.74px"></div><div style="${d};left:11.49px;top:11.31px"></div></div>`;}
+function afterIcon(){return sunIcon('#4a4e56');}
+function listingIcon(){return`<div style="position:relative;width:16px;height:16px;flex-shrink:0"><div style="position:absolute;left:1px;right:1px;bottom:3px;height:1px;background:#9b7fd4;border-radius:1px"></div><div style="position:absolute;left:4px;bottom:3px;width:8px;height:4px;background:#9b7fd4;border-radius:4px 4px 0 0"></div><div style="position:absolute;left:7px;top:1px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:2px;top:3px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;left:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div><div style="position:absolute;right:0;top:6.5px;width:2px;height:2px;border-radius:50%;background:#9b7fd4"></div></div>`;}
+function liqIndicator(t){if(t==='moderate')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:6px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:8px;background:#f69b1d;border-radius:1px"></div></div>`;if(t==='low')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#e05252;border-radius:1px"></div><div style="width:2px;height:6px;background:#f69b1d;border-radius:1px"></div><div style="width:2px;height:8px;background:#f69b1d;border-radius:1px"></div></div>`;return '';}
 
 const FN_IPO='During periods of elevated liquidity risk, certain Pre-Launch trading pairs may be restricted to reduce-only orders.';
 const FN_DL='During periods of elevated liquidity risk, certain Pre-Launch trading pairs may be restricted to reduce-only orders.';
-const PIP_TITLE={t1:'Pre-IPO Assets',t2:'Pre-Public Assets'};
+const PIP_TITLE={t1:'Pre-Launch Assets',t2:'Pre-Public Assets'};
 const PIP_DESC={
   t1:'This perpetual trades 24/7, with its price based on various market prices. Prices may fluctuate during the Pre-Launch phase — please be mindful of the risks. When the underlying asset officially launches on the public market, liquidity and price protection may adjust to align with the regular {stock} market.',
   t2:'This perpetual trades 24/7, with its price based on various market prices. Prices may fluctuate during the Pre-Launch phase — please be mindful of the risks. When the underlying asset officially launches on the public market, liquidity and price protection may adjust to align with the regular {stock} market.'
 };
-const MM_CARDS=[{hl:false,icon:'dot-green',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'listing',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}];
+const MM_CARDS=[{hl:false,icon:'sun-green',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'sun',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}];
 const PIP_STATES={
   1:{
     t1:{cards:[{hl:true,icon:'sun',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',tbd:true}],fn:FN_IPO},
@@ -819,7 +811,7 @@ const PIP_STATES={
     t2:{cards:[{hl:true,icon:'sun',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Market Opening',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN_DL}
   },
   5:{
-    t1:{cards:[{hl:true,icon:'after',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
+    t1:{cards:[{hl:true,icon:'sun',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
     t2:{cards:MM_CARDS,fn:FN_DL}  /* DL/SPAC State 5 = Market Merging (no Pre-Listing) */
   },
   6:{
@@ -831,8 +823,7 @@ const PIP_STATES={
 let currentPIPStateN=1;
 let currentPIPType=1;
 
-function dotGreenIcon(){return`<div style="width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:#2ebd85"></div></div>`;}
-function getIcon(t){if(t==='sun')return sunIcon();if(t==='listing')return listingIcon();if(t==='dot-green')return dotGreenIcon();return afterIcon();}
+function getIcon(t){if(t==='sun')return sunIcon();if(t==='sun-green')return sunIcon('#2ebd85');if(t==='listing')return listingIcon();return afterIcon();}
 function renderPIP(n,tp){
   const tk=tp===2?'t2':'t1';
   const s=PIP_STATES[n][tk];let h='';
