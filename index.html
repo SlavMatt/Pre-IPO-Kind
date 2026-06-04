@@ -302,7 +302,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
               <div class="pip-header">
                 <span class="pip-title" id="pipTitle">Pre-IPO Assets</span>
                 <div class="pip-learn">
-                  <div class="pip-learn-img"><img src="https://www.figma.com/api/mcp/asset/a822ff3f-089a-4af4-92f5-0bf6570217b8" alt=""></div>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.0222 0.800003C13.1086 0.800003 14.8 2.41178 14.8 4.4V11.6C14.8 13.5882 13.1086 15.2 11.0222 15.2H4.97773C2.89132 15.2 1.19995 13.5882 1.19995 11.6V4.4C1.19995 2.41178 2.89132 0.800003 4.97773 0.800003H11.0222ZM5.73328 10.16C5.316 10.16 4.97773 10.4824 4.97773 10.88C4.97773 11.2776 5.316 11.6 5.73328 11.6H7.99995C8.41723 11.6 8.75551 11.2776 8.75551 10.88C8.75551 10.4824 8.41723 10.16 7.99995 10.16H5.73328ZM5.73328 7.28C5.316 7.28 4.97773 7.60236 4.97773 8C4.97773 8.39765 5.316 8.72 5.73328 8.72H10.2666C10.6839 8.72 11.0222 8.39765 11.0222 8C11.0222 7.60236 10.6839 7.28 10.2666 7.28H5.73328ZM5.73328 4.4C5.316 4.4 4.97773 4.72236 4.97773 5.12C4.97773 5.51765 5.316 5.84 5.73328 5.84H10.2666C10.6839 5.84 11.0222 5.51765 11.0222 5.12C11.0222 4.72236 10.6839 4.4 10.2666 4.4H5.73328Z" fill="currentColor"/></svg>
                   Learn More
                 </div>
               </div>
@@ -785,6 +785,7 @@ function halfSunIcon(c){return`<div style="position:relative;width:16px;height:1
 function sunIcon(c){c=c||'#F59004';return`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="8.003" cy="8.073" r="3.333" fill="${c}"/><circle cx="8" cy="1.89" r="1" fill="${c}"/><circle cx="8" cy="14.11" r="1" fill="${c}"/><circle cx="13.97" cy="8" r="1" fill="${c}"/><circle cx="2.03" cy="8" r="1" fill="${c}"/><circle cx="3.5" cy="3.74" r="1" fill="${c}"/><circle cx="3.5" cy="12.31" r="1" fill="${c}"/><circle cx="12.49" cy="3.74" r="1" fill="${c}"/><circle cx="12.49" cy="12.31" r="1" fill="${c}"/></svg>`;}
 function afterIcon(){return halfSunIcon('#9747FF');}
 function listingIcon(){return halfSunIcon('#9747FF');}
+function grayIcon(){return halfSunIcon('#C9CDD1');}
 function liqIndicator(t){if(t==='moderate')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:6px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:8px;background:#F59004;border-radius:1px"></div></div>`;if(t==='low')return`<div style="display:flex;align-items:flex-end;gap:1.5px"><div style="width:2px;height:4px;background:#e05252;border-radius:1px"></div><div style="width:2px;height:6px;background:#F59004;border-radius:1px"></div><div style="width:2px;height:8px;background:#F59004;border-radius:1px"></div></div>`;return '';}
 
 const FN_IPO='During periods of elevated liquidity risk, certain Pre-Launch trading pairs may be restricted to reduce-only orders.';
@@ -794,38 +795,39 @@ const PIP_DESC={
   t1:'This perpetual trades 24/7, with its price based on various market prices. Prices may fluctuate during the Pre-Launch phase — please be mindful of the risks. When the underlying asset officially launches on the public market, liquidity and price protection may adjust to align with the regular {stock} market.',
   t2:'This perpetual trades 24/7, with its price based on various market prices. Prices may fluctuate during the Pre-Launch phase — please be mindful of the risks. When the underlying asset officially launches on the public market, liquidity and price protection may adjust to align with the regular {stock} market.'
 };
-const MM_CARDS=[{hl:false,icon:'after',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'after',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}];
+const MM_CARDS_DL=[{hl:false,icon:'sun-green',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'after',name:'Market Merging',liq:'Low Liquidity',liqT:'low'}];
+const MM_CARDS_IPO=[{hl:false,icon:'sun-green',name:'Market Opening',dateOnly:'2026-06-12 21:00 UTC'},{hl:true,icon:'sun',name:'Market Merging Phase',liq:'Low Liquidity',liqT:'low'}];
 const PIP_STATES={
   1:{
-    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',tbd:true}],fn:FN_IPO},
-    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Market Opening',tbd:true}],fn:FN_DL}
+    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'gray',name:'Est. IPO Date',tbd:true}],fn:FN_IPO},
+    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'gray',name:'Market Opening',tbd:true}],fn:FN_DL}
   },
   2:{
-    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN_IPO},
-    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Market Opening',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN_DL}
+    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun',name:'Est. IPO Date',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN_IPO},
+    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun-green',name:'Market Opening',countdown:'3 Mon 24 Days',tag:'Next Phase',date:'2026-08-12 21:00 UTC'}],fn:FN_DL}
   },
   3:{
-    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
-    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Market Opening',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_DL}
+    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun',name:'Est. IPO Date',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
+    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun-green',name:'Market Opening',countdown:'14 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_DL}
   },
   4:{
-    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN_IPO},
-    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'after',name:'Market Opening',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN_DL}
+    t1:{cards:[{hl:true,icon:'sun-green',name:'Pre-IPO',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun',name:'Est. IPO Date',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN_IPO},
+    t2:{cards:[{hl:true,icon:'sun-green',name:'Pre-Public',liq:'Moderate Liquidity',liqT:'moderate'},{hl:false,icon:'sun-green',name:'Market Opening',countdown:'01:26:56',tag:'Next Phase',date:'2026-10-26 21:00 UTC'}],fn:FN_DL}
   },
   5:{
-    t1:{cards:[{hl:true,icon:'after',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'after',name:'Est. IPO Date',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
-    t2:{cards:MM_CARDS,fn:FN_DL}  /* DL/SPAC State 5 = Market Merging (no Pre-Listing) */
+    t1:{cards:[{hl:true,icon:'sun',name:'Pre-Listing',liq:'Low Liquidity',liqT:'low'},{hl:false,icon:'sun',name:'Est. IPO Date',countdown:'2 Days',tag:'Next Phase',date:'2026-06-12 21:00 UTC'}],fn:FN_IPO},
+    t2:{cards:MM_CARDS_DL,fn:FN_DL}
   },
   6:{
-    t1:{cards:MM_CARDS,fn:FN_IPO},
-    t2:{cards:MM_CARDS,fn:FN_DL}
+    t1:{cards:MM_CARDS_IPO,fn:FN_IPO},
+    t2:{cards:MM_CARDS_DL,fn:FN_DL}
   },
 };
 
 let currentPIPStateN=1;
 let currentPIPType=1;
 
-function getIcon(t){if(t==='sun')return sunIcon();if(t==='sun-green')return sunIcon('#2ebd85');if(t==='listing')return listingIcon();return afterIcon();}
+function getIcon(t){if(t==='sun')return sunIcon();if(t==='sun-green')return sunIcon('#2ebd85');if(t==='gray')return grayIcon();if(t==='listing')return listingIcon();return afterIcon();}
 function renderPIP(n,tp){
   const tk=tp===2?'t2':'t1';
   const s=PIP_STATES[n][tk];let h='';
