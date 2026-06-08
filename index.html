@@ -662,7 +662,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
     <div class="cat-num">4</div>
     <div class="cat-title-wrap">
       <div class="cat-title">Web · 标题栏 Symbol 标签</div>
-      <div class="cat-desc">标签根据 <code>listing_type</code> 分两路径：IPO 路径 4 阶段（Pre-IPO → Pre-Listing → Listing HH:MM:SS → Market Merging），DL / SPAC 路径 3 阶段（Pre-Public → Public HH:MM:SS → Market Merging）。切为 <code>country_stock</code> 后消失。</div>
+      <div class="cat-desc">标签根据 <code>listing_type</code> 分两路径：IPO 路径 4 阶段（Pre-IPO → Pre-Listing → Listing HH:MM:SS → Merging），DL / SPAC 路径 3 阶段（Pre-Public → Public HH:MM:SS → Merging）。切为 <code>country_stock</code> 后消失。</div>
     </div>
   </div>
   <div class="state-list">
@@ -706,7 +706,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
                 <div><b style="color:#F59004;">① Pre-IPO</b>（橙色）— State 1，<code>ipo_time</code> 未配置</div>
                 <div><b style="color:#F59004;">② Pre-Listing</b>（橙色）— States 2–4 + State 5 前期，距开市 &gt; 24h</div>
                 <div><b style="color:#F59004;">③ Listing HH:MM:SS</b>（橙色倒计时）— State 5 最后 24h，距 <code>market_open</code> ≤ 24h</div>
-                <div><b style="color:#e05252;">④ Market Merging</b>（红色）— State 6，集中竞价 <span class="tag tag-local">开发手动</span></div>
+                <div><b style="color:#e05252;">④ Merging</b>（红色）— State 6，集中竞价 <span class="tag tag-local">开发手动</span></div>
               </div>
             </div>
           </div>
@@ -716,7 +716,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:6px;}
               <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
                 <div><b style="color:#F59004;">① Pre-Public</b>（橙色）— States 1–3，<code>market_open</code> 未配置或距开盘 &gt; 24h</div>
                 <div><b style="color:#F59004;">② Public HH:MM:SS</b>（橙色倒计时）— State 4，距 <code>market_open</code> ≤ 24h</div>
-                <div><b style="color:#e05252;">③ Market Merging</b>（红色）— State 5，首次开盘波动剧烈 <span class="tag tag-local">开发手动</span></div>
+                <div><b style="color:#e05252;">③ Merging</b>（红色）— State 5，首次开盘波动剧烈 <span class="tag tag-local">开发手动</span></div>
               </div>
             </div>
           </div>
@@ -885,18 +885,19 @@ function switchH5Tab(el){
 /* ════════════════════════
    TITLE BAR STATE MACHINE
 ════════════════════════ */
-function tbBars(color,heights){return `<span class="tb-bars">${heights.map(h=>`<span style="display:inline-block;width:2.5px;height:${h}px;background:${color};border-radius:1px;"></span>`).join('')}</span>`;}
+const _IND_MOD=`<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.43335 4C2.85675 4 3.19992 4.34321 3.19995 4.7666V11.2334C3.19992 11.6568 2.85675 12 2.43335 12C2.00998 12 1.66678 11.6568 1.66675 11.2334V4.7666C1.66678 4.34323 2.00998 4.00004 2.43335 4ZM5.10034 4C5.52362 4.00014 5.86691 4.3433 5.86694 4.7666V11.2334C5.86691 11.6567 5.52362 11.9999 5.10034 12C4.67695 12 4.33378 11.6568 4.33374 11.2334V4.7666C4.33378 4.34321 4.67695 4 5.10034 4ZM7.76636 4C8.18975 4 8.53292 4.34321 8.53296 4.7666V11.2334C8.53292 11.6568 8.18975 12 7.76636 12C7.34314 11.9998 6.99979 11.6567 6.99976 11.2334V4.7666C6.99979 4.34334 7.34314 4.00021 7.76636 4Z" fill="#F59004"/><path d="M10.4333 4C10.8567 4 11.1999 4.34321 11.2 4.7666V11.2334C11.1999 11.6568 10.8567 12 10.4333 12C10.01 12 9.66678 11.6568 9.66675 11.2334V4.7666C9.66678 4.34323 10.01 4.00004 10.4333 4ZM13.1003 4C13.5236 4.00014 13.8669 4.3433 13.8669 4.7666V11.2334C13.8669 11.6567 13.5236 11.9999 13.1003 12C12.6769 12 12.3338 11.6568 12.3337 11.2334V4.7666C12.3338 4.34321 12.6769 4 13.1003 4Z" fill="#F59004" fill-opacity="0.3"/></svg>`;
+const _IND_LOW=`<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.66675" y="4" width="1.53333" height="8" rx="0.766667" fill="#E05252"/><path d="M5.09985 4C5.52325 4 5.86642 4.34321 5.86646 4.7666V11.2334C5.86642 11.6568 5.52325 12 5.09985 12C4.67649 12 4.33329 11.6568 4.33325 11.2334V4.7666C4.33329 4.34323 4.67649 4.00004 5.09985 4ZM7.76685 4C8.19012 4.00014 8.53341 4.3433 8.53345 4.7666V11.2334C8.53341 11.6567 8.19012 11.9999 7.76685 12C7.34345 12 7.00028 11.6568 7.00024 11.2334V4.7666C7.00028 4.34321 7.34345 4 7.76685 4ZM10.4329 4C10.8563 4 11.1994 4.34321 11.1995 4.7666V11.2334C11.1994 11.6568 10.8563 12 10.4329 12C10.0096 11.9998 9.66629 11.6567 9.66626 11.2334V4.7666C9.66629 4.34334 10.0096 4.00021 10.4329 4ZM13.0999 4C13.5233 4 13.8664 4.34321 13.8665 4.7666V11.2334C13.8664 11.6568 13.5233 12 13.0999 12C12.6765 12 12.3333 11.6568 12.3333 11.2334V4.7666C12.3333 4.34323 12.6765 4.00004 13.0999 4Z" fill="#E05252" fill-opacity="0.3"/></svg>`;
 const TB_PATHS={
   ipo:[
-    {label:'Pre-IPO',tagClass:'preipo',tagHtml:`Pre-IPO${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 1 · Pre-IPO（橙色）</strong><br>State 1 — <code>ipo_time</code> 未配置，显示 Pre-IPO 标签。'},
-    {label:'Pre-Listing',tagClass:'listing',tagHtml:`Pre-Listing${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 2 · Pre-Listing（橙色）</strong><br>States 2–4 及 State 5 前期 — ipo_time 已配置，距开市 &gt; 24h。'},
-    {label:'Listing HH:MM:SS',tagClass:'listing-live',tagHtml:`Listing 01:26:56${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 3 · Listing HH:MM:SS（橙色倒计时）</strong><br>State 5 最后 24h — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
-    {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 4 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 6 — 集中竞价阶段，盘口最易跳空。'},
+    {label:'Pre-IPO',tagClass:'preipo',tagHtml:`Pre-IPO${_IND_MOD}`,note:'<strong>阶段 1 · Pre-IPO（橙色）</strong><br>State 1 — <code>ipo_time</code> 未配置，显示 Pre-IPO 标签。'},
+    {label:'Pre-Listing',tagClass:'listing',tagHtml:`Pre-Listing${_IND_MOD}`,note:'<strong>阶段 2 · Pre-Listing（橙色）</strong><br>States 2–4 及 State 5 前期 — ipo_time 已配置，距开市 &gt; 24h。'},
+    {label:'Listing HH:MM:SS',tagClass:'listing-live',tagHtml:`Listing 01:26:56${_IND_MOD}`,note:'<strong>阶段 3 · Listing HH:MM:SS（橙色倒计时）</strong><br>State 5 最后 24h — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Merging',tagClass:'merge',tagHtml:`Merging${_IND_LOW}`,note:'<strong>阶段 4 · Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 6 — 集中竞价阶段，盘口最易跳空。'},
   ],
   dl:[
-    {label:'Pre-Public',tagClass:'prepublic',tagHtml:`Pre-Public${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 1 · Pre-Public（橙色）</strong><br>States 1–3 — <code>market_open</code> 未配置或距开盘 &gt; 24h。无 Pre-Listing 中间态。'},
-    {label:'Public HH:MM:SS',tagClass:'listing-live',tagHtml:`Public 01:26:56${tbBars('#F59004',[8,5])}`,note:'<strong>阶段 2 · Public HH:MM:SS（橙色倒计时）</strong><br>State 4 — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
-    {label:'Market Merging',tagClass:'merge',tagHtml:`Market Merging${tbBars('#e05252',[8,5,3])}`,note:'<strong>阶段 3 · Market Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 5（DL/SPAC）— 首次开盘波动剧烈，盘口最易跳空。'},
+    {label:'Pre-Public',tagClass:'prepublic',tagHtml:`Pre-Public${_IND_MOD}`,note:'<strong>阶段 1 · Pre-Public（橙色）</strong><br>States 1–3 — <code>market_open</code> 未配置或距开盘 &gt; 24h。无 Pre-Listing 中间态。'},
+    {label:'Public HH:MM:SS',tagClass:'listing-live',tagHtml:`Public 01:26:56${_IND_MOD}`,note:'<strong>阶段 2 · Public HH:MM:SS（橙色倒计时）</strong><br>State 4 — 距 <code>market_open</code> ≤ 24h，标签内嵌实时倒计时。'},
+    {label:'Merging',tagClass:'merge',tagHtml:`Merging${_IND_LOW}`,note:'<strong>阶段 3 · Merging（红色）<span style="margin-left:6px;font-size:11px;background:#444;padding:1px 5px;border-radius:4px;">开发手动</span></strong><br>State 5（DL/SPAC）— 首次开盘波动剧烈，盘口最易跳空。'},
   ]
 };
 let currentTBPath='ipo';
